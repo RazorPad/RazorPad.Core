@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Windows;
-using System.Windows.Controls;
+using System.Windows.Forms;
 using RazorPad.Framework;
 using RazorPad.ViewModels;
+using UserControl = System.Windows.Controls.UserControl;
 
 namespace RazorPad
 {
@@ -58,6 +59,11 @@ namespace RazorPad
 
             PropertyDictionary = newDictionary;
             PropertyGrid.SelectedObject = new DictionaryPropertyGridAdapter(PropertyDictionary);
+        }
+
+        private void OnPropertyValueChanged(object s, PropertyValueChangedEventArgs e)
+        {
+            ViewModel.TriggerPropertyChanged();
         }
     }
 }

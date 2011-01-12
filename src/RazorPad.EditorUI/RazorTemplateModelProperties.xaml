@@ -9,17 +9,15 @@
              d:DesignHeight="300" d:DesignWidth="300">
 
     <StackPanel>
-        <ComboBox DataContext="{Binding TemplateModelType}">
-            <ComboBoxItem>System.object</ComboBoxItem>
-        </ComboBox>
 
-        <WinFormsInt:WindowsFormsHost Width="300" Height="400" DataContextChanged="OnDataContextChanged">
-            <WinForms:PropertyGrid x:Name="PropertyGrid" PropertySort="Alphabetical"  AutoScroll="True" />
-        </WinFormsInt:WindowsFormsHost>
-        
         <Label>New Property:</Label>
         <TextBox x:Name="NewPropertyName" />
         <Button Click="OnAddPropertyClick" Margin="10 5">Add Property</Button>
+
+        <WinFormsInt:WindowsFormsHost Width="300" Height="400" DataContextChanged="OnDataContextChanged">
+            <WinForms:PropertyGrid x:Name="PropertyGrid" PropertySort="Alphabetical"  AutoScroll="True" PropertyValueChanged="OnPropertyValueChanged" />
+        </WinFormsInt:WindowsFormsHost>
+        
     </StackPanel>
 
 </UserControl>

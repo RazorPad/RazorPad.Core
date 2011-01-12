@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Dynamic;
+using System.Linq;
 
 namespace RazorPad.Framework
 {
-    public class DynamicDictionary : DynamicObject, IDictionary, IDictionary<string,object>
+    public class DynamicDictionary : DynamicObject, IDictionary, IDictionary<string, object>, INotifyPropertyChanged
     {
         readonly Dictionary<string, object> _dictionary = new Dictionary<string, object>();
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public void Add(KeyValuePair<string, object> item)
         {
@@ -16,7 +20,8 @@ namespace RazorPad.Framework
 
         public bool Contains(object key)
         {
-            return key is string && _dictionary.ContainsKey(((string)key).ToLower());
+            string actualKey = GetActualKey(key);
+            return actualKey != null && _dictionary.ContainsKey(actualKey);
         }
 
         public void Add(object key, object value)
@@ -27,6 +32,7 @@ namespace RazorPad.Framework
         public void Clear()
         {
             _dictionary.Clear();
+            OnPropertyChanged(string.Empty);
         }
 
         IDictionaryEnumerator IDictionary.GetEnumerator()
@@ -36,30 +42,45 @@ namespace RazorPad.Framework
 
         public void Remove(object key)
         {
-            if(key is string)
-                _dictionary.Remove(((string)key).ToLower());
+            if (key is string)
+            {
+                string actualKey = GetActualKey(key);
+                _dictionary.Remove(actualKey);
+                OnPropertyChanged(actualKey);
+            }
             else
                 throw new NotSupportedException("Only string keys are allowed");
         }
 
         object IDictionary.this[object key]
         {
-            get { return _dictionary[key as string]; }
+            get
+            {
+                string actualKey = GetActualKey(key);
+
+                if (actualKey == null)
+                    return null;
+
+                return _dictionary[actualKey];
+            }
             set
             {
                 var keyString = key as string;
-                if(string.IsNullOrEmpty(keyString))
+                if (string.IsNullOrEmpty(keyString))
                     throw new ArgumentNullException("key");
 
-                _dictionary[keyString.ToLower()] = value;
+                if (_dictionary[keyString] == value)
+                    return;
+
+                _dictionary[keyString] = value;
+                OnPropertyChanged(keyString);
             }
         }
 
         public bool Contains(KeyValuePair<string, object> item)
         {
-            if(!_dictionary.ContainsKey(item.Key.ToLower())) return false;
-
-            return _dictionary[item.Key.ToLower()].Equals(item.Value);
+            var obj = this[item.Key];
+            return obj == item.Value;
         }
 
         public void CopyTo(Array array, int index)
@@ -74,7 +95,8 @@ namespace RazorPad.Framework
 
         public bool Remove(KeyValuePair<string, object> item)
         {
-            return _dictionary.Remove(item.Key.ToLower());
+            string actualKey = GetActualKey(item.Key);
+            return _dictionary.Remove(actualKey);
         }
 
         public int Count
@@ -109,8 +131,9 @@ namespace RazorPad.Framework
 
         public override bool TryGetMember(GetMemberBinder binder, out object result)
         {
-            string name = binder.Name.ToLower();
-            if (!_dictionary.TryGetValue(name, out result))
+            string name = GetActualKey(binder.Name);
+
+            if (string.IsNullOrWhiteSpace(name) || !_dictionary.TryGetValue(name, out result))
                 result = string.Empty;
 
             return true;
@@ -118,7 +141,7 @@ namespace RazorPad.Framework
 
         public override bool TrySetMember(SetMemberBinder binder, object value)
         {
-            _dictionary[binder.Name.ToLower()] = value;
+            this[binder.Name] = value;
             return true;
         }
 
@@ -134,7 +157,7 @@ namespace RazorPad.Framework
 
         public bool ContainsKey(string key)
         {
-            return _dictionary.ContainsKey(key.ToLower());
+            return _dictionary.Keys.Any(x => x.Equals(key, StringComparison.OrdinalIgnoreCase));
         }
 
         public void Add(string key, object value)
@@ -144,7 +167,8 @@ namespace RazorPad.Framework
 
         public bool Remove(string key)
         {
-            return _dictionary.Remove(key.ToLower());
+            string actualKey = GetActualKey(key);
+            return _dictionary.Remove(actualKey);
         }
 
         public bool TryGetValue(string key, out object value)
@@ -156,13 +180,31 @@ namespace RazorPad.Framework
 
         public object this[string key]
         {
-            get { return _dictionary[key.ToLower()]; }
+            get
+            {
+                string actualKey = GetActualKey(key);
+                return _dictionary[actualKey];
+            }
             set
             {
                 if (string.IsNullOrEmpty(key))
                     throw new ArgumentNullException("key");
 
-                _dictionary[key.ToLower()] = value;
+                string actualKey = GetActualKey(key) ?? key;
+
+                if (_dictionary.ContainsKey(actualKey))
+                {
+                    if (_dictionary[actualKey] == value)
+                        return;
+
+                    _dictionary[actualKey] = value;
+                }
+                else
+                {
+                    _dictionary.Add(actualKey, value);
+                }
+
+                OnPropertyChanged(actualKey);
             }
         }
 
@@ -179,6 +221,27 @@ namespace RazorPad.Framework
         public ICollection<object> Values
         {
             get { return _dictionary.Values; }
+        }
+
+
+        private string GetActualKey(object improperlyCasedKey)
+        {
+            string key = improperlyCasedKey as string;
+
+            if (key == null)
+                return null;
+
+            var actualKey =
+                _dictionary.Keys
+                    .SingleOrDefault(x => x.Equals(key, StringComparison.OrdinalIgnoreCase));
+
+            return actualKey;
+        }
+
+        protected void OnPropertyChanged(string propertyName)
+        {
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

@@ -1,3 +1,5 @@
 glob:**/obj/**
 glob:**/bin/**
 glob:**/_ReSharper.*/**
+glob:**/*.suo
+glob:**/*.user

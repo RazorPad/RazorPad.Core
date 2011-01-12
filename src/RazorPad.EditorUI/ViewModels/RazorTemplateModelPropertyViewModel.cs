@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using System.Reflection;
 using RazorPad.Framework;
 
 namespace RazorPad.ViewModels

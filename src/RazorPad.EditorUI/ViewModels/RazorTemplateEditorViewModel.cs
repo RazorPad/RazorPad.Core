@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Text.RegularExpressions;
 using System.Web.Razor;
 using RazorPad.Compilation;
 using RazorPad.Framework;
@@ -130,8 +131,11 @@ namespace RazorPad.ViewModels
             if(!string.IsNullOrWhiteSpace(filename))
                 LoadFromFile(filename);
 
-            TemplateText = "Hello, my name is @Model.Name!";
             TemplateModelProperties = new RazorTemplateModelPropertiesViewModel(typeof(object));
+            TemplateModelProperties.PropertiesUpdated += (x, y) => 
+                Refresh();
+
+            TemplateText = "Hello, my name is @Model.Name!";
             TemplateModelProperties.Properties.Add("Name", "Razor Pad");
         }
 
@@ -147,15 +151,23 @@ namespace RazorPad.ViewModels
             using (StringWriter writer = new StringWriter())
             {
                 results = TemplateCompiler.GenerateCode(TemplateText, writer);
-                GeneratedTemplateCode = writer.ToString();
+                GeneratedTemplateCode = Regex.Replace(writer.ToString(), "//.*", string.Empty).Trim();
             }
 
             if (results.Success)
             {
                 UpdateStatus("Template successfully parsed");
 
-                Type templateModelType = TemplateCompiler.GetTemplateModelType(TemplateText);
-                TemplateModelProperties = new RazorTemplateModelPropertiesViewModel(templateModelType);
+                try
+                {
+                    Type templateModelType = TemplateCompiler.GetTemplateModelType(TemplateText);
+                    TemplateModelProperties.TemplateModelType = templateModelType;
+                }
+                catch (Exception ex)
+                {
+                    ErrorMessages.WriteLine(ex);
+                    UpdateStatus(ex.Message);
+                }
             }
             else
             {
@@ -177,15 +189,30 @@ namespace RazorPad.ViewModels
 
             var model = TemplateModelProperties.Properties;
 
-            ExecutedTemplateOutput = TemplateCompiler.Execute(TemplateText, model);
-
-            UpdateStatus("Success!");
+            try
+            {
+                ExecutedTemplateOutput = TemplateCompiler.Execute(TemplateText, model);
+                UpdateStatus("Success!");
+            }
+            catch (Exception ex)
+            {
+                ErrorMessages.WriteLine(ex);
+                UpdateStatus(ex.Message);
+            }
         }
 
         public void LoadFromFile(string fileName)
         {
-            using (var reader = new StreamReader(File.OpenRead(fileName)))
-                TemplateText = reader.ReadToEnd();
+            try
+            {
+                using (var reader = new StreamReader(File.OpenRead(fileName)))
+                    TemplateText = reader.ReadToEnd();
+            }
+            catch (Exception ex)
+            {
+                ErrorMessages.WriteLine(ex);
+                UpdateStatus(ex.Message);
+            }
 
             Filename = fileName;
         }
@@ -194,16 +221,29 @@ namespace RazorPad.ViewModels
         {
             var targetFilename = fileName ?? Filename;
 
-            if (string.IsNullOrWhiteSpace(targetFilename))
-                throw new ApplicationException("No filename specified!");
+            try
+            {
+                if (string.IsNullOrWhiteSpace(targetFilename))
+                    throw new ApplicationException("No filename specified!");
 
-            using (var writer = new StreamWriter(File.OpenWrite(targetFilename)))
-                writer.Write(TemplateText);
+                using (var writer = new StreamWriter(File.OpenWrite(targetFilename)))
+                    writer.Write(TemplateText);
+            }
+            catch (Exception ex)
+            {
+                ErrorMessages.WriteLine(ex);
+                UpdateStatus(ex.Message);
+            }
         }
 
         private void UpdateStatus(string statusMessage)
         {
             SafeInvoke(OnStatusUpdated, new EventArgs<string>(statusMessage));
+        }
+
+        public void Refresh()
+        {
+            Execute();
         }
     }
 }

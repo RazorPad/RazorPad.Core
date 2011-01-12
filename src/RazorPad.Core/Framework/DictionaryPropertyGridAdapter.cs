@@ -8,11 +8,11 @@ namespace RazorPad.Framework
 {
     public class DictionaryPropertyGridAdapter : ICustomTypeDescriptor
     {
-        readonly IDictionary<string,object> _dictionary;
+        public IDictionary<string, object> Dictionary { get; private set; }
 
         public DictionaryPropertyGridAdapter(IDictionary<string, object> dictionary)
         {
-            _dictionary = dictionary;
+            Dictionary = dictionary;
         }
 
         public string GetComponentName()
@@ -47,7 +47,7 @@ namespace RazorPad.Framework
 
         public object GetPropertyOwner(PropertyDescriptor pd)
         {
-            return _dictionary;
+            return Dictionary;
         }
 
         public AttributeCollection GetAttributes()
@@ -73,9 +73,9 @@ namespace RazorPad.Framework
         public PropertyDescriptorCollection GetProperties(Attribute[] attributes)
         {
             PropertyDescriptor[] props =
-                _dictionary.Keys
+                Dictionary.Keys
                     .Select(key => CultureInfo.CurrentCulture.TextInfo.ToTitleCase(key))
-                    .Select(key => new DictionaryPropertyDescriptor(_dictionary, key))
+                    .Select(key => new DictionaryPropertyDescriptor(Dictionary, key))
                     .ToArray();
 
             return new PropertyDescriptorCollection(props);

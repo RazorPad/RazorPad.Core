@@ -71,7 +71,14 @@ namespace RazorPad.Compilation
             var host = RazorEngineHostFactory.Invoke(CompilationParameters.Language);
 
             var generatorResults = GenerateCode(templateText, host: host);
+
+            if (!generatorResults.Success)
+                throw new CodeGenerationException(generatorResults);
+
             var compilerResults = Compile(generatorResults);
+
+            if (compilerResults.Errors.Count > 0)
+                throw new CompilationException(compilerResults);
 
             var typeName = string.Format("{0}.{1}", host.DefaultNamespace, host.DefaultClassName);
             var type = compilerResults.CompiledAssembly.GetType(typeName);

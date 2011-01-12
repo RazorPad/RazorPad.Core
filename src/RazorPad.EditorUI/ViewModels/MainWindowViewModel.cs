@@ -60,6 +60,12 @@ namespace RazorPad.ViewModels
         {
             InitializeTemplateEditors();
             RegisterCommands();
+
+            CurrentTemplate.PropertyChanged += (x, y) =>
+                {
+                    if (y.PropertyName == "TemplateText")
+                        CurrentTemplate.Refresh();
+                };
         }
 
         private void RegisterCommands()

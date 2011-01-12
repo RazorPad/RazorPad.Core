@@ -7,6 +7,7 @@ namespace RazorPad.ViewModels
     public class RazorTemplateModelPropertiesViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
+        public event EventHandler<EventArgs> PropertiesUpdated;
 
         public Type TemplateModelType
         {
@@ -24,7 +25,19 @@ namespace RazorPad.ViewModels
         private Type _templateModelType;
 
 
-        public DynamicDictionary Properties { get; set; }
+        public DynamicDictionary Properties
+        {
+            get { return _properties; }
+            set
+            {
+                if(_properties == value)
+                    return;
+
+                _properties = value;
+                OnPropertyChanged("Properties");
+            }
+        }
+        private DynamicDictionary _properties;
 
 
         public RazorTemplateModelPropertiesViewModel(Type templateModelType = null)
@@ -44,6 +57,12 @@ namespace RazorPad.ViewModels
         {
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public void TriggerPropertyChanged()
+        {
+            if (PropertiesUpdated != null)
+                PropertiesUpdated(this, EventArgs.Empty);
         }
     }
 }

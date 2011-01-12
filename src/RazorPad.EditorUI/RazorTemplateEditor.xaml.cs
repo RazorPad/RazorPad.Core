@@ -1,8 +1,9 @@
-﻿using System.IO;
-using System.Windows;
+﻿using System;
 using System.Windows.Controls;
-using Microsoft.Win32;
+using System.Windows.Forms;
 using RazorPad.ViewModels;
+using TextBox = System.Windows.Controls.TextBox;
+using UserControl = System.Windows.Controls.UserControl;
 
 namespace RazorPad
 {
@@ -11,6 +12,11 @@ namespace RazorPad
     /// </summary>
     public partial class RazorTemplateEditor : UserControl
     {
+        private static readonly int TemplateTextChangedEventDelay = (int)TimeSpan.FromSeconds(.5).TotalMilliseconds;
+
+
+        Timer _templateTextChangedTimer;
+
         protected RazorTemplateEditorViewModel ViewModel
         {
             get { return (RazorTemplateEditorViewModel) DataContext; }
@@ -19,9 +25,29 @@ namespace RazorPad
         public RazorTemplateEditor()
         {
             InitializeComponent();
-
+            InitializeTemplateTextChangedTimer();
         }
 
+        private void InitializeTemplateTextChangedTimer()
+        {
+            _templateTextChangedTimer = new Timer { Interval = TemplateTextChangedEventDelay };
 
+            _templateTextChangedTimer.Tick += (x, y) =>
+            {
+                TemplateTextBox
+                    .GetBindingExpression(TextBox.TextProperty)
+                    .UpdateSource();
+
+                _templateTextChangedTimer.Stop();
+            };
+        }
+
+        private void TemplateTextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (_templateTextChangedTimer.Enabled)
+                _templateTextChangedTimer.Stop();
+            
+            _templateTextChangedTimer.Start();
+        }
     }
 }

@@ -2,8 +2,11 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <TextBox Text="{Binding TemplateText}" 
+    <TextBox x:Name="TemplateTextBox"
+             Text="{Binding Path=TemplateText, UpdateSourceTrigger=Explicit}"
+             TextChanged="TemplateTextChanged"
              AcceptsReturn="True" AcceptsTab="true" 
-             AllowDrop="True" AutoWordSelection="True"/>
+             AllowDrop="True" AutoWordSelection="True">
+    </TextBox>
 
 </UserControl>

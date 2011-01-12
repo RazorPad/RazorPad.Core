@@ -3,9 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
         xmlns:ViewModels="clr-namespace:RazorPad.ViewModels" xmlns:RazorPad="clr-namespace:RazorPad" Title="Razor Pad" Height="700" Width="1000">
 
-    <Window.CommandBindings>
-    </Window.CommandBindings>
-
     <Window.DataContext>
         <ViewModels:MainWindowViewModel />
     </Window.DataContext>
@@ -52,7 +49,7 @@
                         <RazorPad:RazorTemplateEditor DataContext="{Binding CurrentTemplate}" />
                     </ScrollViewer>
 
-                    <StackPanel Orientation="Horizontal" Grid.Row="1">
+                    <StackPanel Orientation="Horizontal" Grid.Row="1" Visibility="Hidden">
                         <Button x:Name="CompileButton" Margin="10 5" Padding="20 5">Compile</Button>
                         <Button x:Name="ExecuteButton" Margin="10 5" Padding="20 5">Execute</Button>
                     </StackPanel>
@@ -63,12 +60,12 @@
                 <TabControl Grid.Row="2">
                     <TabItem x:Name="OutputTab" Header="Output">
                         <ScrollViewer DataContext="{Binding CurrentTemplate}">
-                            <TextBlock Text="{Binding ExecutedTemplateOutput}"/>
+                            <TextBox Text="{Binding ExecutedTemplateOutput}" IsReadOnly="True" />
                         </ScrollViewer>
                     </TabItem>
                     <TabItem x:Name="CodeTab" Header="Code">
                         <ScrollViewer DataContext="{Binding CurrentTemplate}">
-                            <TextBlock Text="{Binding GeneratedTemplateCode}"/>
+                            <TextBox Text="{Binding GeneratedTemplateCode}" IsReadOnly="True" />
                         </ScrollViewer>
                     </TabItem>
                 </TabControl>

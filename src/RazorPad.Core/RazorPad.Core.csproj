@@ -50,6 +50,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Compilation\CodeGenerationException.cs" />
+    <Compile Include="Compilation\CompilationException.cs" />
     <Compile Include="Compilation\CSharpRazorCodeGeneratorSpanVisitor.cs" />
     <Compile Include="Compilation\CSharpTemplateCompilationParameters.cs" />
     <Compile Include="Compilation\EmbeddedResources\EmbeddedTemplateHost.cs" />
