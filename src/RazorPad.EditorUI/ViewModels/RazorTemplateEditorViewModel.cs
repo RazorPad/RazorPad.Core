@@ -13,6 +13,17 @@ namespace RazorPad.ViewModels
 
         public event EventHandler<EventArgs<string>> OnStatusUpdated;
 
+        public string DisplayName
+        {
+            get
+            {
+                if (string.IsNullOrWhiteSpace(Filename))
+                    return "New File";
+                
+                return new FileInfo(Filename).Name;
+            }
+        }
+
         public TemplateCompilationParameters TemplateCompilationParameters
         {
             get
@@ -98,6 +109,20 @@ namespace RazorPad.ViewModels
         }
         private string _generatedTemplateCode;
 
+        public GeneratorResults GeneratorResults
+        {
+            get { return _generatorResults; }
+            set
+            {
+                if (_generatorResults == value)
+                    return;
+
+                _generatorResults = value;
+                OnPropertyChanged("GeneratorResults");
+            }
+        }
+        private GeneratorResults _generatorResults;
+
         public string TemplateText
         {
             get { return _templateText; }
@@ -108,8 +133,10 @@ namespace RazorPad.ViewModels
 
                 _templateText = value;
                 OnPropertyChanged("TemplateText");
+                Refresh();
             }
         }
+        private string _templateText;
 
         public bool CanSaveToCurrentlyLoadedFile
         {
@@ -121,7 +148,6 @@ namespace RazorPad.ViewModels
             get { return true; }
         }
 
-        private string _templateText;
 
 
         public RazorTemplateEditorViewModel(string filename = null)
@@ -132,11 +158,9 @@ namespace RazorPad.ViewModels
                 LoadFromFile(filename);
 
             TemplateModelProperties = new RazorTemplateModelPropertiesViewModel(typeof(object));
-            TemplateModelProperties.PropertiesUpdated += (x, y) => 
-                Refresh();
+            TemplateModelProperties.PropertiesUpdated += (x, y) => Refresh();
 
-            TemplateText = "Hello, my name is @Model.Name!";
-            TemplateModelProperties.Properties.Add("Name", "Razor Pad");
+            Execute();
         }
 
 
@@ -146,15 +170,18 @@ namespace RazorPad.ViewModels
 
             GeneratedTemplateCode = string.Empty;
 
-            GeneratorResults results;
-
             using (StringWriter writer = new StringWriter())
             {
-                results = TemplateCompiler.GenerateCode(TemplateText, writer);
-                GeneratedTemplateCode = Regex.Replace(writer.ToString(), "//.*", string.Empty).Trim();
+                GeneratorResults = TemplateCompiler.GenerateCode(TemplateText, writer);
+                
+                var generatedCode = writer.ToString();
+                generatedCode = Regex.Replace(generatedCode, "//.*", string.Empty);
+                generatedCode = Regex.Replace(generatedCode, "#.*", string.Empty);
+
+                GeneratedTemplateCode = generatedCode.Trim();
             }
 
-            if (results.Success)
+            if (GeneratorResults != null && GeneratorResults.Success)
             {
                 UpdateStatus("Template successfully parsed");
 
@@ -174,9 +201,12 @@ namespace RazorPad.ViewModels
                 UpdateStatus("Template parsing failed!");
 
                 ErrorMessages.WriteLine("***  Template Parsing Failed  ***");
-                foreach (var error in results.ParserErrors)
+                if (GeneratorResults != null)
                 {
-                    ErrorMessages.WriteLine("Line {0}: {1}", error.Location.LineIndex, error.Message);
+                    foreach (var error in GeneratorResults.ParserErrors)
+                    {
+                        ErrorMessages.WriteLine("Line {0}: {1}", error.Location.LineIndex, error.Message);
+                    }
                 }
             }
         }
@@ -226,7 +256,9 @@ namespace RazorPad.ViewModels
                 if (string.IsNullOrWhiteSpace(targetFilename))
                     throw new ApplicationException("No filename specified!");
 
-                using (var writer = new StreamWriter(File.OpenWrite(targetFilename)))
+                Filename = targetFilename;
+
+                using (var writer = new StreamWriter(File.OpenWrite(Filename)))
                     writer.Write(TemplateText);
             }
             catch (Exception ex)

@@ -30,7 +30,11 @@ namespace RazorPad.Compilation
         public TemplateCompiler(TemplateCompilationParameters templateCompilationParameters = null)
         {
             CompilationParameters = templateCompilationParameters ?? new CSharpTemplateCompilationParameters();
-            CodeGeneratorOptions = new CodeGeneratorOptions {BlankLinesBetweenMembers = false};
+            CodeGeneratorOptions = new CodeGeneratorOptions
+                                       {
+                                           BlankLinesBetweenMembers = false,
+                                           BracingStyle = "C"
+                                       };
         }
 
 

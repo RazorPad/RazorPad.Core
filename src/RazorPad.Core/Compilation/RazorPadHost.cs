@@ -1,6 +1,6 @@
-﻿using System;
-using System.CodeDom;
+﻿using System.CodeDom;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -67,6 +67,7 @@ namespace RazorPad.Compilation
             Assembly[] defaultIncludes = new[] {
                 typeof(TemplateBase).Assembly,
                 typeof(DynamicAttribute).Assembly,
+                typeof(INotifyPropertyChanged).Assembly,
                 typeof(Microsoft.CSharp.RuntimeBinder.Binder).Assembly,
             };
 

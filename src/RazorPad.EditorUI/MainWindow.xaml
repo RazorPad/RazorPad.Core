@@ -12,7 +12,7 @@
         <Menu x:Name="MainMenu" DockPanel.Dock="Top" IsMainMenu="True">
             <MenuItem Header="_File">
                 <MenuItem Header="_Open" Click="OpenFile_Click" IsEnabled="True" />
-                <MenuItem Header="_Save" Command="Save" IsEnabled="True" />
+                <MenuItem Header="_Save" Click="SaveFile_Click" IsEnabled="True" />
                 <MenuItem Header="_Save As..." Click="SaveAsFile_Click" IsEnabled="True" />
             </MenuItem>
         </Menu>
@@ -42,17 +42,23 @@
                 <Grid Grid.Row="0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
-                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
 
-                    <ScrollViewer Grid.Row="0">
-                        <RazorPad:RazorTemplateEditor DataContext="{Binding CurrentTemplate}" />
-                    </ScrollViewer>
-
-                    <StackPanel Orientation="Horizontal" Grid.Row="1" Visibility="Hidden">
-                        <Button x:Name="CompileButton" Margin="10 5" Padding="20 5">Compile</Button>
-                        <Button x:Name="ExecuteButton" Margin="10 5" Padding="20 5">Execute</Button>
-                    </StackPanel>
+                    <TabControl Grid.Row="0" ItemsSource="{Binding TemplateEditors}" SelectedValue="{Binding CurrentTemplate}">
+                        <TabControl.ContentTemplate>
+                            <DataTemplate>
+                                <ScrollViewer Grid.Row="0">
+                                    <RazorPad:RazorTemplateEditor />
+                                </ScrollViewer>
+                            </DataTemplate>
+                        </TabControl.ContentTemplate>
+                        <TabControl.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock FontSize="14" Text="{Binding DisplayName}"/>
+                            </DataTemplate>
+                        </TabControl.ItemTemplate>
+                    </TabControl>
+                    
                 </Grid>
 
                 <GridSplitter Grid.Row="1" ResizeDirection="Rows" Height="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0" />

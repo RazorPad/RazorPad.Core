@@ -20,12 +20,30 @@ namespace RazorPad
         {
             InitializeComponent();
 
-            CompileButton.Click += (sender, args) => ViewModel.CurrentTemplate.Parse();
-            ExecuteButton.Click += (sender, args) =>
-            {
-                ViewModel.CurrentTemplate.Execute();
-                OutputTab.IsSelected = true;
-            };
+            ViewModel.GetSaveAsFilename += GetSaveAsFilename;
+
+            InitializeDemoTemplate();
+        }
+
+        private void InitializeDemoTemplate()
+        {
+            ViewModel.CurrentTemplate.TemplateText = "Hello, my name is @Model.Name!";
+            ViewModel.CurrentTemplate.TemplateModelProperties.Properties.Add("Name", "Razor Pad");
+        }
+
+        private static string GetSaveAsFilename(RazorTemplateEditorViewModel template)
+        {
+            SaveFileDialog dlg = new SaveFileDialog();
+
+            string currentFilename = template.Filename;
+
+            if (!string.IsNullOrWhiteSpace(currentFilename))
+                dlg.InitialDirectory = Path.GetDirectoryName(currentFilename);
+
+            if (dlg.ShowDialog().GetValueOrDefault())
+                return dlg.FileName;
+            else
+                return null;
         }
 
         private void OpenFile_Click(object sender, RoutedEventArgs e)
@@ -39,27 +57,21 @@ namespace RazorPad
             dlg.Filter = "VB Razor Documents|*.vbhtml";
             dlg.Filter = "All Files|*.*";
 
-            // Display OpenFileDialog by calling ShowDialog method
-            bool? result = dlg.ShowDialog();
-
-            // Get the selected file name and display in a TextBox
-            if (result == true)
+            if (dlg.ShowDialog().GetValueOrDefault())
             {
                 ViewModel.AddNewTemplateEditor(dlg.FileName);
             }
         }
 
+        private void SaveFile_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel.CurrentTemplate.SaveToFile();
+        }
+
         private void SaveAsFile_Click(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog dlg = new OpenFileDialog();
-
-            string currentFilename = ViewModel.CurrentTemplate.Filename;
-
-            if (!string.IsNullOrWhiteSpace(currentFilename))
-                dlg.InitialDirectory = Path.GetDirectoryName(currentFilename);
-
-            if (dlg.ShowDialog().GetValueOrDefault())
-                ViewModel.CurrentTemplate.SaveToFile(dlg.FileName);
+            var filename = GetSaveAsFilename(ViewModel.CurrentTemplate);
+            ViewModel.CurrentTemplate.SaveToFile(filename);
         }
     }
 }

@@ -6,7 +6,6 @@
              Text="{Binding Path=TemplateText, UpdateSourceTrigger=Explicit}"
              TextChanged="TemplateTextChanged"
              AcceptsReturn="True" AcceptsTab="true" 
-             AllowDrop="True" AutoWordSelection="True">
-    </TextBox>
+             AllowDrop="True" AutoWordSelection="True" />
 
 </UserControl>

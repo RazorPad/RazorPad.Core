@@ -18,7 +18,6 @@ namespace RazorPad.ViewModels
                     return;
 
                 _templateModelType = value;
-                LoadTemplateModelTypeProperties();
                 OnPropertyChanged("TemplateModelType");
             }
         }
@@ -44,12 +43,6 @@ namespace RazorPad.ViewModels
         {
             TemplateModelType = templateModelType ?? typeof(object);
             Properties = new DynamicDictionary();
-            LoadTemplateModelTypeProperties();
-        }
-
-        private void LoadTemplateModelTypeProperties()
-        {
-            // TODO: Analyze template for additional properties
         }
 
 

@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using RazorPad.Framework;
+﻿using RazorPad.Framework;
 
 namespace RazorPad.ViewModels
 {
@@ -36,22 +35,6 @@ namespace RazorPad.ViewModels
         public RazorTemplateModelPropertyViewModel(string name = null)
         {
             Name = name;
-        }
-
-        public void ApplyValueTo(object targetObject)
-        {
-            if (targetObject == null)
-                return;
-
-            var setMethod =
-                    targetObject.GetType()
-                        .GetProperties()
-                        .Where(x => x.Name == Name)
-                        .Select(x => x.GetSetMethod())
-                        .SingleOrDefault();
-
-            if (setMethod != null)
-                setMethod.Invoke(targetObject, new[] { Value });
         }
     }
 }

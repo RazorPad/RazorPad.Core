@@ -1,8 +1,9 @@
 ﻿using System.Text;
+using RazorPad.Framework;
 
 namespace RazorPad.Compilation
 {
-    public abstract class TemplateBase
+    public abstract class TemplateBase : DynamicDictionary
     {
         public StringBuilder Buffer { get; set; }
 
