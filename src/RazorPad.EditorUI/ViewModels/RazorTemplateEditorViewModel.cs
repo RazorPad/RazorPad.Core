@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Web.Razor;
 using RazorPad.Compilation;
@@ -203,10 +204,15 @@ namespace RazorPad.ViewModels
                 ErrorMessages.WriteLine("***  Template Parsing Failed  ***");
                 if (GeneratorResults != null)
                 {
+                    var errorBuilder = new StringBuilder();
                     foreach (var error in GeneratorResults.ParserErrors)
                     {
-                        ErrorMessages.WriteLine("Line {0}: {1}", error.Location.LineIndex, error.Message);
+                        errorBuilder.AppendFormat("\nLine {0}: {1}", error.Location.LineIndex, error.Message);
                     }
+
+                    var errors = errorBuilder.ToString();
+                    ErrorMessages.WriteLine(errors);
+                    ExecutedTemplateOutput = errors;
                 }
             }
         }

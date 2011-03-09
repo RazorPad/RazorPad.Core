@@ -27,8 +27,8 @@ namespace RazorPad
 
         private void InitializeDemoTemplate()
         {
-            ViewModel.CurrentTemplate.TemplateText = "Hello, my name is @Model.Name!";
             ViewModel.CurrentTemplate.TemplateModelProperties.Properties.Add("Name", "Razor Pad");
+            ViewModel.CurrentTemplate.TemplateText = "Hello, my name is @Model.Name!";
         }
 
         private static string GetSaveAsFilename(RazorTemplateEditorViewModel template)
