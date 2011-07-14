@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<package> 
+  <metadata> 
+    <id>razorpad</id> 
+    <version>1.2.3</version> 
+    <authors>Jess Chadwick</authors>
+    <description>An awesome Razor template editor.</description> 
+    <language>en-US</language>
+    <licenseUrl>http://www.jesschadwick.com/razorpad/license</licenseUrl>
+    <projectUrl>http://www.jesschadwick.com/razorpad</projectUrl>
+  </metadata> 
+
+  <files>
+    <file src="bin\Debug\*.*" target="lib" />
+  </files>
+</package>

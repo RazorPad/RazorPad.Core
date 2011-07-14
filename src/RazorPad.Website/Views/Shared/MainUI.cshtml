@@ -1,0 +1,46 @@
+﻿@{ 
+    Layout = null;
+    var title = "Razor Pad: Online Razor Debugging Tool";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>@title</title>
+    <link href="@Url.Content("~/Content/Site.css")" rel="Stylesheet" type="text/css" />
+</head>
+<body>
+    <div id="header">
+        <h1>@title</h1>
+    </div>
+    
+    <div id="template-container" class="waiting">
+        <h2>Razor Markup</h2>
+        <textarea id="template" name="template" rows="20" cols="80"></textarea>
+    </div>
+
+    <div id="buttons-container">
+        <button id="generate-code">Generate Code</button>
+        <button id="execute">Execute</button>
+    </div>
+
+    <div id="generated-code-container">
+        <h2>Generated Code</h2>
+        <textarea id="generated-code" rows="20" cols="80" readonly></textarea>
+    </div>
+
+    <div id="template-output-container">
+        <h2>Template Output</h2>
+        <textarea id="template-output" rows="20" cols="80" readonly></textarea>
+    </div>
+
+    <div id="messages-container">
+        <h2>Messages</h2>
+        <ul id="messages"></ul>
+    </div>
+
+<script type="text/javascript" src="@Url.Content("~/Scripts/jquery.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/Scripts/RazorPad.js")"></script>
+</body>
+</html>

@@ -27,7 +27,12 @@ namespace RazorPad.Compilation
         private Func<Type, object> _templateInstanceInstatiator;
 
 
-        public TemplateCompiler(TemplateCompilationParameters templateCompilationParameters = null)
+        public TemplateCompiler()
+            : this(null)
+        {
+        }
+
+        public TemplateCompiler(TemplateCompilationParameters templateCompilationParameters)
         {
             CompilationParameters = templateCompilationParameters ?? new CSharpTemplateCompilationParameters();
             CodeGeneratorOptions = new CodeGeneratorOptions
