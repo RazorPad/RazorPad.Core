@@ -36,6 +36,7 @@ namespace RazorPad.Website.Controllers
                 var generatorResults = compiler.GenerateCode(request.Template, writer);
 
                 result.SetGeneratorResults(generatorResults);
+                result.GeneratedCode = writer.ToString();
 
                 if (generatorResults.Success)
                 {

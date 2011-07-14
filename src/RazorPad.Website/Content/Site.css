@@ -2,7 +2,10 @@ body {
   font-family: Verdana, Tahoma, Arial, "Helvetica Neue", Helvetica, Sans-Serif;
   background-color: #fff;
 }
-#template-container, #buttons-container, #template-output-container {
+#template-container,
+#buttons-container,
+#template-output-container,
+#parser-results {
   width: 670px;
   margin-right: 30px;
   padding-bottom: 10px;
@@ -21,6 +24,14 @@ body {
 }
 #template-container.warnings {
   background-color: yellow;
+}
+#parser-results {
+  border: 2px inset;
+  overflow: auto;
+  overflow-x: auto;
+  min-height: 300px;
+  max-height: 300px;
+  padding: 2px;
 }
 /* Styles for basic forms
 -----------------------------------------------------------*/
