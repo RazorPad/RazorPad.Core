@@ -1,6 +1,6 @@
 body {
   font-family: Verdana, Tahoma, Arial, "Helvetica Neue", Helvetica, Sans-Serif;
-  background-color: #fff;
+  background-color: #F1F6F6;
 }
 #template-container,
 #buttons-container,
@@ -72,3 +72,72 @@ textarea {
 .validation-summary-valid {
   display: none;
 }
+/* Hp Styles -------------------------------------------------------------- */
+.actionItems li {
+  cursor: pointer;
+  display: inline;
+  margin-right: 10px;
+  list-style: none;
+  background-color: Gray;
+  color: White;
+}
+.actionItems li:hover {
+  background-color: Olive;
+  color: White;
+}
+#toolbar {
+  background: silver;
+  border: 1px solid gray;
+}
+.clearfix:after {
+  content: ".";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+}
+.fr {
+  float: right;
+}
+.fl {
+  float: left;
+}
+#modelProps {
+  margin: 10px 0 0 0;
+  border-collapse: collapse;
+  width: 100%;
+  white-space: normal;
+  border: 1px solid gray;
+}
+#modelProps td {
+  border: 1px solid gray;
+}
+#body {
+  margin: 10px 0 0 0;
+}
+#body > div {
+  border: 1px solid #737CA1;
+  padding: 8px;
+}
+#right {
+  width: 28%;
+  border: 1px solid #737CA1;
+  padding: 8px;
+}
+#left {
+  width: 69%;
+  border: 1px solid #737CA1;
+  padding: 8px;
+}
+#tModel {
+  width: 100%;
+  white-space: nowrap;
+}
+#code {
+  margin-bottom: 10px;
+}
+.editor textarea {
+  height: 100%;
+  width: 100%;
+}
+/* End Hp Styles -------------------------------------------------------------- */

@@ -64,6 +64,7 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\MockController.cs" />
     <Compile Include="Controllers\RazorPadController.cs" />
     <Compile Include="Models\ExecuteRequest.cs" />
     <Compile Include="Models\ExecuteResult.cs" />
@@ -123,6 +124,7 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="packages.config" />
+    <Content Include="Views\Mock\Mock.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
