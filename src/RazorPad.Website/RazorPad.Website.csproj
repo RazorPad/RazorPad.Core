@@ -33,6 +33,12 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\RazorPad.Core\RazorPad.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
@@ -84,6 +90,9 @@
       <DependentUpon>Site.chirp.less</DependentUpon>
     </Content>
     <Content Include="Global.asax" />
+    <None Include="..\RazorPad.Core\RazorPad.snk">
+      <Link>RazorPad.snk</Link>
+    </None>
     <None Include="Content\Site.chirp.less" />
     <Content Include="Content\themes\base\jquery-ui.css" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />

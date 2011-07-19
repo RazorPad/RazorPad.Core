@@ -1,8 +1,10 @@
-﻿using System.CodeDom.Compiler;
+﻿using System;
+using System.CodeDom.Compiler;
 using System.Linq;
 
 namespace RazorPad.Website.Models
 {
+    [Serializable]
     public class ExecuteResult : ParseResult
     {
         public string TemplateOutput { get; set; }
