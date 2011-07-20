@@ -3,7 +3,6 @@ body {
   background-color: #F1F6F6;
 }
 #template-container,
-#buttons-container,
 #template-output-container,
 #parser-results {
   width: 670px;

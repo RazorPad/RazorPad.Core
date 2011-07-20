@@ -38,11 +38,11 @@
 		else { updateStatus('fail'); }
 
 		showMessages(resp.Messages);
-		$('#generated-code').append(prettyPrintOne(resp.GeneratedCode, 'cs', true));
+		$('#generated-code').empty().append(prettyPrintOne(resp.GeneratedCode, 'cs', true));
 
 		var div = document.createElement('div');
 		div.appendChild(document.createTextNode(resp.ParsedDocument));
-		$('#parser-results').append(prettyPrintOne(div.innerHTML, 'html', true));
+		$('#parser-results').empty().append(prettyPrintOne(div.innerHTML, 'html', true));
 	}
 
 
