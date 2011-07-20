@@ -1,6 +1,5 @@
 ﻿(function ($) {
 
-
     function parseTemplate() {
         $.ajax({
             url: 'razorpad/parse',
@@ -11,9 +10,11 @@
     } // END parseTemplate()
 
     function executeTemplate() {
+        var model = getModel();
+
         $.ajax({
             url: 'razorpad/execute',
-            data: JSON.stringify({ 'Template': $('#template').val(), "Parameters": [] }),
+            data: JSON.stringify({ 'Template': $('#template').val(), "Model": JSON.stringify(model) }),
             success: function (resp) {
                 onParseSuccess(resp);
                 $('#template-output').html(resp.TemplateOutput);

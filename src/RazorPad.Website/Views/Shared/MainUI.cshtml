@@ -9,12 +9,25 @@
 <head>
     <title>@title</title>
     <link href="@Url.Content("~/Content/Site.css")" rel="Stylesheet" type="text/css" />
+
+    <!-- TODO: REMOVE THIS ASAP! -->
+    <script type="text/javascript">
+        function getModel() {
+            return {
+                "Complex": { "$type": "System.Collections.Generic.KeyValuePair`2[[System.String,System.String]]", "Key": "Test", "Value": "Value" },
+                "Name": "Frank Sinatra",
+                "Number": 1,
+                "Time": "12:00:00"
+            };
+        }
+    </script>
+
 </head>
 <body>
     <div id="header">
         <h1>@title</h1>
     </div>
-    
+
     <div id="template-container" class="waiting">
         <h2>Razor Markup</h2>
         <textarea id="template" name="template" rows="20" cols="80"></textarea>

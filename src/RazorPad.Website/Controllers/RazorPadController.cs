@@ -2,7 +2,9 @@
 using System.CodeDom.Compiler;
 using System.IO;
 using System.Web.Mvc;
+using Newtonsoft.Json;
 using RazorPad.Compilation;
+using RazorPad.Framework;
 using RazorPad.Website.Models;
 
 namespace RazorPad.Website.Controllers
@@ -23,6 +25,10 @@ namespace RazorPad.Website.Controllers
             var generatorResults = new TemplateCompiler().GenerateCode(request.Template, writer);
             result.SetGeneratorResults(generatorResults);
             result.GeneratedCode = writer.ToString();
+
+            dynamic testObject = new { Name = "Test", Number = 1234d };
+            var json = JsonConvert.SerializeObject(testObject, Formatting.Indented, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All });
+
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
@@ -45,7 +51,14 @@ namespace RazorPad.Website.Controllers
 
                 if (!compilerResults.Errors.HasErrors)
                 {
-                    result.TemplateOutput = Sandbox.Execute(request.Template);
+                    dynamic model;
+                    
+                    if(!string.IsNullOrEmpty(request.Model))
+                        model = JsonConvert.DeserializeObject(request.Model, new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.Auto});
+                    else
+                        model = new DynamicDictionary();   
+
+                    result.TemplateOutput = Sandbox.Execute(request.Template, model);
                 }
 
                 result.Success = true;
