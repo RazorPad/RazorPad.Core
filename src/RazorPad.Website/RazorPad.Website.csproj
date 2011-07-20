@@ -77,12 +77,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\prettify.css" />
     <Content Include="Content\Site.css">
       <DependentUpon>Site.chirp.less</DependentUpon>
     </Content>
     <Content Include="Content\Site.min.css">
       <DependentUpon>Site.chirp.less</DependentUpon>
     </Content>
+    <Content Include="Content\sons-of-obsidian.css" />
     <Content Include="Global.asax" />
     <None Include="Content\Site.chirp.less" />
     <Content Include="Content\themes\base\jquery-ui.css" />
@@ -102,6 +104,8 @@
     <Content Include="Scripts\jquery-vsdoc.js" />
     <Content Include="Scripts\jquery.js" />
     <Content Include="Scripts\jquery.min.js" />
+    <Content Include="Scripts\prettify.js" />
+    <Content Include="Scripts\prettify.min.js" />
     <Content Include="Scripts\RazorPad.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">

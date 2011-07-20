@@ -12,11 +12,14 @@
     <link href="https://github.com/documentcloud/visualsearch/blob/master/build-min/visualsearch.css"
         media="screen" rel="stylesheet" type="text/css" />
     <!--<![endif]-->
+    <link href="@Url.Content("~/Content/sons-of-obsidian.css")" type="text/css" rel="stylesheet" />
+    @*<link href="@Url.Content("~/Content/prettify.css")" type="text/css" rel="stylesheet" />*@
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
 </head>
 <body>
     <div id="page">
         <div id="toolbar" class="clearfix">
+            <div id="header" class="fl"><strong>Razor Pad: Online Razor Debugging Tool</strong></div>
             <div id="actions" class="fl">
                 <ul class="actionItems">
                     <li>Execute</li>
@@ -41,4 +44,6 @@
 <script type="text/javascript" src="http://documentcloud.github.com/visualsearch/vendor/underscore-1.1.5.js"></script>
 <script type="text/javascript" src="http://documentcloud.github.com/visualsearch/vendor/backbone-0.5.0.js"></script>
 <script type="text/javascript" src="http://documentcloud.github.com/visualsearch/build-min/visualsearch.js"></script>
+@*<script type="text/javascript" src="http://balupton.github.com/jquery-syntaxhighlighter/scripts/jquery.syntaxhighlighter.min.js"></script>*@
+<script type="text/javascript" src="@Url.Content("~/Scripts/prettify.min.js")"></script>
 </html>
