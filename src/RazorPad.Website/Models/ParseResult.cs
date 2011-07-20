@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Razor;
 using System.Web.Razor.Parser.SyntaxTree;
 
 namespace RazorPad.Website.Models
 {
+    [Serializable]
     public class ParseResult
     {
         public string ParsedDocument { get; set; }

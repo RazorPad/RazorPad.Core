@@ -2,5 +2,6 @@
 {
     public class ExecuteRequest : ParseRequest
     {
+        public string Model { get; set; }
     }
 }
