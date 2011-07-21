@@ -86,19 +86,6 @@
 <script type="text/javascript" charset="utf-8">
     $(function () {
         $('#resultTabs').tabs();
-        VS.init({
-            container: $('.visual_search'),
-            query: '',
-            callbacks: {
-                search: function (query) { },
-                facetMatches: function (callback) {
-                    callback([
-                            'bool', 'byte', 'sbyte', 'char', 'decimal', 'double', 'float', 'int', 'uint', 'long', 'ulong', 'object', 'short', 'ushort', 'string'
-                           ]);
 
-                },
-                valueMatches: function (facet, searchTerm, callback) { }
-            }
-        });
     });
 </script>

@@ -1,10 +1,10 @@
-body {
+﻿body {
   font-family: Verdana, Tahoma, Arial, "Helvetica Neue", Helvetica, Sans-Serif;
   background-color: #F1F6F6;
 }
 #template-container,
-#template-output-container,
-#parser-results {
+#buttons-container,
+#template-output-container {
   width: 670px;
   margin-right: 30px;
   padding-bottom: 10px;
@@ -23,14 +23,6 @@ body {
 }
 #template-container.warnings {
   background-color: yellow;
-}
-#parser-results {
-  border: 2px inset;
-  overflow: auto;
-  overflow-x: auto;
-  min-height: 300px;
-  max-height: 300px;
-  padding: 2px;
 }
 /* Styles for basic forms
 -----------------------------------------------------------*/
@@ -77,16 +69,6 @@ textarea {
   display: inline;
   margin-right: 10px;
   list-style: none;
-  background-color: Gray;
-  color: White;
-}
-.actionItems li:hover {
-  background-color: Olive;
-  color: White;
-}
-#toolbar {
-  background: silver;
-  border: 1px solid gray;
 }
 .clearfix:after {
   content: ".";
@@ -139,4 +121,13 @@ textarea {
   height: 100%;
   width: 100%;
 }
+
+#toolbar {
+ padding: 10px;   
+}
+
+#header {
+    margin-right: 10px;
+}
+
 /* End Hp Styles -------------------------------------------------------------- */
