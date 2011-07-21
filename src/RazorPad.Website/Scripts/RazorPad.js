@@ -1,5 +1,56 @@
 ﻿(function ($) {
 
+    function executeTemplate() {
+        var model = getModel();
+
+        $.ajax({
+            url: 'razorpad/execute',
+            data: JSON.stringify({ 'Template': $('#template').val(), "Model": JSON.stringify(model) }),
+            success: function (resp) {
+                onParseSuccess(resp);
+                $('#rendered-output').html(resp.TemplateOutput);
+                $('#template-output').text(resp.TemplateOutput);
+            },
+            error: function (resp) {
+                onParseError(resp);
+                var message = ' [[**** EXECUTION ERROR ****]] \r\n' + JSON.stringify(resp);
+                $('#rendered-output').text(message);
+                $('#template-output').text(message);
+            }
+        });
+    } // END executeTemplate()
+
+    function getModel() {
+        // TODO: Build model from user input
+        var model = {
+            "Name": "Frank Sinatra",
+            "Address": "1234 Stardust Ln, Las Vegas, NV",
+            "Birthday": new Date(1960, 3, 12),
+            "UserID": 9989
+        };
+
+        return model;
+    }
+
+    function onParseError(err) {
+        updateStatus('fail');
+        showMessages([{ Kind: 'Error', Text: JSON.stringify(err)}]);
+        $('#generated-code').html(' [[**** PARSE ERROR ****]] ');
+    } // END onParseError()
+
+    function onParseSuccess(resp) {
+        if (resp.Success) { updateStatus('success'); }
+        else { updateStatus('fail'); }
+
+        showMessages(resp.Messages);
+        //$('#generated-code').empty().append(prettyPrintOne(resp.GeneratedCode, 'cs', true));
+        $('#generated-code').empty().text(resp.GeneratedCode);
+
+        //$('#parser-results').empty().append(prettyPrintOne(div.innerHTML, 'html', true));
+        $('#parser-results').empty().text(resp.ParsedDocument);
+
+        SyntaxHighlighter.highlight();
+    } // END onParseSuccess()
 
     function parseTemplate() {
         $.ajax({
@@ -9,45 +60,6 @@
             error: onParseError
         });
     } // END parseTemplate()
-
-    function executeTemplate() {
-        $.ajax({
-            url: 'razorpad/execute',
-            data: JSON.stringify({ 'Template': $('#template').val(), "Parameters": [] }),
-            success: function (resp) {
-                onParseSuccess(resp);
-                $('#template-output').html(resp.TemplateOutput);
-
-            },
-            error: function (resp) {
-                onParseError(resp);
-                $('#template-output').html(' [[**** EXECUTION ERROR ****]] ');
-            }
-        });
-    } // END executeTemplate()
-
-
-    function onParseError(err) {
-        updateStatus('fail');
-        showMessages([{ Kind: 'Error', Text: JSON.stringify(err)}]);
-        $('#generated-code').html(' [[**** PARSE ERROR ****]] ');
-    }
-
-    function onParseSuccess(resp) {
-        if (resp.Success) { updateStatus('success'); }
-        else { updateStatus('fail'); }
-
-        showMessages(resp.Messages);
-        //$('#generated-code').empty().append(prettyPrintOne(resp.GeneratedCode, 'cs', true));
-        $('#generated-code').empty().append(resp.GeneratedCode);
-
-        var div = document.createElement('div');
-        div.appendChild(document.createTextNode(resp.ParsedDocument));
-        //$('#parser-results').empty().append(prettyPrintOne(div.innerHTML, 'html', true));
-        $('#parser-results').empty().append(div.innerHTML);
-        SyntaxHighlighter.highlight();
-    }
-
 
     function showMessages(messages) {
         var messagesList = $('#messages');
@@ -59,7 +71,7 @@
                 .html($('<pre/>').html(message.Text))
                 .appendTo(messagesList);
         });
-    }
+    } // END showMessages()
 
     function updateStatus(status) {
         $('#template-container').attr('class', status);
@@ -67,21 +79,19 @@
 
 
     // $('#generate-code').click(parseTemplate);
-    $('#execute').click(executeTemplate);
-
-
+    $('#execute')
+        .click(executeTemplate)
+        .ajaxStart(function () {
+            updateStatus('waiting');
+            $('#template-output').html('');
+            $('#generated-code').html('');
+        });
 
 
     $.ajaxSetup({
         contentType: "application/json; charset=utf-8",
         dataType: 'json',
         type: 'post'
-    });
-
-    $.ajaxStart(function () {
-        updateStatus('waiting');
-        $('#template-output').html('');
-        $('#generated-code').html('');
     });
 
 })(jQuery);
