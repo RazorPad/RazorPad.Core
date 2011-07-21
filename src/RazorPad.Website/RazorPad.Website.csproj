@@ -122,6 +122,8 @@
     <Content Include="Scripts\shBrushCSharp.js" />
     <Content Include="Scripts\shBrushXml.js" />
     <Content Include="Scripts\shCore.js" />
+    <Content Include="Scripts\shCore.min.js" />
+    <Content Include="Scripts\XRegExp.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

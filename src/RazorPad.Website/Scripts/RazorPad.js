@@ -43,23 +43,12 @@
         else { updateStatus('fail'); }
 
         showMessages(resp.Messages);
-        //$('#generated-code').empty().append(prettyPrintOne(resp.GeneratedCode, 'cs', true));
-        $('#generated-code').empty().text(resp.GeneratedCode);
+        $('#generated-code-container').empty().append($('<pre id="generated-code" class="brush: csharp"></pre>').text(resp.GeneratedCode));
 
-        //$('#parser-results').empty().append(prettyPrintOne(div.innerHTML, 'html', true));
-        $('#parser-results').empty().text(resp.ParsedDocument);
-
-        SyntaxHighlighter.highlight();
+        $('#parser-result-container').empty().append($('<pre id="parser-results" class="brush: html"></pre>').text(resp.ParsedDocument));
+        SyntaxHighlighter.highlight({ toolbar: false });
     } // END onParseSuccess()
 
-    function parseTemplate() {
-        $.ajax({
-            url: 'razorpad/parse',
-            data: JSON.stringify({ 'Template': $('#template').val() }),
-            success: onParseSuccess,
-            error: onParseError
-        });
-    } // END parseTemplate()
 
     function showMessages(messages) {
         var messagesList = $('#messages');
@@ -83,8 +72,8 @@
         .click(executeTemplate)
         .ajaxStart(function () {
             updateStatus('waiting');
-            $('#template-output').html('');
-            $('#generated-code').html('');
+            $('#template-output').text('');
+            $('#generated-code').text('');
         });
 
 
