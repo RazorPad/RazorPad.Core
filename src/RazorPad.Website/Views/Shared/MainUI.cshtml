@@ -1,60 +1,60 @@
-﻿<div id="code" class="clearfix">
-    <div id="left" class="editor fl">
-        <div>
-            Razor Markup</div>
-        <textarea id="template" name="template" rows="20" cols="80"></textarea>
-    </div>
-    <div id="right" class="fr">
-        <div id="model">
-            <div class="tModel visual_search">
-                &nbsp;
-            </div>
-            <table id="modelProps">
-                <thead>
-                    <tr>
-                        <th>Name </th>
-                        <th>Type </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>
-                            Prop1
-                        </td>
-                        <td>
-                            int
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Prop2
-                        </td>
-                        <td>
-                            bool
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Prop3
-                        </td>
-                        <td>
-                            string
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            &nbsp;
-                        </td>
-                        <td>
-                            &nbsp;
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+﻿<div id="left" class="editor grid_6 alpha">
+    <textarea id="template" name="template" class="watermarkOn" rows="20" cols="80"></textarea>
+</div>
+<div id="right" class="grid_6 omega">
+    <div id="model">
+        <div class="tModel visual_search">
+            &nbsp;
         </div>
+        <table id="modelProps">
+            <thead>
+                <tr>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Type
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        Prop1
+                    </td>
+                    <td>
+                        int
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Prop2
+                    </td>
+                    <td>
+                        bool
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Prop3
+                    </td>
+                    <td>
+                        string
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        &nbsp;
+                    </td>
+                    <td>
+                        &nbsp;
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </div>
-<div class="results">
+<div class="results grid_12">
     <div id="resultTabs" class="tabs results">
         <ul>
             <li><a href="#rendered-output-container">Rendered Output</a></li>
@@ -75,7 +75,8 @@
         <div id="generated-code-container">
         </div>
         <div id="messages-container">
-            <ul id="messages"></ul>
+            <ul id="messages">
+            </ul>
         </div>
     </div>
 </div>
@@ -97,5 +98,6 @@
                 valueMatches: function (facet, searchTerm, callback) { }
             }
         });
+
     });
 </script>

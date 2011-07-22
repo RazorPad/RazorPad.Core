@@ -86,6 +86,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\fGrid.css" />
     <Content Include="Content\reset.css" />
     <Content Include="Content\shCore.css" />
     <Content Include="Content\shThemeDefault.css" />

@@ -3,7 +3,8 @@
 <head>
     <title>@ViewBag.Title</title>
     <link href="@Url.Content("~/Content/reset.css")" rel="stylesheet" type="text/css" />
-    <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/fGrid.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/site.css")" rel="stylesheet" type="text/css" />
     <link href="@Url.Content("~/Content/themes/default/default.css")" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.14/themes/smoothness/jquery-ui.css" />
     <!--[if (!IE)|(gte IE 8)]><!-->
@@ -21,12 +22,12 @@
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
 </head>
 <body>
-    <div id="page">
-        <div id="toolbar" class="gradient clearfix">
-            <div id="header" class="fl">
+    <div class="container_12">
+        <div id="toolbar" class="grid_12 gradient">
+            <div id="header" class="grid_4">
                 <h1 class="insetType" title="Online Tool to play with Razor View Engine">RazorPad</h1>
             </div>
-            <div id="actions" class="fl">
+            <div id="actions" class="grid_4 alpha">
                 <ul class="actionItems">
                     <li>
                         <button id="execute">Execute</button></li>
@@ -34,7 +35,7 @@
                     <li>Share</li>
                 </ul>
             </div>
-            <div id="auth" class="fr">
+            <div id="auth" class="grid_4 omega">
                 <ul class="actionItems">
                     <li>Register</li>
                     <li>Login</li>
@@ -42,7 +43,7 @@
                 </ul>
             </div>
         </div>
-        <div id="body">
+        <div id="content" class="grid_12">
             @RenderBody()
         </div>
     </div>
