@@ -1,42 +1,67 @@
-﻿
+
+/* Hp Styles -------------------------------------------------------------- */
+
 .actionItems li
-{
-	cursor: pointer;
-	display: inline;
-	margin-right: 10px;
-	list-style: none;
-}
-#modelProps
-{
-	margin: 10px 0 0 0;
-	border-collapse: collapse;
-	width: 100%;
-	white-space: normal;
-	border: 1px solid gray;
-}
-#modelProps td
-{
-	border: 1px solid gray;
-}
-#code
-{
-	margin-bottom: 10px;
-}
-.editor textarea
-{
-	height: 100%;
-	width: 100%;
-}
+		{
+			cursor: pointer;
+			display: inline;
+			margin-right: 10px;
+			list-style: none;
+		}
+		
+		
+		#modelProps
+		{
+			margin: 10px 0 0 0;
+			border-collapse: collapse;
+			width: 100%;
+			white-space: normal;
+			border: 1px solid gray;
+		}
+		
+		#modelProps td
+		{
+			border: 1px solid gray;
+		}
+		
+		#right
+		{
+			width: 28%;
+			border: 1px solid #737CA1;
+			padding: 8px;
+		}
+		#left
+		{
+			width: 69%;
+			border: 1px solid #737CA1;
+			padding: 8px;
+		}
+		
+		#tModel
+		{
+			width: 100%;
+			white-space: nowrap;
+		}
 
-#toolbar
-{
-	padding: 10px 0 10px 0;
-	margin-bottom: 10px;
-}
+		#code
+		{
+			margin-bottom: 10px;
+		}
 
-.watermarkOn
+		#results
+		{
+		}
+
+		.editor textarea
+		{
+		height: 100%;
+		width: 100%
+		}
+
+/* End Hp Styles -------------------------------------------------------------- */
+
+
+.results .ui-tabs .ui-tabs-panel
 {
-	color: #CCCCCC;
-	font-style: italic;
-	font-weight: bold;
+	padding: 0;   
 }

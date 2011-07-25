@@ -24,7 +24,7 @@ namespace RazorPad.Website.Models
                     from error in results.Errors.Cast<CompilerError>()
                     select new TemplateMessage {
                         Kind = (error.IsWarning) ? TemplateMessageKind.Warning : TemplateMessageKind.Error,
-                        Text = string.Format("{0} ({1}): {2}", error.Line, error.Column, error.ErrorText),
+                        Text = string.Format("Line {0} (col {1}): {2}", error.Line, error.Column, error.ErrorText),
                     }
                 );
         }

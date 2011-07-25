@@ -90,12 +90,6 @@
     <Content Include="Content\reset.css" />
     <Content Include="Content\shCore.css" />
     <Content Include="Content\shThemeDefault.css" />
-    <Content Include="Content\Site.css">
-      <DependentUpon>Site.chirp.less</DependentUpon>
-    </Content>
-    <Content Include="Content\Site.min.css">
-      <DependentUpon>Site.chirp.less</DependentUpon>
-    </Content>
     <Content Include="Content\themes\default\default.css" />
     <Content Include="Global.asax" />
     <None Include="_bin_deployableAssemblies\Microsoft.Web.Infrastructure.dll" />
@@ -108,7 +102,7 @@
     <None Include="..\RazorPad.Core\RazorPad.snk">
       <Link>RazorPad.snk</Link>
     </None>
-    <None Include="Content\Site.chirp.less" />
+    <Content Include="Content\Site.css" />
     <Content Include="Content\themes\default\jquery-ui.css" />
     <Content Include="Content\themes\default\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\default\images\ui-bg_flat_75_ffffff_40x100.png" />

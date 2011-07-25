@@ -49,6 +49,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Web.Razor, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Web.WebPages.Razor, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -56,19 +57,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Compilation\CodeGenerationException.cs" />
-    <Compile Include="Compilation\CompilationException.cs" />
+    <Compile Include="Compilation\Exceptions\CodeGenerationException.cs" />
+    <Compile Include="Compilation\Exceptions\CompilationException.cs" />
     <Compile Include="Compilation\CSharpRazorCodeGeneratorSpanVisitor.cs" />
-    <Compile Include="Compilation\CSharpTemplateCompilationParameters.cs" />
     <Compile Include="Compilation\EmbeddedResources\EmbeddedTemplateHost.cs" />
+    <Compile Include="Compilation\Hosts\RazorPadMvcEngineHost.cs" />
     <Compile Include="Compilation\ITemplateCompiler.cs" />
-    <Compile Include="Compilation\RazorPadHost.cs" />
+    <Compile Include="Compilation\Hosts\RazorPadHost.cs" />
     <Compile Include="Compilation\EmbeddedResources\RazorViewComponentAssembly.cs" />
     <Compile Include="Compilation\EmbeddedResources\RazorViewComponentAssemblyCompilationException.cs" />
     <Compile Include="Compilation\EmbeddedResources\RazorViewComponentAssemblyCompilationResults.cs" />
     <Compile Include="Compilation\TemplateCompilationParameters.cs" />
     <Compile Include="Compilation\TemplateCompiler.cs" />
-    <Compile Include="Compilation\VBTemplateCompilationParameters.cs" />
+    <Compile Include="Compilation\TemplateLanguage.cs" />
     <Compile Include="Compilation\ViewComponentCSharpRazorCodeGenerator.cs" />
     <Compile Include="Compilation\ViewComponentCSharpRazorCodeParser.cs" />
     <Compile Include="Framework\DictionaryPropertyDescriptor.cs" />

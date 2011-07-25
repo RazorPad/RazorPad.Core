@@ -1,9 +1,15 @@
 ﻿using System;
+using System.CodeDom;
 using System.CodeDom.Compiler;
 using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Text.RegularExpressions;
 using System.Web.Mvc;
+using System.Web.Razor;
 using Newtonsoft.Json;
 using RazorPad.Compilation;
+using RazorPad.Compilation.Hosts;
 using RazorPad.Framework;
 using RazorPad.Website.Models;
 
@@ -26,9 +32,6 @@ namespace RazorPad.Website.Controllers
             result.SetGeneratorResults(generatorResults);
             result.GeneratedCode = writer.ToString();
 
-            dynamic testObject = new { Name = "Test", Number = 1234d };
-            var json = JsonConvert.SerializeObject(testObject, Formatting.Indented, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All });
-
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
@@ -36,12 +39,14 @@ namespace RazorPad.Website.Controllers
         {
             ExecuteResult result = new ExecuteResult();
 
-            var compiler = new TemplateCompiler();
+            var templateParams = TemplateCompilationParameters.CreateFromLanguage(request.Language);
+            var compiler = new TemplateCompiler(templateParams);
+
             var writer = new StringWriter();
 
-            var generatorResults = compiler.GenerateCode(request.Template, writer);
+            var generatorResults = compiler.GenerateCode(request.Template, writer, new RazorPadMvcEngineHost(request.RazorLanguage));
             result.SetGeneratorResults(generatorResults);
-            result.GeneratedCode = writer.ToString();
+            result.GeneratedCode = ExtractCode(writer);
 
             if (generatorResults.Success)
             {
@@ -52,19 +57,29 @@ namespace RazorPad.Website.Controllers
                 if (!compilerResults.Errors.HasErrors)
                 {
                     dynamic model;
-                    
-                    if(!string.IsNullOrEmpty(request.Model))
-                        model = JsonConvert.DeserializeObject(request.Model, new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.Auto});
-                    else
-                        model = new DynamicDictionary();   
 
-                    result.TemplateOutput = Sandbox.Execute(request.Template, model);
+                    if (!string.IsNullOrEmpty(request.Model))
+                        model = JsonConvert.DeserializeObject(request.Model, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Auto });
+                    else
+                        model = new DynamicDictionary();
+
+                    result.TemplateOutput = Sandbox.Execute(request.Language, request.Template, model);
                 }
 
                 result.Success = true;
             }
 
             return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        /// <summary>
+        /// Takes a writer with a bunch of code and extracts only the code that we're interested in
+        /// (excluding boilerplate generated code comments, empty classes, etc.)
+        /// </summary>
+        private string ExtractCode(StringWriter writer)
+        {
+            // TODO: Extract the right stuff
+            return writer.ToString();
         }
 
         protected override void OnException(ExceptionContext filterContext)
@@ -74,14 +89,16 @@ namespace RazorPad.Website.Controllers
             filterContext.ExceptionHandled = true;
         }
 
-
         class Sandbox : MarshalByRefObject
         {
-            public static string Execute(string template, dynamic model = null)
+            public static string Execute(TemplateLanguage language, string template, dynamic model = null)
             {
+                var templateParams = TemplateCompilationParameters.CreateFromLanguage(language);
+                
+                var compiler = new TemplateCompiler(templateParams);
+
                 // TODO: Run this in a sandbox
-                var compiler = new TemplateCompiler();
-                return compiler.Execute(template, model);
+                return compiler.Execute(template, model, new RazorPadMvcEngineHost(templateParams.Language));
             }
         }
     }

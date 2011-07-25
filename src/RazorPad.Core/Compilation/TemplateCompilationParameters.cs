@@ -1,10 +1,23 @@
-﻿using System.CodeDom.Compiler;
+﻿using System;
+using System.CodeDom.Compiler;
 using System.Web.Razor;
+using Microsoft.CSharp;
+using Microsoft.VisualBasic;
 
 namespace RazorPad.Compilation
 {
-    public abstract class TemplateCompilationParameters
+    public class TemplateCompilationParameters
     {
+        public static TemplateCompilationParameters CSharp
+        {
+            get { return new TemplateCompilationParameters(new CSharpRazorCodeLanguage(), new CSharpCodeProvider()); }
+        }
+
+        public static TemplateCompilationParameters VisualBasic
+        {
+            get { return new TemplateCompilationParameters(new VBRazorCodeLanguage(), new VBCodeProvider()); }
+        }
+
         public CodeDomProvider CodeProvider { get; private set; }
 
         public RazorCodeLanguage Language { get; private set; }
@@ -16,7 +29,27 @@ namespace RazorPad.Compilation
         {
             Language = language;
             CodeProvider = codeProvider;
-            CompilerParameters = compilerParameters ?? new CompilerParameters() { GenerateInMemory = true };
+            CompilerParameters = compilerParameters ?? new CompilerParameters { GenerateInMemory = true };
+        }
+
+        public static TemplateCompilationParameters CreateFromFilename(string filename)
+        {
+            if (filename.EndsWith(".vbhtml", StringComparison.OrdinalIgnoreCase))
+                return VisualBasic;
+
+            return CSharp;
+        }
+
+        public static TemplateCompilationParameters CreateFromLanguage(TemplateLanguage language)
+        {
+            switch (language)
+            {
+                case(TemplateLanguage.VisualBasic):
+                    return VisualBasic;
+                
+                default:
+                    return CSharp;
+            }
         }
     }
 }

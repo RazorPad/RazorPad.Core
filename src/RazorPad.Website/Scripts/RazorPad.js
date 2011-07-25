@@ -56,9 +56,9 @@
 
 		$.each(messages, function (idx, message) {
 			$('<li/>')
-                .addClass(message.Kind)
-                .html($('<pre/>').html(message.Text))
-                .appendTo(messagesList);
+				.addClass(message.Kind)
+				.html($('<pre/>').html(message.Text))
+				.appendTo(messagesList);
 		});
 	} // END showMessages()
 
@@ -69,12 +69,12 @@
 
 	// $('#generate-code').click(parseTemplate);
 	$('#execute')
-        .click(executeTemplate)
-        .ajaxStart(function () {
-        	updateStatus('waiting');
-        	$('#template-output').text('');
-        	$('#generated-code').text('');
-        });
+		.click(executeTemplate)
+		.ajaxStart(function () {
+			updateStatus('waiting');
+			$('#template-output').text('');
+			$('#generated-code').text('');
+		});
 
 
 	$.ajaxSetup({
@@ -90,7 +90,7 @@
 
 			// We only want this to apply if there's not
 			// something actually entered
-			return $(this).val() == "" || $(this).val() == "Razor Markup Here";
+			return $(this).val() === "" || $(this).val() === "Razor Markup Here";
 
 		}).removeClass("watermarkOn").val("");
 
@@ -104,7 +104,7 @@
 
 			// We only want this to apply if there's not
 			// something actually entered
-			return $(this).val() == "";
+			return $(this).val() === "";
 
 		}).addClass("watermarkOn").val("Razor Markup Here");
 

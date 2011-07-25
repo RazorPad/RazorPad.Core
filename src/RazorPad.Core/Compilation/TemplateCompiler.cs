@@ -3,6 +3,8 @@ using System.CodeDom.Compiler;
 using System.IO;
 using System.Linq;
 using System.Web.Razor;
+using RazorPad.Compilation.Hosts;
+using RazorPad.Framework;
 
 namespace RazorPad.Compilation
 {
@@ -21,7 +23,7 @@ namespace RazorPad.Compilation
 
         public Func<Type,object> TemplateInstanceInstatiator
         {
-            get { return _templateInstanceInstatiator ?? (type => Activator.CreateInstance(type)); }
+            get { return _templateInstanceInstatiator ?? Activator.CreateInstance; }
             set { _templateInstanceInstatiator = value; }
         }
         private Func<Type, object> _templateInstanceInstatiator;
@@ -34,7 +36,7 @@ namespace RazorPad.Compilation
 
         public TemplateCompiler(TemplateCompilationParameters templateCompilationParameters)
         {
-            CompilationParameters = templateCompilationParameters ?? new CSharpTemplateCompilationParameters();
+            CompilationParameters = templateCompilationParameters ?? TemplateCompilationParameters.CSharp;
             CodeGeneratorOptions = new CodeGeneratorOptions
                                        {
                                            BlankLinesBetweenMembers = false,
@@ -61,7 +63,7 @@ namespace RazorPad.Compilation
             return compiledCode;
         }
 
-        public string Execute(string templateText, object model = null)
+        public string Execute(string templateText, dynamic model = null, RazorEngineHost host = null)
         {
             dynamic instance = GetTemplateInstance(templateText);
 
@@ -75,9 +77,9 @@ namespace RazorPad.Compilation
             return templateOutput;
         }
 
-        private dynamic GetTemplateInstance(string templateText)
+        private dynamic GetTemplateInstance(string templateText, RazorEngineHost host = null)
         {
-            var host = RazorEngineHostFactory.Invoke(CompilationParameters.Language);
+            host = host ?? RazorEngineHostFactory.Invoke(CompilationParameters.Language);
 
             var generatorResults = GenerateCode(templateText, host: host);
 

@@ -13,7 +13,7 @@ namespace RazorPad.Compilation
         CompilerResults Compile(string templateText);
         CompilerResults Compile(GeneratorResults generatorResults);
 
-        string Execute(string templateText, dynamic model = null);
+        string Execute(string templateText, dynamic model = null, RazorEngineHost host = null);
 
         GeneratorResults GenerateCode(string templateText, TextWriter codeWriter = null, RazorEngineHost host = null);
 

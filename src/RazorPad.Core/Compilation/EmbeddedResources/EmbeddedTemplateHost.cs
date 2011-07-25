@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Web.Razor;
+using RazorPad.Compilation.Hosts;
 
 namespace RazorPad.Compilation.EmbeddedResources
 {
