@@ -8,7 +8,7 @@
 			data: JSON.stringify({ 'Template': $('#template').val(), "Model": JSON.stringify(model) }),
 			success: function (resp) {
 				onParseSuccess(resp);
-				$('#rendered-output').html(resp.TemplateOutput);
+				showRenderedTemplateOutput(resp.TemplateOutput);
 				$('#template-output').text(resp.TemplateOutput);
 			},
 			error: function (resp) {
@@ -62,12 +62,20 @@
 		});
 	} // END showMessages()
 
+	function showRenderedTemplateOutput(templateOutput) {
+		var iframe = $('iframe', '#rendered-output-container');
+
+		if (!iframe.get(0))
+			iframe = $('<iframe>').appendTo('#rendered-output-container');
+
+		iframe.contents().find('html').html(templateOutput);
+	}
+
 	function updateStatus(status) {
 		$('#template-container').attr('class', status);
 	}
 
 
-	// $('#generate-code').click(parseTemplate);
 	$('#execute')
 		.click(executeTemplate)
 		.ajaxStart(function () {

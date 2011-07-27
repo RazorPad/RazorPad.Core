@@ -1,8 +1,11 @@
 ﻿<div id="left" class="editor grid_6 alpha">
-    <textarea id="template" name="template" class="watermarkOn" rows="20" cols="80"></textarea>
+<textarea id="template" name="template" class="watermarkOn" rows="20" cols="80">
+<h1>Welcome to RazorPad Online!</h1>
+<div>The time is: @@DateTime.Now</div>
+</textarea>
 </div>
 <div id="right" class="grid_6 omega">
-    <div id="model">
+@*    <div id="model">
         <div class="tModel visual_search">
             &nbsp;
         </div>
@@ -52,8 +55,9 @@
                 </tr>
             </tbody>
         </table>
-    </div>
+    </div>*@
 </div>
+<div class="clear"></div>
 <div class="results grid_12">
     <div id="resultTabs" class="tabs results">
         <ul>

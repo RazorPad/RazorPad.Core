@@ -24,19 +24,7 @@
 			border: 1px solid gray;
 		}
 		
-		#right
-		{
-			width: 28%;
-			border: 1px solid #737CA1;
-			padding: 8px;
-		}
-		#left
-		{
-			width: 69%;
-			border: 1px solid #737CA1;
-			padding: 8px;
-		}
-		
+	
 		#tModel
 		{
 			width: 100%;
@@ -64,4 +52,26 @@
 .results .ui-tabs .ui-tabs-panel
 {
 	padding: 0;   
+    height: 280px;
+    max-height: 280px;
+}
+
+.results .ui-widget-content
+{
+    border: none;
+}
+
+iframe 
+{
+    width: 100%;
+}
+
+#template-output-container 
+{
+    padding: 30px 20px;
+}  
+
+.syntaxhighlighter
+{
+    max-height: 280px;
 }
