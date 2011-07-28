@@ -40,19 +40,27 @@
     $(function () {
         $('#resultTabs').tabs();
 
+        var lastsel2;
         $("#model").jqGrid({
             datatype: "json",
             colNames: ['Type', 'Property', 'Value'],
             colModel: [
-   		                  { name: 'type', index: 'type', width: 100 },
-   		                  { name: 'prop', index: 'prop', width: 300 },
-   		                  { name: 'val', index: 'val', width: 250 }
+   		                  { name: 'type', index: 'type', width: 100, sortable: false, editable: true, edittype: "select", editoptions: { value: "int:int; string:string; bool:bool" }, editrules: { required: true} },
+   		                  { name: 'prop', index: 'prop', width: 300, sortable: false, editable: true },
+   		                  { name: 'val', index: 'val', width: 250, sortable: false, editable: true }
    	                  ],
             rowNum: 10,
             rowList: [10, 20, 30],
             viewrecords: true,
-            sortorder: "desc",
-            caption: "Model"
+            caption: "Model",
+            onSelectRow: function (id) {
+                if (id && id !== lastsel2) {
+                    $('#model').restoreRow(lastsel2);
+                    $('#model').editRow(id, true);
+                    lastsel2 = id;
+                }
+            }
+
         });
 
         var mydata = [
