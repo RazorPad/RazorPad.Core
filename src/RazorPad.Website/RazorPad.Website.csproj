@@ -86,11 +86,25 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\fGrid.css" />
+    <Content Include="Content\fluid960.css" />
     <Content Include="Content\reset.css" />
     <Content Include="Content\shCore.css" />
     <Content Include="Content\shThemeDefault.css" />
     <Content Include="Content\themes\default\default.css" />
+    <Content Include="Content\themes\default\images\ui-bg_diagonals-thick_18_b81900_40x40.png" />
+    <Content Include="Content\themes\default\images\ui-bg_diagonals-thick_20_666666_40x40.png" />
+    <Content Include="Content\themes\default\images\ui-bg_flat_10_000000_40x100.png" />
+    <Content Include="Content\themes\default\images\ui-bg_glass_100_f6f6f6_1x400.png" />
+    <Content Include="Content\themes\default\images\ui-bg_glass_100_fdf5ce_1x400.png" />
+    <Content Include="Content\themes\default\images\ui-bg_gloss-wave_35_f6a828_500x100.png" />
+    <Content Include="Content\themes\default\images\ui-bg_highlight-soft_100_eeeeee_1x100.png" />
+    <Content Include="Content\themes\default\images\ui-bg_highlight-soft_75_ffe45c_1x100.png" />
+    <Content Include="Content\themes\default\images\ui-icons_228ef1_256x240.png" />
+    <Content Include="Content\themes\default\images\ui-icons_ef8c08_256x240.png" />
+    <Content Include="Content\themes\default\images\ui-icons_ffd27a_256x240.png" />
+    <Content Include="Content\themes\default\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="Content\themes\default\jquery-ui.css" />
+    <Content Include="Content\themes\default\ui.jqgrid.css" />
     <Content Include="Global.asax" />
     <None Include="_bin_deployableAssemblies\Microsoft.Web.Infrastructure.dll" />
     <None Include="_bin_deployableAssemblies\System.Web.WebPages.Razor.dll" />
@@ -103,7 +117,6 @@
       <Link>RazorPad.snk</Link>
     </None>
     <Content Include="Content\Site.css" />
-    <Content Include="Content\themes\default\jquery-ui.css" />
     <Content Include="Content\themes\default\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\default\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="Content\themes\default\images\ui-bg_glass_55_fbf9ee_1x400.png" />
@@ -117,6 +130,25 @@
     <Content Include="Content\themes\default\images\ui-icons_454545_256x240.png" />
     <Content Include="Content\themes\default\images\ui-icons_888888_256x240.png" />
     <Content Include="Content\themes\default\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Scripts\grid\grid.base.js" />
+    <Content Include="Scripts\grid\grid.celledit.js" />
+    <Content Include="Scripts\grid\grid.common.js" />
+    <Content Include="Scripts\grid\grid.custom.js" />
+    <Content Include="Scripts\grid\grid.filter.js" />
+    <Content Include="Scripts\grid\grid.formedit.js" />
+    <Content Include="Scripts\grid\grid.grouping.js" />
+    <Content Include="Scripts\grid\grid.import.js" />
+    <Content Include="Scripts\grid\grid.inlinedit.js" />
+    <Content Include="Scripts\grid\grid.jqueryui.js" />
+    <Content Include="Scripts\grid\i18n\grid.locale-en.js" />
+    <Content Include="Scripts\grid\grid.subgrid.js" />
+    <Content Include="Scripts\grid\grid.tbltogrid.js" />
+    <Content Include="Scripts\grid\grid.treegrid.js" />
+    <Content Include="Scripts\grid\jqDnR.js" />
+    <Content Include="Scripts\grid\jqModal.js" />
+    <Content Include="Scripts\grid\jquery.fmatter.js" />
+    <Content Include="Scripts\grid\jquery.jqGrid.js" />
+    <Content Include="Scripts\grid\JsonXml.js" />
     <Content Include="Scripts\jquery-vsdoc.js" />
     <Content Include="Scripts\jquery.js" />
     <Content Include="Scripts\jquery.min.js" />
@@ -125,6 +157,7 @@
     <Content Include="Scripts\shBrushXml.js" />
     <Content Include="Scripts\shCore.js" />
     <Content Include="Scripts\shCore.min.js" />
+    <Content Include="Scripts\underscore.js" />
     <Content Include="Scripts\XRegExp.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">

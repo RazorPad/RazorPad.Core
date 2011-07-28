@@ -2,76 +2,50 @@
 /* Hp Styles -------------------------------------------------------------- */
 
 .actionItems li
-		{
-			cursor: pointer;
-			display: inline;
-			margin-right: 10px;
-			list-style: none;
-		}
-		
-		
-		#modelProps
-		{
-			margin: 10px 0 0 0;
-			border-collapse: collapse;
-			width: 100%;
-			white-space: normal;
-			border: 1px solid gray;
-		}
-		
-		#modelProps td
-		{
-			border: 1px solid gray;
-		}
-		
-	
-		#tModel
-		{
-			width: 100%;
-			white-space: nowrap;
-		}
+{
+	cursor: pointer;
+	display: inline;
+	margin-right: 10px;
+	list-style: none;
+}
 
-		#code
-		{
-			margin-bottom: 10px;
-		}
+#code
+{
+	margin-bottom: 10px;
+}
 
-		#results
-		{
-		}
-
-		.editor textarea
-		{
-		height: 100%;
-		width: 100%
-		}
+.editor textarea
+{
+	height: 100%;
+	width: 100%;
+}
 
 /* End Hp Styles -------------------------------------------------------------- */
 
 
 .results .ui-tabs .ui-tabs-panel
 {
-	padding: 0;   
-    height: 280px;
-    max-height: 280px;
+	padding: 0;
+	height: 280px;
+	max-height: 280px;
 }
 
 .results .ui-widget-content
 {
-    border: none;
+	border: none;
 }
 
-iframe 
+iframe
 {
-    width: 100%;
+	width: 100%;
 }
 
-#template-output-container 
+#template-output-container
 {
-    padding: 30px 20px;
-}  
+	padding: 30px 20px;
+}
 
 .syntaxhighlighter
 {
-    max-height: 280px;
+	max-height: 280px;
 }

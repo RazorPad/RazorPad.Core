@@ -1,63 +1,15 @@
 ﻿<div id="left" class="editor grid_6 alpha">
-<textarea id="template" name="template" class="watermarkOn" rows="20" cols="80">
+    <textarea id="template" name="template" class="watermarkOn" rows="20" cols="80">
 <h1>Welcome to RazorPad Online!</h1>
 <div>The time is: @@DateTime.Now</div>
 </textarea>
 </div>
 <div id="right" class="grid_6 omega">
-@*    <div id="model">
-        <div class="tModel visual_search">
-            &nbsp;
-        </div>
-        <table id="modelProps">
-            <thead>
-                <tr>
-                    <th>
-                        Name
-                    </th>
-                    <th>
-                        Type
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>
-                        Prop1
-                    </td>
-                    <td>
-                        int
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Prop2
-                    </td>
-                    <td>
-                        bool
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Prop3
-                    </td>
-                    <td>
-                        string
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        &nbsp;
-                    </td>
-                    <td>
-                        &nbsp;
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>*@
+    <table id="model">
+    </table>
 </div>
-<div class="clear"></div>
+<div class="clear">
+</div>
 <div class="results grid_12">
     <div id="resultTabs" class="tabs results">
         <ul>
@@ -84,24 +36,32 @@
         </div>
     </div>
 </div>
-<script type="text/javascript" src="@Url.Content("~/Scripts/RazorPad.js")"></script>
 <script type="text/javascript" charset="utf-8">
     $(function () {
         $('#resultTabs').tabs();
-        VS.init({
-            container: $('.visual_search'),
-            query: '',
-            callbacks: {
-                search: function (query) { },
-                facetMatches: function (callback) {
-                    callback([
-                            'bool', 'byte', 'sbyte', 'char', 'decimal', 'double', 'float', 'int', 'uint', 'long', 'ulong', 'object', 'short', 'ushort', 'string'
-                           ]);
 
-                },
-                valueMatches: function (facet, searchTerm, callback) { }
-            }
+        $("#model").jqGrid({
+            datatype: "json",
+            colNames: ['Type', 'Property', 'Value'],
+            colModel: [
+   		                  { name: 'type', index: 'type', width: 100 },
+   		                  { name: 'prop', index: 'prop', width: 300 },
+   		                  { name: 'val', index: 'val', width: 250 }
+   	                  ],
+            rowNum: 10,
+            rowList: [10, 20, 30],
+            viewrecords: true,
+            sortorder: "desc",
+            caption: "Model"
         });
+
+        var mydata = [
+		{ type: "int", prop: "Index", val: "5" },
+		{ type: "string", prop: "Name", val: "John" },
+		{ type: "bool", prop: "IsDone", val: "true" }
+		];
+        for (var i = 0; i <= mydata.length; i++)
+            $("#model").jqGrid('addRowData', i + 1, mydata[i]);
 
     });
 </script>

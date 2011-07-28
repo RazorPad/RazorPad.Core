@@ -68,7 +68,7 @@
 		if (!iframe.get(0))
 			iframe = $('<iframe>').appendTo('#rendered-output-container');
 
-		iframe.contents().find('html').html(templateOutput);
+		iframe.contents().find('body').html(templateOutput);
 	}
 
 	function updateStatus(status) {
