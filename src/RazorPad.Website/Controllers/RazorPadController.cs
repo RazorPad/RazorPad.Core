@@ -23,6 +23,11 @@ namespace RazorPad.Website.Controllers
             return View("MainUI");
         }
 
+        public ActionResult Beta()
+        {
+            return View("Ide");
+        }
+
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Parse([Bind(Prefix = "")]ParseRequest request)
         {

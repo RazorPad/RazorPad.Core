@@ -1,0 +1,39 @@
+﻿<div class="splitPanes">
+    <div class="upperPanes">
+        <div id="razorPane" class="grid_6 alpha pane">
+            @Html.Partial("_RazorPane")
+        </div>
+        <div id="modelPane" class="grid_6 omega pane">
+            @Html.Partial("_ModelPane")
+        </div>
+    </div>
+    <div class="lowerPanes">
+        <div id="resultsPane" class="grid_12 pane">
+            @Html.Partial("_ResultsPane")
+        </div>
+    </div>
+</div>
+<script type="text/javascript" charset="utf-8">
+    $(function () {
+        $('.splitPanes').splitter({
+            splitHorizontal: true,
+            //outline: true,
+
+            accessKey: "L"
+        });
+
+        $('.upperPanes').splitter({
+            splitVertical: true,
+            //outline: true,
+            accessKey: "V"
+        });
+        var razorEditor = ace.edit("razorEditor");
+        var modelEditor = ace.edit("modelEditor");
+
+        var HtmlMode = require("ace/mode/html").Mode;
+        razorEditor.getSession().setMode(new HtmlMode());
+
+        var CSharpMode = require("ace/mode/csharp").Mode;
+        modelEditor.getSession().setMode(new CSharpMode());
+    });
+</script>

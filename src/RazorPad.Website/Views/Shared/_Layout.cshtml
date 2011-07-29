@@ -3,7 +3,7 @@
 <head>
     <title>@ViewBag.Title</title>
     <link href="@Url.Content("~/Content/reset.css")" rel="stylesheet" type="text/css" />
-    <link href="@Url.Content("~/Content/fluid960.css")" rel="stylesheet" type="text/css" />
+@*    <link href="@Url.Content("~/Content/fluid960.css")" rel="stylesheet" type="text/css" />*@
     <link href="@Url.Content("~/Content/themes/default/ui.jqgrid.css")" rel="stylesheet" type="text/css" />
     <link href="@Url.Content("~/Content/site.css")" rel="stylesheet" type="text/css" />
     <link href="@Url.Content("~/Content/themes/default/default.css")" rel="stylesheet" type="text/css" />
@@ -13,7 +13,7 @@
     <script type="text/javascript" language="javascript" src="@Url.Content("~/Scripts/jquery.js")"></script>
 </head>
 <body>
-    <div class="container_12">
+    <div class="container container_12">
         <div id="toolbar" class="grid_12 gradient">
             <div id="header" class="grid_4">
                 <h1 class="insetType" title="Online Tool to play with Razor View Engine">
@@ -44,6 +44,7 @@
 <script type="text/javascript" language="javascript" src="@Url.Content("~/Scripts/jquery-ui.js")"></script>
 <script type="text/javascript" language="javascript" src="@Url.Content("~/Scripts/underscore.js")"></script>
 <script type="text/javascript" language="javascript" src="@Url.Content("~/Scripts/RazorPad.js")"></script>
+<script type="text/javascript" language="javascript" src="@Url.Content("~/Scripts/splitter.js")"></script>
 <script type="text/javascript" language="javascript" src="@Url.Content("~/Scripts/grid/i18n/grid.locale-en.js")"></script>
 <script type="text/javascript" language="javascript" src="@Url.Content("~/Scripts/grid/grid.base.js")"></script>
 <script type="text/javascript" language="javascript" src="@Url.Content("~/Scripts/grid/grid.common.js")"></script>
@@ -64,4 +65,8 @@
 <script type="text/javascript" language="javascript" src="@Url.Content("~/Scripts/shCore.js")"></script>
 <script type="text/javascript" language="javascript" src="@Url.Content("~/Scripts/shBrushCSharp.js")"></script>
 <script type="text/javascript" language="javascript" src="@Url.Content("~/Scripts/shBrushXml.js")"></script>
+<script type="text/javascript" language="javascript" src="@Url.Content("~/Scripts/ace-uncompressed.js")"></script>
+<script type="text/javascript" language="javascript" src="@Url.Content("~/Scripts/mode-html.js")"></script>
+<script type="text/javascript" language="javascript" src="@Url.Content("~/Scripts/mode-csharp.js")"></script>
+
 </html>
