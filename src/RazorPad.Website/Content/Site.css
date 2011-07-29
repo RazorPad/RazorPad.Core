@@ -5,6 +5,7 @@ html, body
 {
     height: 100%;
     overflow: hidden;
+    font: 85% Tahoma, sans-serif;
 }
 
 body, div
@@ -29,11 +30,6 @@ body, div
     margin-bottom: 10px;
 }
 
-.editor
-{
-    height: 100%;
-    width: 100%;
-}
 
 /* End Hp Styles -------------------------------------------------------------- */
 
@@ -65,39 +61,166 @@ iframe
     min-height: 280px;
 }
 
-.splitPanes
+.panes
 {
-    min-height: 1000px;
     width: 100%;
     height: 100%;
-    border: 5px solid #aaa;
-    overflow: hidden;
 }
 
-.upperPanes
+.tabBar a
 {
-    min-height: 600px;
+    text-decoration: none;
+    border-left: solid 1px #BBB;
+    border-right: solid 1px #BBB;
+    border-top: solid 1px #BBB;
+    background-color: whiteSmoke;
+    color: #000;
+    display: inline-block;
+    padding: 5px;
+    vertical-align: bottom;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+.tabBar a.Selected
+{
+    background-color: white;
+    color: #CA060A;
+    position: relative;
+    top: 1px;
+    padding-bottom: 6px;
+}
+
+
+/* splitter styles */
+.panes
+{
+    height: 100%;
+    width: 100%;
+}
+
+.leftPane
+{
+    width: 49%;
+    height: 100%;
+}
+
+
+.inlinebox {
+	display: -moz-inline-stack;
+	display: inline-block;
+	vertical-align: top;
+	zoom: 1;
+	*display: inline;
+	width: 49%;
+}
+
+.rightPane
+{
+    width: 49%;
+    height: 100%;
+}
+
+.topPane
+{
     height: 60%;
+    width: 100%;
+    overflow: auto;
 }
 
-.lowerPanes
+.bottomPane
 {
-    min-height: 400px;
     height: 40%;
+    width: 100%;
+    overflow: auto;
 }
 
-.vsplitbar
+
+/* Splitbar styles; these are the default class names and required styles */
+.splitbarV
 {
-    width: 5px;
-    background: #aaa;
+    float: left;
+    width: 6px;
+    height: 100%;
+    line-height: 0px;
+    font-size: 0px;
+    border-left: solid 1px #9cbdff;
+    border-right: solid 1px #9cbdff;
+    background: #cbe1fb url(themes/default/images/splitter/panev.gif) 0% 50%;
 }
-
-.hsplitbar
+.splitbarH
 {
     height: 6px;
-    background: #669;
+    text-align: left;
+    line-height: 0px;
+    font-size: 0px;
+    border-top: solid 1px #9cbdff;
+    border-bottom: solid 1px #9cbdff;
+    background: #cbe1fb url(themes/default/images/splitter/paneh.gif) 50% 0%;
 }
 
+.splitbuttonV
+{
+    margin-top: -41px;
+    margin-left: -4px;
+    top: 50%;
+    position: relative;
+    height: 83px;
+    width: 10px;
+    background: transparent url(themes/default/images/splitter/panevc.gif) 10px 50%;
+}
+.splitbuttonV.invert
+{
+    margin-left: 0px;
+    background: transparent url(themes/default/images/splitter/panevc.gif) 0px 50%;
+}
+.splitbuttonH
+{
+    margin-left: -41px;
+    left: 50%;
+    position: relative;
+    height: 10px !important;
+    width: 83px;
+    background: transparent url(themes/default/images/splitter/panehc.gif) 50% 0px;
+}
+.splitbuttonH.invert
+{
+    margin-top: -4px;
+    background: transparent url(themes/default/images/splitter/panehc.gif) 50% -10px;
+}
+.splitbarV.working, .splitbarH.working, .splitbuttonV.working, .splitbuttonH.working
+{
+    -moz-opacity: .50;
+    filter: alpha(opacity=50);
+    opacity: .50;
+}
 
+/* end splitter styles */
 
+.clearfix:after {
+	clear: both;
+	content: ' ';
+	display: block;
+	font-size: 0;
+	line-height: 0;
+	visibility: hidden;
+	width: 0;
+	height: 0;
+}
 
+.clearfix {
+	display: inline-block;
+}
+
+* html .clearfix {
+	height: 1%;
+}
+
+.clearfix {
+	display: block;
+}
+
+#content 
+{
+    height: 100%;
+}

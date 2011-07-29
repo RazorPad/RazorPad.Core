@@ -1,39 +1,72 @@
-﻿<div class="splitPanes">
-    <div class="upperPanes">
-        <div id="razorPane" class="grid_6 alpha pane">
+﻿<table style="height: 100%; width: 100%">
+    <colgroup>
+        <col width="50%" />
+        <col width="50%" />
+    </colgroup>
+    <tr>
+        <td>
+            <div id="razorPane" class="grid_6 inlinebox leftPane">
+                @Html.Partial("_RazorPane")
+            </div>
+        </td>
+        <td>
+            <div id="modelPane" class="grid_6 inlinebox rightPane">
+                @*@Html.Partial("_ModelPane")*@ public class Model { public int Index { get; set;
+                } }
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <div id="resultsPane" class="grid_12 ui-layout-south">
+                @Html.Partial("_ResultsPane")
+            </div>
+        </td>
+    </tr>
+</table>
+@*<div class="panes">
+    <div class="topPane clearfix">
+        <div id="razorPane" class="grid_6 inlinebox leftPane">
             @Html.Partial("_RazorPane")
         </div>
-        <div id="modelPane" class="grid_6 omega pane">
-            @Html.Partial("_ModelPane")
-        </div>
-    </div>
-    <div class="lowerPanes">
-        <div id="resultsPane" class="grid_12 pane">
-            @Html.Partial("_ResultsPane")
-        </div>
+        <div id="modelPane" class="grid_6 inlinebox rightPane">
+            @Html.Partial("_ModelPane") public class Model { public int Index
+{ get; set; } } </div> </div>
+<div class="bottomPane">
+    <div id="resultsPane" class="grid_12 ui-layout-south">
+        @Html.Partial("_ResultsPane")
     </div>
 </div>
+</div>*@
 <script type="text/javascript" charset="utf-8">
+
     $(function () {
-        $('.splitPanes').splitter({
-            splitHorizontal: true,
-            //outline: true,
 
-            accessKey: "L"
-        });
 
-        $('.upperPanes').splitter({
-            splitVertical: true,
-            //outline: true,
-            accessKey: "V"
-        });
-        var razorEditor = ace.edit("razorEditor");
-        var modelEditor = ace.edit("modelEditor");
+        //        $("div.panes").splitter({
+        //            splitHorizontal: true,
+        //            A: $('.topPane'),
+        //            B: $('.bottomPane'),
 
-        var HtmlMode = require("ace/mode/html").Mode;
-        razorEditor.getSession().setMode(new HtmlMode());
+        //            closeableto: 50
+        //        });
+        //        $(".topPane").splitter({
+        //            splitVertical: true,
+        //            A: $('.leftPane'),
+        //            B: $('.rightPane'),
+        //            closeableto: 50
+        //        });
 
-        var CSharpMode = require("ace/mode/csharp").Mode;
-        modelEditor.getSession().setMode(new CSharpMode());
+
+        //        var razorEditor = ace.edit("razorEditor");
+        //        var HtmlMode = require("ace/mode/html").Mode;
+        //        razorEditor.getSession().setMode(new HtmlMode());
+
+
+                var modelEditor = ace.edit("modelPane");
+                var CSharpMode = require("ace/mode/csharp").Mode;
+                modelEditor.getSession().setMode(new CSharpMode());
+
+
     });
 </script>

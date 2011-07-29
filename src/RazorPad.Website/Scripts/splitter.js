@@ -1,213 +1,187 @@
 /*
- * jQuery.splitter.js - two-pane splitter window plugin
- *
- * version 1.51 (2009/01/09) 
- * 
- * Dual licensed under the MIT and GPL licenses: 
- *   http://www.opensource.org/licenses/mit-license.php 
- *   http://www.gnu.org/licenses/gpl.html 
- */
+* jQuery.splitter.js - animated splitter plugin
+*
+* version 1.0 (2010/01/02) 
+* 
+* Dual licensed under the MIT and GPL licenses: 
+*   http://www.opensource.org/licenses/mit-license.php 
+*   http://www.gnu.org/licenses/gpl.html 
+*/
 
 /**
- * The splitter() plugin implements a two-pane resizable splitter window.
- * The selected elements in the jQuery object are converted to a splitter;
- * each selected element should have two child elements, used for the panes
- * of the splitter. The plugin adds a third child element for the splitbar.
- * 
- * For more details see: http://methvin.com/splitter/
- *
- *
- * @example $('#MySplitter').splitter();
- * @desc Create a vertical splitter with default settings 
- *
- * @example $('#MySplitter').splitter({type: 'h', accessKey: 'M'});
- * @desc Create a horizontal splitter resizable via Alt+Shift+M
- *
- * @name splitter
- * @type jQuery
- * @param Object options Options for the splitter (not required)
- * @cat Plugins/Splitter
- * @return jQuery
- * @author Dave Methvin (dave.methvin@gmail.com)
- */
- ;(function($){
+* jQuery.splitter() plugin implements a two-pane resizable animated window, using existing DIV elements for layout.
+* For more details and demo visit: http://krikus.com/js/splitter
+*
+* @example $("#splitterContainer").splitter({splitVertical:true,A:$('#leftPane'),B:$('#rightPane'),closeableto:0});
+* @desc Create a vertical splitter with toggle button
+*
+* @example $("#splitterContainer").splitter({minAsize:100,maxAsize:300,splitVertical:true,A:$('#leftPane'),B:$('#rightPane'),slave:$("#rightSplitterContainer"),closeableto:0});
+* @desc Create a vertical splitter with toggle button, with minimum and maximum width for plane A and bind resize event to the slave element
+*
+* @name splitter
+* @type jQuery
+* @param Object options Options for the splitter ( required)
+* @cat Plugins/Splitter
+* @return jQuery
+* @author Kristaps Kukurs (contact@krikus.com)
+*/
+
  
- $.fn.splitter = function(args){
-	args = args || {};
-	return this.each(function() {
-		var zombie;		// left-behind splitbar for outline resizes
-		function startSplitMouse(evt) {
-			if ( opts.outline )
-				zombie = zombie || bar.clone(false).insertAfter(A);
-			panes.css("-webkit-user-select", "none");	// Safari selects A/B text on a move
-			bar.addClass(opts.activeClass);
-			A._posSplit = A[0][opts.pxSplit] - evt[opts.eventPos];
-			$(document)
-				.bind("mousemove", doSplitMouse)
-				.bind("mouseup", endSplitMouse);
-		}
-		function doSplitMouse(evt) {
-			var newPos = A._posSplit+evt[opts.eventPos];
-			if ( opts.outline ) {
-				newPos = Math.max(0, Math.min(newPos, splitter._DA - bar._DA));
-				bar.css(opts.origin, newPos);
-			} else 
-				resplit(newPos);
-		}
-		function endSplitMouse(evt) {
-			bar.removeClass(opts.activeClass);
-			var newPos = A._posSplit+evt[opts.eventPos];
-			if ( opts.outline ) {
-				zombie.remove(); zombie = null;
-				resplit(newPos);
-			}
-			panes.css("-webkit-user-select", "text");	// let Safari select text again
-			$(document)
-				.unbind("mousemove", doSplitMouse)
-				.unbind("mouseup", endSplitMouse);
-		}
-		function resplit(newPos) {
-			// Constrain new splitbar position to fit pane size limits
-			newPos = Math.max(A._min, splitter._DA - B._max, 
-					Math.min(newPos, A._max, splitter._DA - bar._DA - B._min));
-			// Resize/position the two panes
-			bar._DA = bar[0][opts.pxSplit];		// bar size may change during dock
-			bar.css(opts.origin, newPos).css(opts.fixed, splitter._DF);
-			A.css(opts.origin, 0).css(opts.split, newPos).css(opts.fixed,  splitter._DF);
-			B.css(opts.origin, newPos+bar._DA)
-				.css(opts.split, splitter._DA-bar._DA-newPos).css(opts.fixed,  splitter._DF);
-			// IE fires resize for us; all others pay cash
-			if ( !$.browser.msie )
-				panes.trigger("resize");
-		}
-		function dimSum(jq, dims) {
-			// Opera returns -1 for missing min/max width, turn into 0
-			var sum = 0;
-			for ( var i=1; i < arguments.length; i++ )
-				sum += Math.max(parseInt(jq.css(arguments[i])) || 0, 0);
-			return sum;
-		}
-		
-		// Determine settings based on incoming opts, element classes, and defaults
-		var vh = (args.splitHorizontal? 'h' : args.splitVertical? 'v' : args.type) || 'v';
-		var opts = $.extend({
-			activeClass: 'active',	// class name for active splitter
-			pxPerKey: 8,			// splitter px moved per keypress
-			tabIndex: 0,			// tab order indicator
-			accessKey: ''			// accessKey for splitbar
-		},{
-			v: {					// Vertical splitters:
-				keyLeft: 39, keyRight: 37, cursor: "e-resize",
-				splitbarClass: "vsplitbar", outlineClass: "voutline",
-				type: 'v', eventPos: "pageX", origin: "left",
-				split: "width",  pxSplit: "offsetWidth",  side1: "Left", side2: "Right",
-				fixed: "height", pxFixed: "offsetHeight", side3: "Top",  side4: "Bottom"
+
+;(function($){
+
+	$.fn.splitter = function(args){
+		args = args || {};
+		return this.each(function() {
+			var _ghost;		//splitbar  ghosted element 
+			var splitPos;	 // current splitting position
+			var _splitPos;	 // saved splitting position
+			var _initPos;	//initial mouse position
+			var _ismovingNow=false;	// animaton state flag
+
+			// Default opts
+			var direction = (args.splitHorizontal? 'h':'v');
+			var opts = $.extend({
+			minAsize:0, //minimum width/height in PX of the first (A) div.
+			maxAsize:0, //maximum width/height  in PX of the first (A) div.
+			minBsize:0, //minimum width/height in PX of the second (B) div.
+			maxBsize:0, //maximum width/height  in PX of the second (B) div.
+			ghostClass: 'working',// class name for _ghosted splitter and hovered button
+			invertClass: 'invert',//class name for invert splitter button
+			animSpeed: 250 //animation speed in ms
+			},{
+			v:{ // Vertical
+			moving:"left",sizing: "width", eventPos: "pageX",splitbarClass:"splitbarV",buttonClass: "splitbuttonV", cursor: "e-resize"
 			},
-			h: {					// Horizontal splitters:
-				keyTop: 40, keyBottom: 38,  cursor: "n-resize",
-				splitbarClass: "hsplitbar", outlineClass: "houtline",
-				type: 'h', eventPos: "pageY", origin: "top",
-				split: "height", pxSplit: "offsetHeight", side1: "Top",  side2: "Bottom",
-				fixed: "width",  pxFixed: "offsetWidth",  side3: "Left", side4: "Right"
+			h: { // Horizontal 
+			moving:"top",sizing: "height", eventPos: "pageY",splitbarClass:"splitbarH",buttonClass: "splitbuttonH",  cursor: "n-resize"
 			}
-		}[vh], args);
+			}[direction], args);
 
-		// Create jQuery object closures for splitter and both panes
-		var splitter = $(this).css({position: "relative"});
-		var panes = $(">*", splitter[0]).css({
-			position: "absolute", 			// positioned inside splitter container
-			"z-index": "1",					// splitbar is positioned above
-			"-moz-outline-style": "none"	// don't show dotted outline
-		});
-		var A = $(panes[0]);		// left  or top
-		var B = $(panes[1]);		// right or bottom
+			//setup elements
+			var splitter = $(this);
+			var mychilds =splitter.children(); //$(">*", splitter[0]);
+			var A = args.A;	// left/top frame
+			var B = args.B;// right/bottom frame
+			var slave=args.slave;//optional, elemt forced to receive resize event
+//Create splitbar 
+var C=$('<div><span></span></div>');
+A.after(C);
+C.attr({"class": opts.splitbarClass,unselectable:"on"}).css({"cursor":opts.cursor,"user-select": "none", "-webkit-user-select": "none","-khtml-user-select": "none", "-moz-user-select": "none"})
+.bind("mousedown", startDrag);
+ 		
+if(opts.closeableto!=undefined){
+var Bt=$('<div></div>').css("cursor",'pointer');
+C.append(Bt);
+Bt.attr({"class": opts.buttonClass, unselectable: "on"});
+Bt.hover(function(){$(this).addClass(opts.ghostClass);},function(){$(this).removeClass(opts.ghostClass);});
+Bt.mousedown(function(e){if(e.target != this)return;Bt.toggleClass(opts.invertClass).hide();splitTo((splitPos==opts.closeableto)?_splitPos:opts.closeableto,true);return false;});
+}		
+//reset size to default.			
+var perc=(((C.position()[opts.moving]-splitter.offset()[opts.moving])/splitter[opts.sizing]())*100).toFixed(1);
+splitTo(perc,false,true); 
+// resize  event handlers;
+splitter.bind("resize",function(e, size){if(e.target!=this)return;splitTo(splitPos,false,true);});
+$(window).bind("resize",function(){splitTo(splitPos,false,true);});
 
-		// Focuser element, provides keyboard support; title is shown by Opera accessKeys
-		var focuser = $('<a href="javascript:void(0)"></a>')
-			.attr({accessKey: opts.accessKey, tabIndex: opts.tabIndex, title: opts.splitbarClass})
-			.bind($.browser.opera?"click":"focus", function(){ this.focus(); bar.addClass(opts.activeClass) })
-			.bind("keydown", function(e){
-				var key = e.which || e.keyCode;
-				var dir = key==opts["key"+opts.side1]? 1 : key==opts["key"+opts.side2]? -1 : 0;
-				if ( dir )
-					resplit(A[0][opts.pxSplit]+dir*opts.pxPerKey, false);
-			})
-			.bind("blur", function(){ bar.removeClass(opts.activeClass) });
+//C.onmousedown=startDrag
+			function startDrag(e) {
+			if(e.target != this)return;
+		 _ghost = _ghost || C.clone(false).insertAfter(A);
+				splitter._initPos=C.position();
+				splitter._initPos[opts.moving]-=C[opts.sizing]();
+_ghost.addClass(opts.ghostClass).css('position','absolute').css('z-index','250').css("-webkit-user-select", "none").width(C.width()).height(C.height()).css(opts.moving,splitter._initPos[opts.moving]);
+mychilds.css("-webkit-user-select", "none");	// Safari selects A/B text on a move
+A._posSplit = e[opts.eventPos];
+
+$(document).bind("mousemove", performDrag).bind("mouseup", endDrag);
+			}
+//document.onmousemove=performDrag
+			function performDrag(e) {
+			if (!_ghost||!A) return;
+				var incr = e[opts.eventPos]-A._posSplit;
+				_ghost.css(opts.moving, splitter._initPos[opts.moving]+incr);
+			}
+//C.onmouseup=endDrag			
+			function endDrag(e){
+				var p=_ghost.position();
+				_ghost.remove(); _ghost = null;	
+				mychilds.css("-webkit-user-select", "text");// let Safari select text again
+				$(document).unbind("mousemove", performDrag).unbind("mouseup", endDrag);
+				var perc=(((p[opts.moving]-splitter.offset()[opts.moving])/splitter[opts.sizing]())*100).toFixed(1);		 
+				splitTo(perc,(splitter._initPos[opts.moving]>p[opts.moving]),false); 
+				splitter._initPos=0;
+			}
+//Perform actual splitting and animate it;					
+	function splitTo(perc,reversedorder,fast) {
+if(_ismovingNow||perc==undefined)return;//generally MSIE problem
+_ismovingNow=true;
+if(splitPos&&splitPos>10&&splitPos<90)//do not save accidental events
+		_splitPos=splitPos;
+splitPos=perc;
+
+var barsize=C[opts.sizing]()+(2*parseInt(C.css('border-'+opts.moving+'-width')));//+ border. cehap&dirty
+var splitsize=splitter[opts.sizing]();
+if(opts.closeableto!=perc){
+var percpx=Math.max(parseInt((splitsize/100)*perc),opts.minAsize);
+if(opts.maxAsize)percpx=Math.min(percpx,opts.maxAsize);
+}else{
+var percpx=parseInt((splitsize/100)*perc,0);
+}
+if(opts.maxBsize){
+if((splitsize-percpx)>opts.maxBsize)
+percpx=splitsize-opts.maxBsize;
+}
+if(opts.minBsize){
+if((splitsize-percpx)<opts.minBsize)
+percpx=splitsize-opts.minBsize;
+}
+var sizeA=Math.max(0,(percpx-barsize));
+var sizeB=Math.max(0,(splitsize-percpx));
+splitsize=(splitsize-barsize);
+
+//A.attr('title','- '+sizeA);  B.attr('title','- '+sizeB);
+ if(fast){
+					A.show().css(opts.sizing,sizeA+'px');
+					B.show().css(opts.sizing,sizeB+'px');
+					Bt.show();
+					if (!$.browser.msie ){
+					mychilds.trigger("resize");if(slave)slave.trigger("resize");
+					}
+				_ismovingNow=false;	
+				return true;
+				}				
+	if(reversedorder){//reduces flickering if total percentage becomes more  than 100 (possible while animating)
+					var anob={};
+					anob[opts.sizing]=sizeA+'px';
+					A.show().animate(anob,opts.animSpeed,function(){Bt.fadeIn('fast');if($(this)[opts.sizing]()<2){this.style.display='none';B.stop(true,true);B[opts.sizing](splitsize+'px');}});
+					var anob2={};
+					anob2[opts.sizing]=sizeB+'px';
+					B.show().animate(anob2,opts.animSpeed,function(){Bt.fadeIn('fast');if($(this)[opts.sizing]()<2){this.style.display='none';A.stop(true,true);A[opts.sizing](splitsize+'px')}});
+	}else{
+					var anob={};
+					anob[opts.sizing]=sizeB+'px';
+					B.show().animate(anob,opts.animSpeed,function(){Bt.fadeIn('fast');if($(this)[opts.sizing]()<2){this.style.display='none';A.stop(true,true);A[opts.sizing](splitsize+'px')}});
+					var anob={};
+					anob[opts.sizing]=sizeA+'px';
+					A.show().animate(anob,opts.animSpeed,function(){Bt.fadeIn('fast');if($(this)[opts.sizing]()<2){this.style.display='none';B.stop(true,true);B[opts.sizing](splitsize+'px');}});					
+}	
+//trigger resize evt
+splitter.queue(function(){  
+setTimeout(function(){  
+splitter.dequeue();
+_ismovingNow=false;
+mychilds.trigger("resize");if(slave)slave.trigger("resize");		
+}, opts.animSpeed+5);  
+});
+ 
+ }//end splitTo()
 			
-		// Splitbar element, can be already in the doc or we create one
-		var bar = $(panes[2] || '<div></div>')
-			.insertAfter(A).css("z-index", "100").append(focuser)
-			.attr({"class": opts.splitbarClass, unselectable: "on"})
-			.css({position: "absolute",	"user-select": "none", "-webkit-user-select": "none",
-				"-khtml-user-select": "none", "-moz-user-select": "none"})
-			.bind("mousedown", startSplitMouse);
-		// Use our cursor unless the style specifies a non-default cursor
-		if ( /^(auto|default|)$/.test(bar.css("cursor")) )
-			bar.css("cursor", opts.cursor);
+			
+	
 
-		// Cache several dimensions for speed, rather than re-querying constantly
-		bar._DA = bar[0][opts.pxSplit];
-		splitter._PBF = $.boxModel? dimSum(splitter, "border"+opts.side3+"Width", "border"+opts.side4+"Width") : 0;
-		splitter._PBA = $.boxModel? dimSum(splitter, "border"+opts.side1+"Width", "border"+opts.side2+"Width") : 0;
-		A._pane = opts.side1;
-		B._pane = opts.side2;
-		$.each([A,B], function(){
-			this._min = opts["min"+this._pane] || dimSum(this, "min-"+opts.split);
-			this._max = opts["max"+this._pane] || dimSum(this, "max-"+opts.split) || 9999;
-			this._init = opts["size"+this._pane]===true ?
-				parseInt($.curCSS(this[0],opts.split)) : opts["size"+this._pane];
-		});
-		
-		// Determine initial position, get from cookie if specified
-		var initPos = A._init;
-		if ( !isNaN(B._init) )	// recalc initial B size as an offset from the top or left side
-			initPos = splitter[0][opts.pxSplit] - splitter._PBA - B._init - bar._DA;
-		if ( opts.cookie ) {
-			if ( !$.cookie )
-				alert('jQuery.splitter(): jQuery cookie plugin required');
-			var ckpos = parseInt($.cookie(opts.cookie));
-			if ( !isNaN(ckpos) )
-				initPos = ckpos;
-			$(window).bind("unload", function(){
-				var state = String(bar.css(opts.origin));	// current location of splitbar
-				$.cookie(opts.cookie, state, {expires: opts.cookieExpires || 365, 
-					path: opts.cookiePath || document.location.pathname});
-			});
-		}
-		if ( isNaN(initPos) )	// King Solomon's algorithm
-			initPos = Math.round((splitter[0][opts.pxSplit] - splitter._PBA - bar._DA)/2);
 
-		// Resize event propagation and splitter sizing
-		if ( opts.anchorToWindow ) {
-			// Account for margin or border on the splitter container and enforce min height
-			splitter._hadjust = dimSum(splitter, "borderTopWidth", "borderBottomWidth", "marginBottom");
-			splitter._hmin = Math.max(dimSum(splitter, "minHeight"), 20);
-			$(window).bind("resize", function(){
-				var top = splitter.offset().top;
-				var wh = $(window).height();
-				splitter.css("height", Math.max(wh-top-splitter._hadjust, splitter._hmin)+"px");
-				if ( !$.browser.msie ) splitter.trigger("resize");
-			}).trigger("resize");
-		}
-		else if ( opts.resizeToWidth && !$.browser.msie )
-			$(window).bind("resize", function(){
-				splitter.trigger("resize"); 
-			});
-
-		// Resize event handler; triggered immediately to set initial position
-		splitter.bind("resize", function(e, size){
-			// Custom events bubble in jQuery 1.3; don't get into a Yo Dawg
-			if ( e.target != this ) return;
-			// Determine new width/height of splitter container
-			splitter._DF = splitter[0][opts.pxFixed] - splitter._PBF;
-			splitter._DA = splitter[0][opts.pxSplit] - splitter._PBA;
-			// Bail if splitter isn't visible or content isn't there yet
-			if ( splitter._DF <= 0 || splitter._DA <= 0 ) return;
-			// Re-divvy the adjustable dimension; maintain size of the preferred pane
-			resplit(!isNaN(size)? size : (!(opts.sizeRight||opts.sizeBottom)? A[0][opts.pxSplit] :
-				splitter._DA-B[0][opts.pxSplit]-bar._DA));
-		}).trigger("resize" , [initPos]);
-	});
-};
+});//end each
+	};//end splitter
 
 })(jQuery);

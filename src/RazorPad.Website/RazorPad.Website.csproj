@@ -91,6 +91,10 @@
     <Content Include="Content\shCore.css" />
     <Content Include="Content\shThemeDefault.css" />
     <Content Include="Content\themes\default\default.css" />
+    <Content Include="Content\themes\default\images\splitter\paneh.gif" />
+    <Content Include="Content\themes\default\images\splitter\panehc.gif" />
+    <Content Include="Content\themes\default\images\splitter\panev.gif" />
+    <Content Include="Content\themes\default\images\splitter\panevc.gif" />
     <Content Include="Content\themes\default\images\ui-bg_diagonals-thick_18_b81900_40x40.png" />
     <Content Include="Content\themes\default\images\ui-bg_diagonals-thick_20_666666_40x40.png" />
     <Content Include="Content\themes\default\images\ui-bg_flat_10_000000_40x100.png" />
