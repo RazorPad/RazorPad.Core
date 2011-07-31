@@ -4,8 +4,9 @@
 		var model = getModel();
 
 		$.ajax({
-			url: 'razorpad/execute',
-			data: JSON.stringify({ 'Template': $('#template').val(), "Model": JSON.stringify(model) }),
+			url: 'execute',
+			//data: JSON.stringify({ 'Template': $('#razorEditor textarea').val(), "Model": JSON.stringify(model) }),
+			data: JSON.stringify({ 'Template': $('#razorEditor textarea').val(), "Model": "public class Dummy { public System.DateTime TimeNow { get { return System.DateTime.Now; } } }" }),
 			success: function (resp) {
 				onParseSuccess(resp);
 				showRenderedTemplateOutput(resp.TemplateOutput);
@@ -92,13 +93,13 @@
 	});
 
 
-	$('#template').focus(function () {
+	$('#razorEditor textarea').focus(function () {
 
 		$(this).filter(function () {
 
 			// We only want this to apply if there's not
 			// something actually entered
-			return $(this).val() === "" || $(this).val() === "Razor Markup Here";
+			return /\s/.test(this.value) || this.value === "Razor Markup Here";
 
 		}).removeClass("watermarkOn").val("");
 
@@ -106,13 +107,13 @@
 
 	// Define what happens when the textbox loses focus
 	// Add the watermark class and default text
-	$('#template').blur(function () {
+	$('#razorEditor textarea').blur(function () {
 
 		$(this).filter(function () {
 
 			// We only want this to apply if there's not
 			// something actually entered
-			return $(this).val() === "";
+			return /\s/.test(this.value);
 
 		}).addClass("watermarkOn").val("Razor Markup Here");
 

@@ -3,31 +3,31 @@
 
 html, body
 {
-    height: 100%;
-    overflow: hidden;
-    font: 85% Tahoma, sans-serif;
+	height: 100%;
+	overflow: hidden;
+	font: 85% Tahoma, sans-serif;
 }
 
 body, div
 {
-    border: 0px solid gray;
+	border: 0px solid gray;
 }
 
 .container
 {
-    height: 100%;
+	height: 100%;
 }
 .actionItems li
 {
-    cursor: pointer;
-    display: inline;
-    margin-right: 10px;
-    list-style: none;
+	cursor: pointer;
+	display: inline;
+	margin-right: 10px;
+	list-style: none;
 }
 
 #code
 {
-    margin-bottom: 10px;
+	margin-bottom: 10px;
 }
 
 
@@ -36,191 +36,234 @@ body, div
 
 .results .ui-tabs .ui-tabs-panel
 {
-    padding: 0;
-    height: 280px;
-    min-height: 280px;
+	padding: 0;
+	height: 280px;
+	min-height: 280px;
 }
 
 .results .ui-widget-content
 {
-    border: none;
+	border: none;
 }
 
 iframe
 {
-    width: 100%;
+	width: 100%;
 }
 
 #template-output-container
 {
-    padding: 30px 20px;
+	padding: 30px 20px;
 }
 
 .syntaxhighlighter
 {
-    min-height: 280px;
+	min-height: 280px;
 }
 
-.panes
+#resultsPane, .tabContainer, .panes, #content
 {
-    width: 100%;
-    height: 100%;
+	height: 100%;
+	width: 100%;
 }
+
+
+.tabBar
+{
+	background-color: #A1A8CC;
+	height: 30px;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	right: 0px;
+	width: 100%;
+	padding: 2px;
+}
+
+.tabContainer
+{
+	position: relative;
+}
+
+.tabPanels
+{
+	border: 1px solid #8A8FAB;
+	width: 100%;
+	position: absolute;
+	top: 34px;
+	left: 0px;
+	right: 0px;
+	bottom: 0px;
+}
+
+.tabPanels > div
+{
+	display: none;
+}
+
+.tabPanels div
+{
+	height: 100%;
+	width: 100%;
+}
+
 
 .tabBar a
 {
-    text-decoration: none;
-    border-left: solid 1px #BBB;
-    border-right: solid 1px #BBB;
-    border-top: solid 1px #BBB;
-    background-color: whiteSmoke;
-    color: #000;
-    display: inline-block;
-    padding: 5px;
-    vertical-align: bottom;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
+	text-decoration: none;
+	border-left: solid 1px #BBB;
+	border-right: solid 1px #BBB;
+	border-top: solid 1px #BBB;
+	background-color: whiteSmoke;
+	color: #000;
+	display: inline-block;
+	padding: 5px;
+	vertical-align: bottom;
 }
 
 .tabBar a.Selected
 {
-    background-color: white;
-    color: #CA060A;
-    position: relative;
-    top: 1px;
-    padding-bottom: 6px;
+	background-color: white;
+	color: #CA060A;
+	position: relative;
+	top: 1px;
+	padding-bottom: 6px;
 }
 
 
-/* splitter styles */
 .panes
 {
-    height: 100%;
-    width: 100%;
+	height: 100%;
+	width: 100%;
+	background-color: #8A8FAB;
+}
+
+.panes > div
+{
+	overflow: auto;
 }
 
 .leftPane
 {
-    width: 49%;
-    height: 100%;
+	width: 49%;
+	height: 100%;
+	border-right: 1px solid #8A8FAB;
 }
 
 
-.inlinebox {
+.inlinebox
+{
 	display: -moz-inline-stack;
 	display: inline-block;
-	vertical-align: top;
-	zoom: 1;
-	*display: inline;
-	width: 49%;
+	vertical-align: middle;
+	zoom: 1; /**display: inline;*/
 }
 
 .rightPane
 {
-    width: 49%;
-    height: 100%;
+	width: 49.8%;
+	height: 100%;
+	margin-left: 0.2%;
 }
+
 
 .topPane
 {
-    height: 60%;
-    width: 100%;
-    overflow: auto;
+	height: 60%;
+	width: 100%;
+	padding: 6px;
+	background-color: white;
 }
 
 .bottomPane
 {
-    height: 40%;
-    width: 100%;
-    overflow: auto;
+	height: 40%;
+	width: 100%;
+	background-color: white;
 }
 
+
+/* splitter styles */
 
 /* Splitbar styles; these are the default class names and required styles */
 .splitbarV
 {
-    float: left;
-    width: 6px;
-    height: 100%;
-    line-height: 0px;
-    font-size: 0px;
-    border-left: solid 1px #9cbdff;
-    border-right: solid 1px #9cbdff;
-    background: #cbe1fb url(themes/default/images/splitter/panev.gif) 0% 50%;
+	float: left;
+	width: 6px;
+	height: 100%;
+	line-height: 0px;
+	font-size: 0px;
+	border-left: solid 1px #9cbdff;
+	border-right: solid 1px #9cbdff;
+	background: #cbe1fb url(themes/default/images/splitter/panev.gif) 0% 50%;
 }
 .splitbarH
 {
-    height: 6px;
-    text-align: left;
-    line-height: 0px;
-    font-size: 0px;
-    border-top: solid 1px #9cbdff;
-    border-bottom: solid 1px #9cbdff;
-    background: #cbe1fb url(themes/default/images/splitter/paneh.gif) 50% 0%;
+	height: 6px;
+	text-align: left;
+	line-height: 0px;
+	font-size: 0px;
+	border-top: solid 1px #9cbdff;
+	border-bottom: solid 1px #9cbdff;
+	background: #cbe1fb url(themes/default/images/splitter/paneh.gif) 50% 0%;
 }
 
 .splitbuttonV
 {
-    margin-top: -41px;
-    margin-left: -4px;
-    top: 50%;
-    position: relative;
-    height: 83px;
-    width: 10px;
-    background: transparent url(themes/default/images/splitter/panevc.gif) 10px 50%;
+	margin-top: -41px;
+	margin-left: -4px;
+	top: 50%;
+	position: relative;
+	height: 83px;
+	width: 10px;
+	background: transparent url(themes/default/images/splitter/panevc.gif) 10px 50%;
 }
 .splitbuttonV.invert
 {
-    margin-left: 0px;
-    background: transparent url(themes/default/images/splitter/panevc.gif) 0px 50%;
+	margin-left: 0px;
+	background: transparent url(themes/default/images/splitter/panevc.gif) 0px 50%;
 }
 .splitbuttonH
 {
-    margin-left: -41px;
-    left: 50%;
-    position: relative;
-    height: 10px !important;
-    width: 83px;
-    background: transparent url(themes/default/images/splitter/panehc.gif) 50% 0px;
+	margin-left: -41px;
+	left: 50%;
+	position: relative;
+	height: 10px !important;
+	width: 83px;
+	background: transparent url(themes/default/images/splitter/panehc.gif) 50% 0px;
 }
 .splitbuttonH.invert
 {
-    margin-top: -4px;
-    background: transparent url(themes/default/images/splitter/panehc.gif) 50% -10px;
+	margin-top: -4px;
+	background: transparent url(themes/default/images/splitter/panehc.gif) 50% -10px;
 }
 .splitbarV.working, .splitbarH.working, .splitbuttonV.working, .splitbuttonH.working
 {
-    -moz-opacity: .50;
-    filter: alpha(opacity=50);
-    opacity: .50;
+	-moz-opacity: .50;
+	filter: alpha(opacity=50);
+	opacity: .50;
 }
 
 /* end splitter styles */
 
-.clearfix:after {
-	clear: both;
-	content: ' ';
-	display: block;
-	font-size: 0;
-	line-height: 0;
-	visibility: hidden;
-	width: 0;
-	height: 0;
-}
-
-.clearfix {
-	display: inline-block;
-}
-
-* html .clearfix {
-	height: 1%;
-}
-
-.clearfix {
-	display: block;
-}
-
-#content 
+.editorContainer
 {
-    height: 100%;
+	position: relative;
+	height: 100%;
+	width: 100%;
+}
+.editor
+{
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+}
+
+
+.watermarkOn
+{
+	color: #CCCCCC;
+	font-style: italic;
 }

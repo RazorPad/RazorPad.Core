@@ -1,12 +1,14 @@
 ﻿using System;
 using System.CodeDom;
 using System.CodeDom.Compiler;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using System.Web.Razor;
+using Microsoft.CSharp;
 using Newtonsoft.Json;
 using RazorPad.Compilation;
 using RazorPad.Compilation.Hosts;
@@ -61,20 +63,35 @@ namespace RazorPad.Website.Controllers
 
                 if (!compilerResults.Errors.HasErrors)
                 {
-                    dynamic model;
+                    //dynamic model;
 
-                    if (!string.IsNullOrEmpty(request.Model))
-                        model = JsonConvert.DeserializeObject(request.Model, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Auto });
-                    else
-                        model = new DynamicDictionary();
+                    //if (!string.IsNullOrEmpty(request.Model))
+                    //    model = JsonConvert.DeserializeObject(request.Model, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Auto });
+                    //else
+                    //    model = new DynamicDictionary();
 
-                    result.TemplateOutput = Sandbox.Execute(request.Language, request.Template, model);
+                    result.TemplateOutput = Sandbox.Execute(request.Language, request.Template, GetCompiledModel(request.Model));
                 }
 
                 result.Success = true;
             }
 
             return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        private static dynamic GetCompiledModel(string model)
+        {
+            var provider = new CSharpCodeProvider();
+            var parameters = new CompilerParameters(new[] { "mscorlib.dll", "System.Core.dll" })
+            {
+                GenerateInMemory = true,
+                GenerateExecutable = false,
+                IncludeDebugInformation = true
+            };
+
+            var results = provider.CompileAssemblyFromSource(parameters, model);
+            return results.CompiledAssembly.CreateInstance("Dummy");
+            //results.Errors.Cast<CompilerError>().ToList().ForEach(error => Console.WriteLine(error.ErrorText));
         }
 
         /// <summary>
@@ -99,7 +116,7 @@ namespace RazorPad.Website.Controllers
             public static string Execute(TemplateLanguage language, string template, dynamic model = null)
             {
                 var templateParams = TemplateCompilationParameters.CreateFromLanguage(language);
-                
+
                 var compiler = new TemplateCompiler(templateParams);
 
                 // TODO: Run this in a sandbox

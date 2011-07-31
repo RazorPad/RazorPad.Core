@@ -1,4 +1,4 @@
-﻿<table style="height: 100%; width: 100%">
+﻿@*<table style="height: 100%; width: 100%">
     <colgroup>
         <col width="50%" />
         <col width="50%" />
@@ -11,33 +11,31 @@
         </td>
         <td>
             <div id="modelPane" class="grid_6 inlinebox rightPane">
-                @*@Html.Partial("_ModelPane")*@ public class Model { public int Index { get; set;
-                } }
-            </div>
-        </td>
-    </tr>
-    <tr>
-        <td colspan="2">
-            <div id="resultsPane" class="grid_12 ui-layout-south">
-                @Html.Partial("_ResultsPane")
-            </div>
-        </td>
-    </tr>
-</table>
-@*<div class="panes">
+                @Html.Partial("_ModelPane") public class Model { public int
+Index { get; set; } } </div> </td> </tr>
+<tr>
+    <td colspan="2">
+        <div id="resultsPane" class="grid_12 ui-layout-south">
+            @Html.Partial("_ResultsPane")
+        </div>
+    </td>
+</tr>
+</table>*@
+<div class="panes">
     <div class="topPane clearfix">
-        <div id="razorPane" class="grid_6 inlinebox leftPane">
+        <div id="razorPane" class="inlinebox leftPane">
             @Html.Partial("_RazorPane")
         </div>
-        <div id="modelPane" class="grid_6 inlinebox rightPane">
-            @Html.Partial("_ModelPane") public class Model { public int Index
-{ get; set; } } </div> </div>
-<div class="bottomPane">
-    <div id="resultsPane" class="grid_12 ui-layout-south">
-        @Html.Partial("_ResultsPane")
+        <div id="modelPane" class="inlinebox rightPane">
+            @Html.Partial("_ModelPane")
+        </div>
+    </div>
+    <div class="bottomPane">
+        <div id="resultsPane" class="">
+            @Html.Partial("_ResultsPane")
+        </div>
     </div>
 </div>
-</div>*@
 <script type="text/javascript" charset="utf-8">
 
     $(function () {
@@ -63,9 +61,9 @@
         //        razorEditor.getSession().setMode(new HtmlMode());
 
 
-                var modelEditor = ace.edit("modelPane");
-                var CSharpMode = require("ace/mode/csharp").Mode;
-                modelEditor.getSession().setMode(new CSharpMode());
+//        var modelEditor = ace.edit("modelPane");
+//        var CSharpMode = require("ace/mode/csharp").Mode;
+//        modelEditor.getSession().setMode(new CSharpMode());
 
 
     });

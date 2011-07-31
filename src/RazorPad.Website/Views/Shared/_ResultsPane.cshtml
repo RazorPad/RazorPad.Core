@@ -1,63 +1,52 @@
 ﻿<div class="tabContainer">
     <div class="tabBar">
-        <a href="#rendered-output-container">Rendered Output</a>
+        <a href="#rendered-output-container">Rendered Output</a> <a href="#template-output-container">
+            Template Output</a> <a href="#parser-result-container">Parser Results</a> <a href="#generated-code-container">
+                Generated Code</a> <a href="#messages-container">Messages</a>
+    </div>
+    <div class="tabPanels">
         <div id="rendered-output-container">
             <div id="rendered-output">
+                rendered-output
             </div>
         </div>
-        <a href="#template-output-container">Template Output</a>
         <div id="template-output-container">
-            <pre id="template-output" class="prettyprint"></pre>
+            <pre id="template-output" class="prettyprint">template-output</pre>
         </div>
-        <a href="#parser-result-container">Parser Results</a>
         <div id="parser-result-container">
+            parser-result-container
         </div>
-        <a href="#generated-code-container">Generated Code</a>
         <div id="generated-code-container">
+            generated-code-container
         </div>
-        <a href="#messages-container">Messages</a>
         <div id="messages-container">
-            <ul id="messages"></ul>
+            messages-container
+            <ul id="messages">
+            </ul>
         </div>
     </div>
 </div>
-
 <script type="text/javascript" charset="utf-8">
 
     function CreateTabControl($el) {
-        $el.children("PRE, DIV").wrap("<div class='TabContent'/>");
-        $el.children("DIV").remove().appendTo($el);
-        $el.children("A").attr("href", "javascript:void(0)").click(function (t) {
-            return ShowTab(this);
+        $el.find(".tabBar > a").click(function () {
+            ShowTab(this);
+            return false;
         });
-        ShowTab($el.children("A").get(0));
+        ShowTab($el.find(".tabBar > a")[0]);
     }
 
-    function BindTab(lnk) {
-        if (lnk.href == "") lnk.href = "javascript:void(0)";
-        $(lnk).click(function (t) {
-            return ShowTab(this);
-        });
-    }
 
     function ShowTab(lnk) {
-        var headers = $(lnk).parent().children("A");
-        var contents = $(lnk).parent().children("PRE, DIV");
-        for (var i = 0; i < headers.length; i++) {
-            var header = headers.get(i);
-            var content = contents.get(i);
-            if (header == lnk) {
-                $(content).show();
-                $(header).addClass("Selected");
-            } else {
-                $(content).hide();
-                $(header).removeClass("Selected");
-            }
-            $(content).toggle(header == lnk);
-        }
+        var $lnk = $(lnk),
+    	    $panel = $($lnk.attr("href"));
+        $lnk.siblings("a").removeClass("Selected");
+        $panel.siblings("div").hide();
+        $lnk.addClass("Selected");
+        $panel.show();
     }
 
     $(function () {
-        CreateTabControl($('div.tabBar'));
+        CreateTabControl($('div.tabContainer'));
     });
 </script>

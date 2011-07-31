@@ -1,1 +1,13 @@
-﻿<div id="razorEditor"><Pre><h1>Hello World</h1></Pre></div>
+﻿<div class="editorContainer">
+    <div id="razorEditor" class="editor model watermarkOn">
+
+    </div>
+</div>
+<script type="text/javascript" charset="utf-8">
+
+    $(function () {
+        var razorEditor = ace.edit("razorEditor");
+        var HtmlMode = require("ace/mode/html").Mode;
+        razorEditor.getSession().setMode(new HtmlMode());
+    });
+</script>

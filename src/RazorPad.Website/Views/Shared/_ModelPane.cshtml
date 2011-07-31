@@ -1,1 +1,12 @@
-﻿<div id="modelEditor" class="editor model">public class Model {}</div>
+﻿<div class="editorContainer">
+    <div id="modelEditor" class="editor model">
+    </div>
+</div>
+<script type="text/javascript" charset="utf-8">
+
+    $(function () {
+        var modelEditor = ace.edit("modelEditor");
+        var CSharpMode = require("ace/mode/csharp").Mode;
+        modelEditor.getSession().setMode(new CSharpMode());
+    });
+</script>
