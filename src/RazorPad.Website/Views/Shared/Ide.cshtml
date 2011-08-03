@@ -1,27 +1,4 @@
-﻿@*<table style="height: 100%; width: 100%">
-    <colgroup>
-        <col width="50%" />
-        <col width="50%" />
-    </colgroup>
-    <tr>
-        <td>
-            <div id="razorPane" class="grid_6 inlinebox leftPane">
-                @Html.Partial("_RazorPane")
-            </div>
-        </td>
-        <td>
-            <div id="modelPane" class="grid_6 inlinebox rightPane">
-                @Html.Partial("_ModelPane") public class Model { public int
-Index { get; set; } } </div> </td> </tr>
-<tr>
-    <td colspan="2">
-        <div id="resultsPane" class="grid_12 ui-layout-south">
-            @Html.Partial("_ResultsPane")
-        </div>
-    </td>
-</tr>
-</table>*@
-<div class="panes">
+﻿<div class="panes">
     <div class="topPane clearfix">
         <div id="razorPane" class="inlinebox leftPane">
             @Html.Partial("_RazorPane")
@@ -38,33 +15,7 @@ Index { get; set; } } </div> </td> </tr>
 </div>
 <script type="text/javascript" charset="utf-8">
 
-    $(function () {
+//    $(function () {
 
-
-        //        $("div.panes").splitter({
-        //            splitHorizontal: true,
-        //            A: $('.topPane'),
-        //            B: $('.bottomPane'),
-
-        //            closeableto: 50
-        //        });
-        //        $(".topPane").splitter({
-        //            splitVertical: true,
-        //            A: $('.leftPane'),
-        //            B: $('.rightPane'),
-        //            closeableto: 50
-        //        });
-
-
-        //        var razorEditor = ace.edit("razorEditor");
-        //        var HtmlMode = require("ace/mode/html").Mode;
-        //        razorEditor.getSession().setMode(new HtmlMode());
-
-
-//        var modelEditor = ace.edit("modelPane");
-//        var CSharpMode = require("ace/mode/csharp").Mode;
-//        modelEditor.getSession().setMode(new CSharpMode());
-
-
-    });
+//    });
 </script>

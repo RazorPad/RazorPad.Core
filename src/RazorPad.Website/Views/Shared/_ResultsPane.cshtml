@@ -1,8 +1,10 @@
 ﻿<div class="tabContainer">
     <div class="tabBar">
-        <a href="#rendered-output-container">Rendered Output</a> <a href="#template-output-container">
-            Template Output</a> <a href="#parser-result-container">Parser Results</a> <a href="#generated-code-container">
-                Generated Code</a> <a href="#messages-container">Messages</a>
+        <a href="#rendered-output-container">Rendered Output</a><span class="separator">|</span><a
+            href="#template-output-container"> Template Output</a><span class="separator">|</span><a
+                href="#parser-result-container">Parser Results</a><span class="separator">|</span><a
+                    href="#generated-code-container"> Generated Code</a><span class="separator">|</span><a
+                        href="#messages-container">Messages</a>
     </div>
     <div class="tabPanels">
         <div id="rendered-output-container">
@@ -21,32 +23,12 @@
         </div>
         <div id="messages-container">
             messages-container
-            <ul id="messages">
-            </ul>
+            <ul id="messages"></ul>
         </div>
     </div>
 </div>
 <script type="text/javascript" charset="utf-8">
-
-    function CreateTabControl($el) {
-        $el.find(".tabBar > a").click(function () {
-            ShowTab(this);
-            return false;
-        });
-        ShowTab($el.find(".tabBar > a")[0]);
-    }
-
-
-    function ShowTab(lnk) {
-        var $lnk = $(lnk),
-    	    $panel = $($lnk.attr("href"));
-        $lnk.siblings("a").removeClass("Selected");
-        $panel.siblings("div").hide();
-        $lnk.addClass("Selected");
-        $panel.show();
-    }
-
     $(function () {
-        CreateTabControl($('div.tabContainer'));
+        $('div.tabContainer').hpTabs(); 
     });
 </script>
