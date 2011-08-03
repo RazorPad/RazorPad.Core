@@ -111,11 +111,12 @@
     <Content Include="Content\themes\default\ui.jqgrid.css" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\ace-uncompressed.js" />
+    <Content Include="Scripts\hpTabs.js" />
+    <Content Include="Scripts\jquery.hotkeys.js" />
     <Content Include="Scripts\mode-csharp.js" />
     <Content Include="Scripts\mode-c_cpp.js" />
     <Content Include="Scripts\mode-html.js" />
     <Content Include="Scripts\splitter.js" />
-    <Content Include="Views\Shared\Ide.cshtml" />
     <Content Include="Views\Shared\_RazorPane.cshtml" />
     <Content Include="Views\Shared\_ModelPane.cshtml" />
     <Content Include="Views\Shared\_ResultsPane.cshtml" />
@@ -203,7 +204,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\MainUI.cshtml" />
+    <Content Include="Views\RazorPad\MainUI.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

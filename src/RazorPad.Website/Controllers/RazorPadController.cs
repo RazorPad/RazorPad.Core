@@ -1,18 +1,10 @@
 ﻿using System;
-using System.CodeDom;
 using System.CodeDom.Compiler;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text.RegularExpressions;
 using System.Web.Mvc;
-using System.Web.Razor;
 using Microsoft.CSharp;
-using Newtonsoft.Json;
 using RazorPad.Compilation;
 using RazorPad.Compilation.Hosts;
-using RazorPad.Framework;
 using RazorPad.Website.Models;
 
 namespace RazorPad.Website.Controllers
@@ -25,12 +17,6 @@ namespace RazorPad.Website.Controllers
             return View("MainUI");
         }
 
-        public ActionResult Beta()
-        {
-            return View("Ide");
-        }
-
-        [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Parse([Bind(Prefix = "")]ParseRequest request)
         {
             ParseResult result = new ParseResult();
