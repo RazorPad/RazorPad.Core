@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RazorPad.Core", "RazorPad.C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RazorPad.Website", "RazorPad.Website\RazorPad.Website.csproj", "{F3A2783E-D8B2-4D8C-8240-C01FC0B8D932}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PluginTestBed", "PluginTestBed\PluginTestBed.csproj", "{8412AFCA-6395-4C26-B3F5-7A48323CA990}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +49,16 @@ Global
 		{F3A2783E-D8B2-4D8C-8240-C01FC0B8D932}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{F3A2783E-D8B2-4D8C-8240-C01FC0B8D932}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{F3A2783E-D8B2-4D8C-8240-C01FC0B8D932}.Release|x86.ActiveCfg = Release|Any CPU
+		{8412AFCA-6395-4C26-B3F5-7A48323CA990}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8412AFCA-6395-4C26-B3F5-7A48323CA990}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8412AFCA-6395-4C26-B3F5-7A48323CA990}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{8412AFCA-6395-4C26-B3F5-7A48323CA990}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{8412AFCA-6395-4C26-B3F5-7A48323CA990}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{8412AFCA-6395-4C26-B3F5-7A48323CA990}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8412AFCA-6395-4C26-B3F5-7A48323CA990}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8412AFCA-6395-4C26-B3F5-7A48323CA990}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{8412AFCA-6395-4C26-B3F5-7A48323CA990}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{8412AFCA-6395-4C26-B3F5-7A48323CA990}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

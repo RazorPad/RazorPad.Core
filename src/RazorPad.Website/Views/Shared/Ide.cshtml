@@ -1,4 +1,4 @@
-﻿<div class="panes">
+﻿@*<div class="panes">
     <div class="topPane clearfix">
         <div id="razorPane" class="inlinebox leftPane">
             @Html.Partial("_RazorPane")
@@ -12,10 +12,35 @@
             @Html.Partial("_ResultsPane")
         </div>
     </div>
-</div>
+</div>*@
+<table id="main">
+    <colgroup>
+        <col width="50%" />
+        <col width="50%" />
+    </colgroup>
+    <tr class="topRow">
+        <td>
+            <div id="razorPane" class="">
+                @Html.Partial("_RazorPane")
+            </div>
+        </td>
+        <td>
+            <div id="modelPane" class=" ">
+                @Html.Partial("_ModelPane")
+            </div>
+        </td>
+    </tr>
+    <tr  class="bottomRow">
+        <td colspan="2">
+            <div id="resultsPane" class="">
+                @Html.Partial("_ResultsPane")
+            </div>
+        </td>
+    </tr>
+</table>
 <script type="text/javascript" charset="utf-8">
 
-//    $(function () {
+    //    $(function () {
 
-//    });
+    //    });
 </script>
