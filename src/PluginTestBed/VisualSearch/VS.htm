@@ -1,0 +1,90 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Visual Search Test Page</title>
+    <!--[if (!IE)|(gte IE 8)]><!-->
+    <link href="visualsearch-datauri.css" media="screen" rel="stylesheet" type="text/css" />
+    <!--<![endif]-->
+    <!--[if lte IE 7]><!-->
+    <link href="visualsearch.css" media="screen" rel="stylesheet" type="text/css" />
+    <!--<![endif]-->
+</head>
+<body>
+    <div class="visual_search">
+    </div>
+    <div id="search_query">
+        &nbsp;
+    </div>
+</body>
+<script src="../Content/js/jquery-1.6.1.js" type="text/javascript"></script>
+<script src="../Content/js/underscore-1.1.5.js" type="text/javascript"></script>
+<script src="../Content/js/jquery.ui.core.js" type="text/javascript"></script>
+<script src="../Content/js/jquery.ui.position.js" type="text/javascript"></script>
+<script src="../Content/js/jquery.ui.widget.js" type="text/javascript"></script>
+<script src="../Content/js/jquery.ui.autocomplete.js" type="text/javascript"></script>
+<script src="../Content/js/backbone-0.5.0.js" type="text/javascript"></script>
+<script src="visualsearch.js" type="text/javascript"></script>
+<script type="text/javascript" charset="utf-8">
+    $(document).ready(function () {
+        VS.init({
+            container: $('.visual_search'),
+            query: '',
+            callbacks: {
+                search: function (query) {
+                    var $query = $('#search_query');
+                    $query.stop().animate({ opacity: 1 }, { duration: 300, queue: false });
+                    $query.html('<span class="raquo">&raquo;</span> You searched for: <b>' + query + '</b>');
+                    clearTimeout(window.queryHideDelay);
+                    window.queryHideDelay = setTimeout(function () {
+                        $query.animate({
+                            opacity: 0
+                        }, {
+                            duration: 1000,
+                            queue: false
+                        });
+                    }, 2000);
+                },
+
+                // These are the facets that will be autocompleted in an empty input.
+
+                facetMatches: function (callback) {
+                    callback(['bool', 'byte', 'char', 'decimal', 'double', 'enum', 'float', 'int', 'long', 'sbyte', 'short', 'struct', 'uint', 'ulong', 'ushort']);
+                },
+
+                // These are the values that match specific categories, autocompleted
+                // in a category's input field.  searchTerm can be used to filter the
+                // list on the server-side, prior to providing a list to the widget.
+                valueMatches: function (facet, searchTerm, callback) {
+                    switch (facet) {
+                        case 'account':
+                            callback([
+                                  { value: '1-amanda', label: 'Amanda' },
+                                  { value: '2-aron', label: 'Aron' },
+                                  { value: '3-eric', label: 'Eric' },
+                                  { value: '4-jeremy', label: 'Jeremy' },
+                                  { value: '5-samuel', label: 'Samuel' },
+                                  { value: '6-scott', label: 'Scott' }
+                                ]);
+                            break;
+                        case 'filter':
+                            callback(['published', 'unpublished', 'draft']);
+                            break;
+                        case 'access':
+                            callback(['public', 'private', 'protected']);
+                            break;
+                        case 'title':
+                            callback([
+                                  'Pentagon Papers',
+                                  'CoffeeScript Manual',
+                                  'Laboratory for Object Oriented Thinking',
+                                  'A Repository Grows in Brooklyn'
+                                ]);
+                            break;
+                    }
+                }
+
+            }
+        });
+    });
+</script>
+</html>

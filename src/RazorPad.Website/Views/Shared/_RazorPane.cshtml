@@ -3,12 +3,15 @@
         <div class="title">
             View</div>
     </div>
-    <div id="razorEditor" class="editor model watermarkOn">
+    <div id="razorEditor" class="editor model watermarkOn">&nbsp;
     </div>
 </div>
 <script type="text/javascript" charset="utf-8">
 
     $(function () {
+        // ace editor needs explicityly sized div
+        var parent = $('#razorEditor').closest('td');
+    	$('#razorEditor').height(parent.outerHeight()-16);
         var razorEditor = ace.edit("razorEditor");
         var HtmlMode = require("ace/mode/html").Mode;
         razorEditor.getSession().setMode(new HtmlMode());
