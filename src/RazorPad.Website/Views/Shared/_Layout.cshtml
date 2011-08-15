@@ -3,7 +3,6 @@
 <head>
     <title>@ViewBag.Title</title>
     <link href="@Url.Content("~/Content/reset.css")" rel="stylesheet" type="text/css" />
-@*    <link href="@Url.Content("~/Content/fluid960.css")" rel="stylesheet" type="text/css" />*@
     <link href="@Url.Content("~/Content/themes/default/ui.jqgrid.css")" rel="stylesheet" type="text/css" />
     <link href="@Url.Content("~/Content/site.css")" rel="stylesheet" type="text/css" />
     <link href="@Url.Content("~/Content/themes/default/default.css")" rel="stylesheet" type="text/css" />
@@ -21,19 +20,9 @@
             </div>
             <div id="actions" class="grid_4 inlinebox">
                 <ul class="actionItems">
-                    <li>
-                        <button id="execute">
-                            Execute</button></li>
-                    @*                    <li>Save</li>*@ @*                    <li>Share</li>*@
+                    <li><button id="execute">Execute</button></li>
                 </ul>
             </div>
-            @*            <div id="auth" class="grid_4 omega">
-                <ul class="actionItems">
-                    <li>Register</li>
-                    <li>Login</li>
-                    <li>About</li>
-                </ul>
-            </div>*@
         </div>
         <div id="content" class="grid_12">
             @RenderBody()
@@ -43,7 +32,6 @@
 
 <script type="text/javascript" language="javascript" src="@Url.Content("~/Scripts/jquery-ui.js")"></script>
 <script type="text/javascript" language="javascript" src="@Url.Content("~/Scripts/underscore.js")"></script>
-<script type="text/javascript" language="javascript" src="@Url.Content("~/Scripts/RazorPad.js")"></script>
 <script type="text/javascript" language="javascript" src="@Url.Content("~/Scripts/splitter.js")"></script>
 <script type="text/javascript" language="javascript" src="@Url.Content("~/Scripts/grid/i18n/grid.locale-en.js")"></script>
 <script type="text/javascript" language="javascript" src="@Url.Content("~/Scripts/grid/grid.base.js")"></script>
@@ -69,5 +57,7 @@
 <script type="text/javascript" language="javascript" src="@Url.Content("~/Scripts/mode-html.js")"></script>
 <script type="text/javascript" language="javascript" src="@Url.Content("~/Scripts/mode-csharp.js")"></script>
 <script type="text/javascript" language="javascript" src="@Url.Content("~/Scripts/hpTabs.js")"></script>
+<script type="text/javascript" language="javascript" src="@Url.Content("~/Scripts/jquery.hotkeys.js")"></script>
+<script type="text/javascript" language="javascript" src="@Url.Content("~/Scripts/RazorPad.js")"></script>
 
 </html>
