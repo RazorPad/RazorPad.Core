@@ -13,6 +13,12 @@ body, div
     border: 0px solid gray;
 }
 
+table {
+	table-layout: fixed;
+	width: inherit;
+	height: inherit;
+}
+
 .container
 {
     height: 100%;
@@ -45,11 +51,6 @@ iframe
 {
     background-color: #BCC7D8;
     height: 20px;
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    right: 0px;
-    width: 100%;
     padding: 2px 0 2px 0px;
 }
 
@@ -242,11 +243,11 @@ iframe
 }
 .editor
 {
-    position: absolute;
-    top: 0;
+    position: relative;
+    /*top: 0;
     bottom: 0;
     left: 0;
-    right: 0;
+    right: 0;*/
 }
 
 
@@ -258,14 +259,16 @@ iframe
 
 #modelEditor
 {
-    top: 40px;
+    /*top: 40px;*/
 	height: 100%;
     
 }
 
 #razorEditor
 {
-    top: 16px;
+    /*top: 16px;*/
+
+	position: relative;
 	height: 100%;
 }
 
@@ -280,10 +283,6 @@ iframe
     background-color: #465A7D;
     color: White;
     height: 16px;
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    right: 0px;
     width: 99.9%;
     padding-left: 0.1%;
 }

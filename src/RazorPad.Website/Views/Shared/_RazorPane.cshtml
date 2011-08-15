@@ -10,10 +10,12 @@
 
     $(function () {
         // ace editor needs explicityly sized div
-        var parent = $('#razorEditor').closest('td');
-    	$('#razorEditor').height(parent.outerHeight()-16);
         var razorEditor = ace.edit("razorEditor");
         var HtmlMode = require("ace/mode/html").Mode;
         razorEditor.getSession().setMode(new HtmlMode());
+
+       // $(window).resize(function () { resizeEditor($('#razorEditor')); });
     });
+    
+
 </script>

@@ -1,28 +1,52 @@
-﻿<div class="editorContainer">
+﻿@*<div class="editorContainer">
     <div id="modelHeader" class="paneheader">
         <div class="title">
             Model</div>
         <div class="tabBar">
-            <a href="#simple">Simple</a><span class="separator">|</span><a
-                href="#geeky"> Geeky</a>
+            <a href="#simple">Simple</a><span class="separator">|</span><a href="#geeky"> Geeky</a>
         </div>
     </div>
     <div id="modelEditor" class="editor model">
     </div>
     <div id="modelGrid" class="editor model">
-
     </div>
+</div>*@
+<div class="editorContainer">
+    <table id="modelPane">
+        <tr>
+            <td>
+                <div class="paneheader">
+                    <div class="title">
+                        Model</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="tabBar">
+                    <a href="#simple">Simple</a><span class="separator">|</span><a href="#geeky"> Geeky</a>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div id="modelEditor" class="editor model">
+                </div>
+            </td>
+        </tr>
+    </table>
 </div>
 <script type="text/javascript" charset="utf-8">
 
     $(function () {
         // ace editor needs explicityly sized div
-        var parent = $('#modelEditor').closest('td');
-        $('#modelEditor').height(parent.outerHeight()-40);
-    	
-        $('#modelHeader').hpTabs(); 
+        //resizeEditor($('#modelEditor'));
+
+        $('#modelHeader').hpTabs();
         var modelEditor = ace.edit("modelEditor");
         var CSharpMode = require("ace/mode/csharp").Mode;
         modelEditor.getSession().setMode(new CSharpMode());
+
+        //$(window).resize(function () { resizeEditor($('#modelEditor')); });
     });
 </script>

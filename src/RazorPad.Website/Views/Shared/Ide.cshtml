@@ -15,8 +15,8 @@
 </div>*@
 <table id="main">
     <colgroup>
-        <col width="50%" />
-        <col width="50%" />
+        <col width="60%" />
+        <col width="40%" />
     </colgroup>
     <tr class="topRow">
         <td>
@@ -43,4 +43,9 @@
     //    $(function () {
 
     //    });
+    function resizeEditor(editor) {
+    	console.log('in resize');
+        var parent = editor.closest('td');
+        editor.height(parent.outerHeight() - editor.siblings().outerHeight());
+    }
 </script>

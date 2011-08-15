@@ -1,0 +1,42 @@
+﻿<style>
+
+#prop
+{
+	width:100%;
+}
+</style>
+<input id="prop"/>
+
+<table id="modelGrid">
+<tr></tr>
+</table>
+
+<script>
+    $(function () {
+        $('#prop').focus(function () {
+
+            $(this).filter(function () {
+
+                // We only want this to apply if there's not
+                // something actually entered
+                return /\s/.test(this.value) || this.value === "Enter Property here e.g. int Index = 1;";
+
+            }).removeClass("watermarkOn").val("");
+
+        });
+
+        // Define what happens when the textbox loses focus
+        // Add the watermark class and default text
+        $('#prop').blur(function () {
+
+            $(this).filter(function () {
+
+                // We only want this to apply if there's not
+                // something actually entered
+                return /\s/.test(this.value);
+
+            }).addClass("watermarkOn").val("Enter Property here e.g. int Index = 1;");
+
+        });
+    });
+</script>
