@@ -264,12 +264,27 @@ iframe
     
 }
 
+#modelGrid {
+	width: 99.8%;
+	height: 100%;
+	
+}
+
+#modelGrid td {
+	border: solid 1px lightgrey;
+	vertical-align: middle;
+	font-size: 100%;
+	line-height: normal;
+}
+
 #razorEditor
 {
     /*top: 16px;*/
 
 	position: relative;
 	height: 100%;
+	width: 99.8%;
+	border: solid 1px #465A7D;
 }
 
 #header

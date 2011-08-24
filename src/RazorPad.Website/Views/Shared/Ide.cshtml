@@ -44,7 +44,6 @@
 
     //    });
     function resizeEditor(editor) {
-    	console.log('in resize');
         var parent = editor.closest('td');
         editor.height(parent.outerHeight() - editor.siblings().outerHeight());
     }

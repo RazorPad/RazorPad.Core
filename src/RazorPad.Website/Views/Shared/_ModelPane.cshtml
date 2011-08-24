@@ -30,23 +30,55 @@
         </tr>
         <tr>
             <td>
-                <div id="modelEditor" class="editor model">
-                </div>
+                <input type="text" id="propinput" style="width: 100%; display: block;" />
+                <table id="modelGrid">
+                    <colgroup>
+                        <col width="50%" align="left" />
+                        <col width="50%" align="left" />
+                    </colgroup>
+                    <tbody>
+                    <tr><td>&nbsp;</td><td></td></tr>
+                    </tbody>
+                </table>
             </td>
         </tr>
     </table>
 </div>
 <script type="text/javascript" charset="utf-8">
 
+
+    var modelProps = modelProps || [];
+
+    var addPropRow = function (data) {
+        $('#modelGrid tbody').prepend(String.format("<tr title=\"{2} {0};\"><td>{0}</td><td>{1}</td></tr>", data.name, data.value, data.type));
+    };
+
+
+    var addToModel = function (txt) {
+        var parts = txt.replace(/^\s*/, '').replace(/[;\s]*$/, '').split(' ');
+
+        modelProps.push({ type: parts[0], name: parts[1], value: parts[3] });
+        addPropRow({ type: parts[0], name: parts[1], value: parts[3] });
+    };
+
     $(function () {
         // ace editor needs explicityly sized div
+
+
+        $('#modelHeader').hpTabs().watermark('model');
+
+        $('#propinput').bind('keypress blur', function (e) {
+            if (e.type === 'keypress' && e.keyCode !== 13) { return; }
+            addToModel(this.value);
+        	this.value = '';
+            return false;
+        });
+
         //resizeEditor($('#modelEditor'));
+        //        var modelEditor = ace.edit("modelEditor");
+        //        var CSharpMode = require("ace/mode/csharp").Mode;
+        //        modelEditor.getSession().setMode(new CSharpMode());
 
-        $('#modelHeader').hpTabs();
-        var modelEditor = ace.edit("modelEditor");
-        var CSharpMode = require("ace/mode/csharp").Mode;
-        modelEditor.getSession().setMode(new CSharpMode());
-
-        //$(window).resize(function () { resizeEditor($('#modelEditor')); });
+        $(window).resize(function () { resizeEditor($('#modelEditor')); });
     });
 </script>

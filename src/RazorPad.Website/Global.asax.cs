@@ -19,6 +19,12 @@ namespace RazorPad.Website
                 "{action}/{id}", // URL with parameters
                 new { controller = "RazorPad", action = "Index", id = UrlParameter.Optional } // Parameter defaults
             );
+
+            routes.MapRoute(
+                "beta", // Route name
+                "beta", // URL with parameters
+                new { controller = "RazorPad", action = "beta" } // Parameter defaults
+            );
         }
 
         protected void Application_Start()

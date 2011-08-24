@@ -17,6 +17,13 @@ namespace RazorPad.Website.Controllers
             return View("MainUI");
         }
 
+
+        public ActionResult beta()
+        {
+            return View("Ide");
+        }
+
+
         public ActionResult Parse([Bind(Prefix = "")]ParseRequest request)
         {
             ParseResult result = new ParseResult();
