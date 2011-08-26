@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Linq;
 using System.CodeDom.Compiler;
 using System.Web.Razor;
 using Microsoft.CSharp;
 using Microsoft.VisualBasic;
+using System.Reflection;
 
 namespace RazorPad.Compilation
 {
@@ -30,6 +32,8 @@ namespace RazorPad.Compilation
             Language = language;
             CodeProvider = codeProvider;
             CompilerParameters = compilerParameters ?? new CompilerParameters { GenerateInMemory = true };
+            CompilerParameters.ReferencedAssemblies.Add(AppDomain.CurrentDomain
+                            .GetAssemblies().First(asm => asm.FullName.StartsWith("RazorPad.DynamicModel")).Location);
         }
 
         public static TemplateCompilationParameters CreateFromFilename(string filename)

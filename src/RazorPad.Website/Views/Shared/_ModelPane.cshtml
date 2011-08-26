@@ -37,7 +37,13 @@
                         <col width="50%" align="left" />
                     </colgroup>
                     <tbody>
-                    <tr><td>&nbsp;</td><td></td></tr>
+                        <tr>
+                            <td>
+                                &nbsp;
+                            </td>
+                            <td>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </td>
@@ -50,15 +56,15 @@
     var modelProps = modelProps || [];
 
     var addPropRow = function (data) {
-        $('#modelGrid tbody').prepend(String.format("<tr title=\"{2} {0};\"><td>{0}</td><td>{1}</td></tr>", data.name, data.value, data.type));
+        $('#modelGrid tbody').prepend(String.format("<tr title=\"{2} {0};\"><td><span class='name'>{0}</span></td><td><span class='value'>{1}</span></td></tr>", data.name, data.value, data.type));
     };
 
 
     var addToModel = function (txt) {
         var parts = txt.replace(/^\s*/, '').replace(/[;\s]*$/, '').split(' ');
-
-        modelProps.push({ type: parts[0], name: parts[1], value: parts[3] });
-        addPropRow({ type: parts[0], name: parts[1], value: parts[3] });
+        var prop = { type: parts[0], name: parts[1], value: parts[parts.length - 1].replace(/^"/, '').replace(/"$/, '') };
+        modelProps.push(prop);
+        addPropRow(prop);
     };
 
     $(function () {
@@ -68,16 +74,26 @@
         $('#modelHeader').hpTabs().watermark('model');
 
         $('#propinput').bind('keypress blur', function (e) {
+            if (this.value.replace(/^\s*/, '').replace(/[;\s]*$/, '').length === 0) { return; }
             if (e.type === 'keypress' && e.keyCode !== 13) { return; }
             addToModel(this.value);
-        	this.value = '';
+            this.value = '';
             return false;
         });
 
+        $('#propinput').val('string Name = "world";');
         //resizeEditor($('#modelEditor'));
         //        var modelEditor = ace.edit("modelEditor");
         //        var CSharpMode = require("ace/mode/csharp").Mode;
         //        modelEditor.getSession().setMode(new CSharpMode());
+
+        $('#modelGrid > tbody').delegate('td', 'click', function () {
+            $(this).children('span').attr('contentEditable', 'true').focus();
+        });
+        $('#modelGrid > tbody').delegate('td span', 'keypress blur', function (e) {
+            if (e.type === 'keypress' && e.keyCode !== 13) { return; }
+            $(this).attr('contentEditable', 'false');
+        });
 
         $(window).resize(function () { resizeEditor($('#modelEditor')); });
     });

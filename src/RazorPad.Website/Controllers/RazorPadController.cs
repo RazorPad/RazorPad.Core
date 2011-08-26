@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.CodeDom.Compiler;
 using System.IO;
 using System.Web.Mvc;
@@ -6,6 +7,7 @@ using Microsoft.CSharp;
 using RazorPad.Compilation;
 using RazorPad.Compilation.Hosts;
 using RazorPad.Website.Models;
+using System.Text.RegularExpressions;
 
 namespace RazorPad.Website.Controllers
 {
@@ -44,7 +46,8 @@ namespace RazorPad.Website.Controllers
 
             var writer = new StringWriter();
 
-            var generatorResults = compiler.GenerateCode(request.Template, writer, new RazorPadMvcEngineHost(request.RazorLanguage));
+            var templ = TransformRequest(request.Template);
+            var generatorResults = compiler.GenerateCode(templ, writer, new RazorPadMvcEngineHost(request.RazorLanguage));
             result.SetGeneratorResults(generatorResults);
             result.GeneratedCode = ExtractCode(writer);
 
@@ -63,13 +66,21 @@ namespace RazorPad.Website.Controllers
                     //else
                     //    model = new DynamicDictionary();
 
-                    result.TemplateOutput = Sandbox.Execute(request.Language, request.Template, GetCompiledModel(request.Model));
+                    
+                    result.TemplateOutput = Sandbox.Execute(request.Language, templ, request.Model);
                 }
 
                 result.Success = true;
             }
 
             return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        private string TransformRequest(string p)
+        {
+
+            var transformedTemplate = "@using System.Linq;@model System.Collections.Generic.IEnumerable<RazorPad.DynamicModel.JsonProps>\n" + Regex.Replace(p, "@Model\\.([a-zA-Z0-9]+)", "@Model.First(x => x.Name == \"$1\").Value");
+            return transformedTemplate;
         }
 
         private static dynamic GetCompiledModel(string model)

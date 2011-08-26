@@ -206,6 +206,10 @@
       <Project>{511D144C-F4C7-40A3-B3B4-80D891FCE2F5}</Project>
       <Name>RazorPad.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\RazorPad.DynamicModel\RazorPad.DynamicModel.csproj">
+      <Project>{8687FA7B-28F1-421B-AEF3-404F68B501B4}</Project>
+      <Name>RazorPad.DynamicModel</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\RazorPad\MainUI.cshtml" />

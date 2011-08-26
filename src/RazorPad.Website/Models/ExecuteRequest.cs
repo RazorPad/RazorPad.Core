@@ -1,11 +1,13 @@
-﻿using System.Web.Razor;
+﻿using System.Collections.Generic;
+using System.Web.Razor;
 using RazorPad.Compilation;
+using RazorPad.DynamicModel;
 
 namespace RazorPad.Website.Models
 {
     public class ExecuteRequest : ParseRequest
     {
-        public string Model { get; set; }
+        public IEnumerable<JsonProps> Model { get; set; }
 
         public TemplateLanguage Language { get; set; }
 
@@ -24,4 +26,6 @@ namespace RazorPad.Website.Models
             set { }
         }
     }
+
+    
 }
