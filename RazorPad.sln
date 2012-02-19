@@ -11,7 +11,19 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PluginTestBed", "PluginTest
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RazorPad.DynamicModel", "RazorPad.DynamicModel\RazorPad.DynamicModel.csproj", "{8687FA7B-28F1-421B-AEF3-404F68B501B4}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1240E37F-611C-421E-8C44-C6E334C1938E}"
+	ProjectSection(SolutionItems) = preProject
+		Local.testsettings = Local.testsettings
+		RazorPad.vsmdi = RazorPad.vsmdi
+		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RazorPad.DynamicModel.Tests", "RazorPad.DynamicModel.Tests\RazorPad.DynamicModel.Tests.csproj", "{C58BCD42-B3C8-41AA-9A9E-53CC5E75286B}"
+EndProject
 Global
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = RazorPad.vsmdi
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|Mixed Platforms = Debug|Mixed Platforms
@@ -71,6 +83,16 @@ Global
 		{8687FA7B-28F1-421B-AEF3-404F68B501B4}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{8687FA7B-28F1-421B-AEF3-404F68B501B4}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{8687FA7B-28F1-421B-AEF3-404F68B501B4}.Release|x86.ActiveCfg = Release|Any CPU
+		{C58BCD42-B3C8-41AA-9A9E-53CC5E75286B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C58BCD42-B3C8-41AA-9A9E-53CC5E75286B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C58BCD42-B3C8-41AA-9A9E-53CC5E75286B}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{C58BCD42-B3C8-41AA-9A9E-53CC5E75286B}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{C58BCD42-B3C8-41AA-9A9E-53CC5E75286B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C58BCD42-B3C8-41AA-9A9E-53CC5E75286B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C58BCD42-B3C8-41AA-9A9E-53CC5E75286B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C58BCD42-B3C8-41AA-9A9E-53CC5E75286B}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{C58BCD42-B3C8-41AA-9A9E-53CC5E75286B}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{C58BCD42-B3C8-41AA-9A9E-53CC5E75286B}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
