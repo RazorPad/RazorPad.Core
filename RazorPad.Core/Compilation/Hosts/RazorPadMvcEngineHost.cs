@@ -39,8 +39,8 @@ namespace RazorPad.Compilation.Hosts
                 }
                 // "Third party" assemblies (by location)
                 .Union(new[] {
-                    Assembly.ReflectionOnlyLoad("System.Web.Mvc"),
-                    Assembly.ReflectionOnlyLoad("System.Web.WebPages"),
+                    Assembly.ReflectionOnlyLoad("System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35"),
+                    Assembly.ReflectionOnlyLoad("System.Web.WebPages, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35"),
                 }.Select(x => x.Location));
 
             codeCompileUnit.ReferencedAssemblies.AddRange(referencedAssemblies.ToArray());
