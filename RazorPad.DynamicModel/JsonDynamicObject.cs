@@ -36,5 +36,9 @@ namespace RazorPad.DynamicModel
             return _properties.ContainsKey(binder.Name);
         }
 
+        public IDictionary<string, object> GetProperties()
+        {
+            return _properties;
+        }
     }
 }
