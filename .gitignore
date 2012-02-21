@@ -6,3 +6,5 @@ obj
 TestResults
 _UpgradeReport_Files
 UpgradeLog.XML
+
+/RazorPad.Website/App_Data/Database
