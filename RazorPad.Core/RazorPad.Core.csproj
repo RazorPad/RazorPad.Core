@@ -41,7 +41,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>RazorPad.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\assets\RazorPad.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -82,7 +82,9 @@
     <Compile Include="Compilation\TemplateBase.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="RazorPad.snk" />
+    <None Include="..\assets\RazorPad.snk">
+      <Link>RazorPad.snk</Link>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

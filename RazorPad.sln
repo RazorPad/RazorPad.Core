@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 11
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1240E37F-611C-421E-8C44-C6E334C1938E}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MS Test Settings", "MS Test Settings", "{1240E37F-611C-421E-8C44-C6E334C1938E}"
 	ProjectSection(SolutionItems) = preProject
 		Local.testsettings = Local.testsettings
 		RazorPad.vsmdi = RazorPad.vsmdi
@@ -19,6 +19,12 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RazorPad.DynamicModel.Tests", "RazorPad.DynamicModel.Tests\RazorPad.DynamicModel.Tests.csproj", "{C58BCD42-B3C8-41AA-9A9E-53CC5E75286B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RazorPad.Core.Tests", "RazorPad.Core.Tests\RazorPad.Core.Tests.csproj", "{4C25DE40-6799-4144-9F23-3919193772EC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{D31B0F21-F11C-4342-8239-50D2441C67E5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WPF", "WPF", "{3CB8C54B-E938-41BE-B18E-04AF54D71C11}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Website", "Website", "{F3A99037-5F63-418A-9BEE-0D9892CA7A56}"
 EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
@@ -96,6 +102,14 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{4C25DE40-6799-4144-9F23-3919193772EC} = {D31B0F21-F11C-4342-8239-50D2441C67E5}
+		{511D144C-F4C7-40A3-B3B4-80D891FCE2F5} = {D31B0F21-F11C-4342-8239-50D2441C67E5}
+		{8687FA7B-28F1-421B-AEF3-404F68B501B4} = {F3A99037-5F63-418A-9BEE-0D9892CA7A56}
+		{A635596E-2215-4FEF-BC10-92F63EAAAA97} = {3CB8C54B-E938-41BE-B18E-04AF54D71C11}
+		{C58BCD42-B3C8-41AA-9A9E-53CC5E75286B} = {F3A99037-5F63-418A-9BEE-0D9892CA7A56}
+		{F3A2783E-D8B2-4D8C-8240-C01FC0B8D932} = {F3A99037-5F63-418A-9BEE-0D9892CA7A56}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		VisualSVNWorkingCopyRoot = .
