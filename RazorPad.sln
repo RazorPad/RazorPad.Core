@@ -5,6 +5,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RazorPad.Core", "RazorPad.C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RazorPad.Core.Tests", "RazorPad.Core.Tests\RazorPad.Core.Tests.csproj", "{4C25DE40-6799-4144-9F23-3919193772EC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RazorPad.EditorUI", "RazorPad.EditorUI\RazorPad.EditorUI.csproj", "{A635596E-2215-4FEF-BC10-92F63EAAAA97}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = RazorPad.vsmdi
@@ -38,6 +40,16 @@ Global
 		{511D144C-F4C7-40A3-B3B4-80D891FCE2F5}.Release|Mixed Platforms.Build.0 = Release|x86
 		{511D144C-F4C7-40A3-B3B4-80D891FCE2F5}.Release|x86.ActiveCfg = Release|x86
 		{511D144C-F4C7-40A3-B3B4-80D891FCE2F5}.Release|x86.Build.0 = Release|x86
+		{A635596E-2215-4FEF-BC10-92F63EAAAA97}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{A635596E-2215-4FEF-BC10-92F63EAAAA97}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{A635596E-2215-4FEF-BC10-92F63EAAAA97}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{A635596E-2215-4FEF-BC10-92F63EAAAA97}.Debug|x86.ActiveCfg = Debug|x86
+		{A635596E-2215-4FEF-BC10-92F63EAAAA97}.Debug|x86.Build.0 = Debug|x86
+		{A635596E-2215-4FEF-BC10-92F63EAAAA97}.Release|Any CPU.ActiveCfg = Release|x86
+		{A635596E-2215-4FEF-BC10-92F63EAAAA97}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{A635596E-2215-4FEF-BC10-92F63EAAAA97}.Release|Mixed Platforms.Build.0 = Release|x86
+		{A635596E-2215-4FEF-BC10-92F63EAAAA97}.Release|x86.ActiveCfg = Release|x86
+		{A635596E-2215-4FEF-BC10-92F63EAAAA97}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
