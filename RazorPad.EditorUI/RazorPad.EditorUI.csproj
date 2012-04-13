@@ -70,6 +70,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AttachedProperties\BrowseBehavior.cs" />
     <Compile Include="Framework\CommandSink.cs" />
     <Compile Include="Framework\CommandSinkBinding.cs" />
     <Compile Include="Framework\ICommandSink.cs" />

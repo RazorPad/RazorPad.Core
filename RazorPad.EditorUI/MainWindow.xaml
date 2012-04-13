@@ -2,7 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
         xmlns:ViewModels="clr-namespace:RazorPad.ViewModels" 
-        xmlns:RazorPad="clr-namespace:RazorPad" 
+        xmlns:RazorPad="clr-namespace:RazorPad" xmlns:AttachedProperties="clr-namespace:RazorPad.AttachedProperties"
         Title="Razor Pad" Icon="razor.ico"
         Height="700" Width="1000">
 
@@ -67,14 +67,19 @@
                 <GridSplitter Grid.Row="1" ResizeDirection="Rows" Height="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0" />
 
                 <TabControl Grid.Row="2">
-                    <TabItem x:Name="OutputTab" Header="Output">
+                    <TabItem x:Name="BrowserTab" Header="Browser View">
+                        <ScrollViewer DataContext="{Binding CurrentTemplate}">
+                            <WebBrowser AttachedProperties:BrowseBehavior.Html="{Binding ExecutedTemplateOutput}" />
+                        </ScrollViewer>
+                    </TabItem>
+                    <TabItem x:Name="OutputTab" Header="Source View">
                         <ScrollViewer DataContext="{Binding CurrentTemplate}">
                             <TextBox Text="{Binding ExecutedTemplateOutput}" 
                                      IsReadOnly="True" HorizontalScrollBarVisibility="Auto"
                             />
                         </ScrollViewer>
                     </TabItem>
-                    <TabItem x:Name="CodeTab" Header="Code">
+                    <TabItem x:Name="CodeTab" Header="Generated Code">
                         <ScrollViewer DataContext="{Binding CurrentTemplate}">
                             <TextBox Text="{Binding GeneratedTemplateCode}" IsReadOnly="True" />
                         </ScrollViewer>
