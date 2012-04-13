@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.IO;
+using System.Text;
 using RazorPad.Framework;
 
 namespace RazorPad.Compilation
@@ -24,6 +25,16 @@ namespace RazorPad.Compilation
         public virtual void WriteLiteral(object value)
         {
             Buffer.Append(value);
+        }
+
+        public static void WriteTo(TextWriter writer, object content)
+        {
+            writer.Write(content);
+        }
+
+        public static void WriteLiteralTo(TextWriter writer, object content)
+        {
+            writer.Write(content);
         }
     }
 
