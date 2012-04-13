@@ -32,8 +32,7 @@ namespace RazorPad.Compilation
             Language = language;
             CodeProvider = codeProvider;
             CompilerParameters = compilerParameters ?? new CompilerParameters { GenerateInMemory = true };
-            CompilerParameters.ReferencedAssemblies.Add(AppDomain.CurrentDomain
-                            .GetAssemblies().First(asm => asm.FullName.StartsWith("RazorPad.Web")).Location);
+            CompilerParameters.ReferencedAssemblies.Add(typeof(TemplateBase).Assembly.Location);
         }
 
         public static TemplateCompilationParameters CreateFromFilename(string filename)
