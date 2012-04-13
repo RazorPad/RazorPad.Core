@@ -2,9 +2,9 @@
 using System.CodeDom.Compiler;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Web.Razor;
 using RazorPad.Compilation.Hosts;
-using RazorPad.Framework;
 using RazorPad.Core;
 
 namespace RazorPad.Compilation
@@ -46,6 +46,22 @@ namespace RazorPad.Compilation
         }
 
 
+        public void AddAssemblyReference(Type type)
+        {
+            CompilationParameters.AddAssemblyReference(type.Assembly.Location);
+        }
+
+        public void AddAssemblyReference(Assembly assembly)
+        {
+            CompilationParameters.AddAssemblyReference(assembly.Location);
+        }
+
+        public void AddAssemblyReference(string location)
+        {
+            CompilationParameters.AddAssemblyReference(location);
+        }
+
+
         public CompilerResults Compile(string templateText)
         {
             var generatorResults = GenerateCode(templateText);
@@ -82,7 +98,7 @@ namespace RazorPad.Compilation
         {
             host = host ?? RazorEngineHostFactory.Invoke(CompilationParameters.Language);
 
-            var generatorResults = GenerateCode(templateText, host: host);
+            var generatorResults = GenerateCode(templateText, null, host: host);
 
             if (!generatorResults.Success)
                 throw new CodeGenerationException(generatorResults);
@@ -97,7 +113,23 @@ namespace RazorPad.Compilation
             return TemplateInstanceInstatiator.Invoke(type);
         }
 
-        public GeneratorResults GenerateCode(string templateText, TextWriter codeWriter = null, RazorEngineHost host = null)
+
+        public string GenerateCode(string templateText, RazorEngineHost host = null)
+        {
+            GeneratorResults results;
+            return GenerateCode(templateText, out results, host);
+        }
+
+        public string GenerateCode(string templateText, out GeneratorResults results, RazorEngineHost host = null)
+        {
+            using (var writer = new StringWriter())
+            {
+                results = GenerateCode(templateText, writer, host);
+                return writer.GetStringBuilder().ToString();
+            }
+        }
+
+        public GeneratorResults GenerateCode(string templateText, TextWriter codeWriter, RazorEngineHost host = null)
         {
             host = host ?? RazorEngineHostFactory.Invoke(CompilationParameters.Language);
             var engine = new RazorTemplateEngine(host);

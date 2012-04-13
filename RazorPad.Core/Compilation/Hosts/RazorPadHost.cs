@@ -16,11 +16,18 @@ namespace RazorPad.Compilation.Hosts
 
         public RazorPadHost(RazorCodeLanguage language = null)
         {
+            
 // ReSharper disable DoNotCallOverridableMethodsInConstructor
-            DefaultBaseClass = typeof (TemplateBase).FullName;
+            DefaultBaseClass = typeof(TemplateBase).FullName;
             DefaultClassName = "CompiledTemplate";
             DefaultNamespace = "RazorPad.Runtime";
             CodeLanguage = language;
+            GeneratedClassContext = new GeneratedClassContext(
+                GeneratedClassContext.DefaultExecuteMethodName, 
+                GeneratedClassContext.DefaultWriteMethodName,
+                GeneratedClassContext.DefaultWriteLiteralMethodName,
+                "WriteTo", "WriteLiteralTo", 
+                typeof(HelperResult).FullName);
 // ReSharper restore DoNotCallOverridableMethodsInConstructor
         }
 

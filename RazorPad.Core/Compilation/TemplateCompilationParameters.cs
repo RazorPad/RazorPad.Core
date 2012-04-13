@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.CodeDom.Compiler;
 using System.Web.Razor;
@@ -32,9 +33,31 @@ namespace RazorPad.Compilation
             Language = language;
             CodeProvider = codeProvider;
             CompilerParameters = compilerParameters ?? new CompilerParameters { GenerateInMemory = true };
-            CompilerParameters.ReferencedAssemblies.Add(AppDomain.CurrentDomain
-                            .GetAssemblies().First(asm => asm.FullName.StartsWith("RazorPad.Web")).Location);
+            AddAssemblyReference(typeof(TemplateBase));
         }
+
+
+        public void AddAssemblyReference(Type type)
+        {
+            Contract.Requires(type != null);
+
+            AddAssemblyReference(type.Assembly.Location);
+        }
+
+        public void AddAssemblyReference(Assembly assembly)
+        {
+            Contract.Requires(assembly != null);
+
+            AddAssemblyReference(assembly.Location);
+        }
+
+        public void AddAssemblyReference(string location)
+        {
+            Contract.Requires(string.IsNullOrWhiteSpace(location) == false);
+
+            CompilerParameters.ReferencedAssemblies.Add(location);
+        }
+
 
         public static TemplateCompilationParameters CreateFromFilename(string filename)
         {

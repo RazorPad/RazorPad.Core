@@ -64,6 +64,7 @@
     <Compile Include="Compilation\Exceptions\CompilationException.cs" />
     <Compile Include="Compilation\CSharpRazorCodeGeneratorSpanVisitor.cs" />
     <Compile Include="Compilation\EmbeddedResources\EmbeddedTemplateHost.cs" />
+    <Compile Include="Compilation\HelperResult.cs" />
     <Compile Include="Compilation\Hosts\RazorPadMvcEngineHost.cs" />
     <Compile Include="Compilation\ITemplateCompiler.cs" />
     <Compile Include="Compilation\Hosts\RazorPadHost.cs" />
