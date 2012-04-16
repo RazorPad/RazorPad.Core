@@ -29,11 +29,7 @@
 
         <DockPanel LastChildFill="True">
 
-            <ScrollViewer DockPanel.Dock="Right" DataContext="{Binding CurrentTemplate}">
-                <ContentControl DataContext="{Binding TemplateModelProperties}">
-                    <RazorPad:RazorTemplateModelProperties />
-                </ContentControl>
-            </ScrollViewer>
+            <RazorPad:Sidebar DockPanel.Dock="Right" DataContext="{Binding CurrentTemplate}" />
 
             <Grid x:Name="MainContent">
                 <Grid.RowDefinitions>
