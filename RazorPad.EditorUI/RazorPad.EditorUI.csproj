@@ -39,7 +39,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>razor.ico</ApplicationIcon>
+    <ApplicationIcon>Assets\razor.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <NoWin32Manifest>true</NoWin32Manifest>
@@ -75,13 +75,13 @@
     <Compile Include="Framework\CommandSinkBinding.cs" />
     <Compile Include="Framework\ICommandSink.cs" />
     <Compile Include="Framework\InMemoryTextWriter.cs" />
-    <Compile Include="MainWindow.xaml.cs">
+    <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="RazorTemplateModelProperties.xaml.cs">
+    <Compile Include="Views\RazorTemplateModelProperties.xaml.cs">
       <DependentUpon>RazorTemplateModelProperties.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Sidebar.xaml.cs">
+    <Compile Include="Views\Sidebar.xaml.cs">
       <DependentUpon>Sidebar.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
@@ -89,23 +89,23 @@
     <Compile Include="Framework\ViewModelBase.cs" />
     <Compile Include="ViewModels\RazorTemplateModelPropertiesViewModel.cs" />
     <Compile Include="ViewModels\RazorTemplateModelPropertyViewModel.cs" />
-    <Page Include="MainWindow.xaml">
+    <Page Include="Views\MainWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="RazorTemplateEditor.xaml">
+    <Page Include="Views\RazorTemplateEditor.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="RazorTemplateEditor.xaml.cs">
+    <Compile Include="Views\RazorTemplateEditor.xaml.cs">
       <DependentUpon>RazorTemplateEditor.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="RazorTemplateModelProperties.xaml">
+    <Page Include="Views\RazorTemplateModelProperties.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Sidebar.xaml">
+    <Page Include="Views\Sidebar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -142,7 +142,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="razor.ico" />
+    <Resource Include="Assets\razor.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

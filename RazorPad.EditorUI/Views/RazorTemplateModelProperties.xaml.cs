@@ -1,11 +1,10 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Forms;
 using RazorPad.Framework;
 using RazorPad.ViewModels;
 using UserControl = System.Windows.Controls.UserControl;
 
-namespace RazorPad
+namespace RazorPad.Views
 {
     /// <summary>
     /// Interaction logic for RazorTemplateModelProperties.xaml

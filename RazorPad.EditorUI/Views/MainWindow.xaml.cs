@@ -1,10 +1,9 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Windows;
 using Microsoft.Win32;
 using RazorPad.ViewModels;
 
-namespace RazorPad
+namespace RazorPad.Views
 {
     /// <summary>
     /// Interaction logic for Main.xaml
