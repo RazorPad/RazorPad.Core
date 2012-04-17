@@ -62,24 +62,26 @@
 
                 <GridSplitter Grid.Row="1" ResizeDirection="Rows" Height="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0" />
 
-                <TabControl Grid.Row="2">
+                <TabControl Grid.Row="2" DataContext="{Binding CurrentTemplate}">
+                    
                     <TabItem x:Name="BrowserTab" Header="Browser View">
-                        <ScrollViewer DataContext="{Binding CurrentTemplate}">
-                            <WebBrowser AttachedProperties:BrowseBehavior.Html="{Binding ExecutedTemplateOutput}" />
-                        </ScrollViewer>
+                        <WebBrowser AttachedProperties:BrowseBehavior.Html="{Binding ExecutedTemplateOutput}" />
                     </TabItem>
+                    
                     <TabItem x:Name="OutputTab" Header="Source View">
-                        <ScrollViewer DataContext="{Binding CurrentTemplate}">
+                        <ScrollViewer>
                             <TextBox Text="{Binding ExecutedTemplateOutput}" 
                                      IsReadOnly="True" HorizontalScrollBarVisibility="Auto"
                             />
                         </ScrollViewer>
                     </TabItem>
+                    
                     <TabItem x:Name="CodeTab" Header="Generated Code">
-                        <ScrollViewer DataContext="{Binding CurrentTemplate}">
+                        <ScrollViewer>
                             <TextBox Text="{Binding GeneratedTemplateCode}" IsReadOnly="True" />
                         </ScrollViewer>
                     </TabItem>
+                    
                 </TabControl>
             </Grid>
 

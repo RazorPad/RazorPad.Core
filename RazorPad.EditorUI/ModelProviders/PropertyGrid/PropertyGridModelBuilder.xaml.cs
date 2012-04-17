@@ -1,19 +1,17 @@
 ﻿using System.Windows;
 using System.Windows.Forms;
 using RazorPad.Framework;
-using RazorPad.ViewModels;
-using UserControl = System.Windows.Controls.UserControl;
 
-namespace RazorPad.Views
+namespace RazorPad.ModelProviders
 {
     /// <summary>
     /// Interaction logic for RazorTemplateModelProperties.xaml
     /// </summary>
-    public partial class RazorTemplateModelProperties : UserControl
+    public partial class RazorTemplateModelProperties
     {
-        protected RazorTemplateModelPropertiesViewModel ViewModel
+        protected PropertyGridModelProvider ViewModel
         {
-            get { return (RazorTemplateModelPropertiesViewModel) DataContext; }
+            get { return (PropertyGridModelProvider) ModelProvider; }
         }
 
         protected DynamicDictionary PropertyDictionary { get; set; }
@@ -22,6 +20,7 @@ namespace RazorPad.Views
         {
             InitializeComponent();
             PropertyDictionary = new DynamicDictionary();
+            ModelProvider = new PropertyGridModelProvider();
         }
 
         private void OnAddPropertyClick(object sender, RoutedEventArgs e)
@@ -62,7 +61,7 @@ namespace RazorPad.Views
 
         private void OnPropertyValueChanged(object s, PropertyValueChangedEventArgs e)
         {
-            ViewModel.TriggerPropertyChanged();
+            ViewModel.TriggerModelChanged();
         }
     }
 }

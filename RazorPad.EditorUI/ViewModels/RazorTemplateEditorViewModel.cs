@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.Composition;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -33,19 +34,45 @@ namespace RazorPad.ViewModels
             }
         }
 
-        public RazorTemplateModelPropertiesViewModel TemplateModelProperties
+
+        public ModelBuilder ModelBuilder
         {
-            get { return _templateModelProperties; }
+            get { return _modelBuilder; }
             set
             {
-                if (_templateModelProperties == value)
-                    return;
+                _modelBuilder = value;
 
-                _templateModelProperties = value;
-                OnPropertyChanged("TemplateModelProperties");
+                if (value != null && ModelProvider == null && _modelBuilder.ModelProvider != null)
+                    ModelProvider = _modelBuilder.ModelProvider;
+                
+                OnPropertyChanged("ModelBuilder");
             }
         }
-        private RazorTemplateModelPropertiesViewModel _templateModelProperties;
+        private ModelBuilder _modelBuilder;
+
+        public IModelProvider ModelProvider
+        {
+            get { return _modelProvider; }
+            set
+            {
+                if (_modelProvider == value)
+                    return;
+
+                if (_modelProvider != null)
+                    _modelProvider.ModelChanged -= TriggerRefresh;
+
+                if (value != null)
+                    value.ModelChanged += TriggerRefresh;
+
+                if(ModelBuilder != null)
+                    ModelBuilder.ModelProvider = value;
+
+                _modelProvider = value;
+
+                OnPropertyChanged("ModelProvider");
+            }
+        }
+        private IModelProvider _modelProvider;
 
         public TextWriter ErrorMessages
         {
@@ -158,9 +185,6 @@ namespace RazorPad.ViewModels
             if(!string.IsNullOrWhiteSpace(filename))
                 LoadFromFile(filename);
 
-            TemplateModelProperties = new RazorTemplateModelPropertiesViewModel(typeof(object));
-            TemplateModelProperties.PropertiesUpdated += (x, y) => Refresh();
-
             Execute();
         }
 
@@ -185,17 +209,6 @@ namespace RazorPad.ViewModels
             if (GeneratorResults != null && GeneratorResults.Success)
             {
                 UpdateStatus("Template successfully parsed");
-
-                try
-                {
-                    Type templateModelType = TemplateCompiler.GetTemplateModelType(TemplateText);
-                    TemplateModelProperties.TemplateModelType = templateModelType;
-                }
-                catch (Exception ex)
-                {
-                    ErrorMessages.WriteLine(ex);
-                    UpdateStatus(ex.Message);
-                }
             }
             else
             {
@@ -219,14 +232,15 @@ namespace RazorPad.ViewModels
 
         public void Execute()
         {
+            UpdateStatus("Parsing template...");
             Parse();
-
-            UpdateStatus("Executing template...");
-
-            var model = TemplateModelProperties.Properties;
 
             try
             {
+                UpdateStatus("Retrieving model...");
+                var model = ModelProvider.GetModel();
+
+                UpdateStatus("Executing template...");
                 ExecutedTemplateOutput = TemplateCompiler.Execute(TemplateText, model);
                 UpdateStatus("Success!");
             }
@@ -282,6 +296,11 @@ namespace RazorPad.ViewModels
         public void Refresh()
         {
             Execute();
+        }
+
+        private void TriggerRefresh(object sender, EventArgs args)
+        {
+            Refresh();
         }
     }
 }

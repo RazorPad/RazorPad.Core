@@ -20,14 +20,6 @@ namespace RazorPad.Views
             InitializeComponent();
 
             ViewModel.GetSaveAsFilename += GetSaveAsFilename;
-
-            InitializeDemoTemplate();
-        }
-
-        private void InitializeDemoTemplate()
-        {
-            ViewModel.CurrentTemplate.TemplateModelProperties.Properties.Add("Name", "Razor Pad");
-            ViewModel.CurrentTemplate.TemplateText = "Hello, my name is @Model.Name!";
         }
 
         private static string GetSaveAsFilename(RazorTemplateEditorViewModel template)

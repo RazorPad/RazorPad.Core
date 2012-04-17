@@ -9,7 +9,12 @@ namespace RazorPad.Framework
 {
     public class DynamicDictionary : DynamicObject, IDictionary, IDictionary<string, object>, INotifyPropertyChanged
     {
-        readonly Dictionary<string, object> _dictionary = new Dictionary<string, object>();
+        private readonly Dictionary<string, object> _dictionary;
+
+        public DynamicDictionary(IDictionary<string, object> properties = null)
+        {
+            _dictionary = new Dictionary<string, object>(properties ?? new Dictionary<string, object>());
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
 

@@ -1,10 +1,9 @@
 ﻿<UserControl x:Class="RazorPad.Views.RazorTemplateEditor"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:Framework="clr-namespace:RazorPad.Framework">
 
-    <TextBox x:Name="TemplateTextBox"
+    <Framework:DelayedNotifyPropertyChangedTextBox x:Name="TemplateTextBox"
              Text="{Binding Path=TemplateText, UpdateSourceTrigger=Explicit}"
-             TextChanged="TemplateTextChanged"
              AcceptsReturn="True" AcceptsTab="true" 
              AllowDrop="True" AutoWordSelection="True" />
 

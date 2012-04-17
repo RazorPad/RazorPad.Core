@@ -93,10 +93,14 @@ namespace RazorPad.ViewModels
         private void InitializeTemplateEditors()
         {
             TemplateEditors = new ObservableCollection<RazorTemplateEditorViewModel>();
-            AddNewTemplateEditor();
+            
+            var defaultDocument = AddNewTemplateEditor();
+            defaultDocument.TemplateText = "<h1>Welcome to @Model.Name!</h1>\r\n<div>Start typing some text to get started.</div>\r\n<div>Or, try adding a property called 'Message' and see what happens...</div>\r\n\r\n<h3>@Model.Message</h3>";
+            defaultDocument.ModelProvider = new ModelProviders.Json.JsonModelProvider(json: "{\r\n\tName: 'RazorPad'\r\n}");
+            defaultDocument.Execute();
         }
 
-        internal RazorTemplateEditorViewModel AddNewTemplateEditor(string filename = null, bool setAsCurrentTemplate = true)
+        internal RazorTemplateEditorViewModel AddNewTemplateEditor(string filename = null, bool current = true)
         {
             RazorTemplateEditorViewModel loadedTemplate =
                 TemplateEditors
@@ -107,19 +111,22 @@ namespace RazorPad.ViewModels
             {
                 loadedTemplate.LoadFromFile(filename);
 
-                if (setAsCurrentTemplate)
+                if (current)
                     CurrentTemplate = loadedTemplate;
 
                 return loadedTemplate;
             }
 
-            var templateEditor = new RazorTemplateEditorViewModel(filename);
-            templateEditor.ErrorMessages = ErrorMessages;
+            var templateEditor = new RazorTemplateEditorViewModel(filename) {
+                        ErrorMessages = ErrorMessages,
+                        ModelBuilder = new ModelProviders.Json.JsonModelBuilder(),
+                    };
             templateEditor.OnStatusUpdated += (sender, args) => StatusMessage = args.Message;
+
 
             TemplateEditors.Add(templateEditor);
 
-            if (setAsCurrentTemplate)
+            if (current)
                 CurrentTemplate = templateEditor;
 
             return templateEditor;
