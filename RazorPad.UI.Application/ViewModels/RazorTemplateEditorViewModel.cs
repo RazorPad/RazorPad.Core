@@ -290,7 +290,7 @@ namespace RazorPad.ViewModels
 
         private void UpdateStatus(string statusMessage)
         {
-            SafeInvoke(OnStatusUpdated, new EventArgs<string>(statusMessage));
+            OnStatusUpdated.SafeInvoke(statusMessage);
         }
 
         public void Refresh()

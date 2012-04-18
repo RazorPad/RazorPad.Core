@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Text;
 
-namespace RazorPad.Core
+namespace RazorPad
 {
     public static class StringExtensions
     {

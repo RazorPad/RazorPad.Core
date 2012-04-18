@@ -4,10 +4,11 @@ using System.Linq;
 using System.Windows.Input;
 using RazorPad.UI;
 using RazorPad.UI.Json;
+using RazorPad.UI.Wpf;
 
 namespace RazorPad.ViewModels
 {
-    public class MainWindowViewModel : ViewModelBase
+    public class MainWindowViewModel : CommandSink
     {
         public Func<RazorTemplateEditorViewModel, string> GetSaveAsFilename
         {

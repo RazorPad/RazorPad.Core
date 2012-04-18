@@ -14,7 +14,7 @@ namespace RazorPad.UI.Wpf
     /// Taken from Josh Smith's CodeProject MVVM article:
     /// http://www.codeproject.com/KB/WPF/VMCommanding.aspx
     /// </remarks>
-    public class CommandSink : ICommandSink
+    public class CommandSink : ViewModelBase, ICommandSink
     {
         readonly Dictionary<ICommand, CommandCallbacks> _commandToCallbacksMap = new Dictionary<ICommand, CommandCallbacks>();
 

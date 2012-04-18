@@ -5,7 +5,6 @@ using System.Linq;
 using System.Reflection;
 using System.Web.Razor;
 using RazorPad.Compilation.Hosts;
-using RazorPad.Core;
 
 namespace RazorPad.Compilation
 {

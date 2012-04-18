@@ -10,3 +10,4 @@ UpgradeLog.XML
 RazorPad.Web.Website/App_Data/Database
 packages
 *ncrunch*
+*.DotSettings
