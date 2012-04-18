@@ -4,12 +4,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("RazorPad.Core")]
+[assembly: AssemblyTitle("RazorPad.UI")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Microsoft")]
-[assembly: AssemblyProduct("RazorPad.Core")]
-[assembly: AssemblyCopyright("Copyright © Microsoft 2010")]
+[assembly: AssemblyCompany("Dow Jones & Co.")]
+[assembly: AssemblyProduct("RazorPad.UI")]
+[assembly: AssemblyCopyright("Copyright © Dow Jones & Co. 2012")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -19,7 +19,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("9fb24eb8-51b4-4ad5-9f9c-da8ea570b410")]
+[assembly: Guid("9ff7ba63-2b84-48f3-b265-6cb9a542b245")]
 
 // Version information for an assembly consists of the following four values:
 //
