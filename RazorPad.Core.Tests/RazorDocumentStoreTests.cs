@@ -8,15 +8,7 @@ namespace RazorPad.Core.Tests
     public class RazorDocumentStoreTests
     {
         private RazorDocumentStore _store;
-        private XDocument _demoDoc;
-
-        [TestInitialize]
-        public void TestInitialize()
-        {
-            _store = new RazorDocumentStore(null);
-            _demoDoc =
-                XDocument.Parse(
-                    @"
+        private const string DemoDocument = @"
                         <RazorDocument>
                             <Metadata>
                                 <Title>Hello World!</Title>
@@ -36,19 +28,24 @@ namespace RazorPad.Core.Tests
                             ]]>
                             </Template>
 
-                        </RazorDocument>");
+                        </RazorDocument>";
+
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            _store = new RazorDocumentStore(null);
         }
 
         [TestMethod]
         public void ShouldLoadRazorDocument()
         {
-            var document = _store.Load(_demoDoc);
+            var document = _store.Parse(DemoDocument);
 
             Assert.AreEqual(document.Template.Trim(), "<h1>Hello, @Model.Name!</h1>");
             Assert.AreEqual(document.Metadata["Title"], "Hello World!");
             Assert.IsInstanceOfType(document.ModelProvider, typeof(JsonModelProvider));
 
-            var model = document.GetModel();
+            dynamic model = document.GetModel();
             Assert.AreEqual(model.Name, "RazorPad");
         }
     }
