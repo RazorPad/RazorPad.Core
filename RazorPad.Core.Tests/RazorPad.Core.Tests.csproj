@@ -53,9 +53,9 @@
   <ItemGroup>
     <None Include="AcceptanceTests.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>AcceptanceTests1.cs</LastGenOutput>
+      <LastGenOutput>AcceptanceTests.cs</LastGenOutput>
     </None>
-    <Compile Include="AcceptanceTests1.cs">
+    <Compile Include="AcceptanceTests.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>AcceptanceTests.tt</DependentUpon>

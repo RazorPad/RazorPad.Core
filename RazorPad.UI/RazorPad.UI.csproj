@@ -37,7 +37,6 @@
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
@@ -46,16 +45,13 @@
     <Compile Include="ModelProviders\Json\JsonModelBuilder.xaml.cs">
       <DependentUpon>JsonModelBuilder.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ModelProviders\Json\JsonModelProvider.cs" />
     <Compile Include="Wpf\BrowseBehavior.cs" />
     <Compile Include="Wpf\CommandSink.cs" />
     <Compile Include="Wpf\CommandSinkBinding.cs" />
     <Compile Include="Wpf\DelayedNotifyPropertyChangedTextBox.cs" />
     <Compile Include="Wpf\ICommandSink.cs" />
-    <Compile Include="ModelProviders\IModelProvider.cs" />
     <Compile Include="Util\InMemoryTextWriter.cs" />
     <Compile Include="ModelProviders\ModelBuilder.cs" />
-    <Compile Include="ModelProviders\ModelProvider.cs" />
     <Compile Include="ViewModel\NotifyPropertyChanged.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

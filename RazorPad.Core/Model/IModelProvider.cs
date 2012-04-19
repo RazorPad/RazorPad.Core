@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace RazorPad.UI
+namespace RazorPad
 {
     public interface IModelProvider
     {

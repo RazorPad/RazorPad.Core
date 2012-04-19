@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using RazorPad.Framework;
 
-namespace RazorPad.UI
+namespace RazorPad
 {
-    public abstract class ModelProvider : NotifyPropertyChanged, IModelProvider
+    public abstract class ModelProvider : IModelProvider
     {
         public event EventHandler ModelChanged
         {
@@ -13,20 +13,7 @@ namespace RazorPad.UI
         }
         private event EventHandler _modelChanged;
 
-
-        public Type ModelType
-        {
-            get { return _modelType; }
-            set
-            {
-                if (_modelType == value)
-                    return;
-
-                _modelType = value;
-                TriggerPropertyChanged("ModelType");
-            }
-        }
-        private Type _modelType;
+        public Type ModelType { get; set; }
 
 
         protected ModelProvider(Type modelType)

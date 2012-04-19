@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
+using RazorPad.Providers;
 using RazorPad.UI;
 using RazorPad.UI.Json;
 using RazorPad.UI.Wpf;

@@ -1,4 +1,6 @@
-﻿namespace RazorPad.UI.Json
+﻿using RazorPad.Providers;
+
+namespace RazorPad.UI.Json
 {
     public partial class JsonModelBuilder : ModelBuilder
     {

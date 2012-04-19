@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Web.Script.Serialization;
 
-namespace RazorPad.UI.Json
+namespace RazorPad.Providers
 {
     public class JsonModelProvider : ModelProvider
     {
@@ -15,7 +15,6 @@ namespace RazorPad.UI.Json
 
                 _json = value;
                 TriggerModelChanged();
-                TriggerPropertyChanged("Json");
             }
         }
         private string _json;
