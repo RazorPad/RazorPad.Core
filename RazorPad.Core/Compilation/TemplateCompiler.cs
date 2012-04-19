@@ -79,6 +79,11 @@ namespace RazorPad.Compilation
             return compiledCode;
         }
 
+        public string Execute(RazorDocument document)
+        {
+            return Execute(document.Template, document.GetModel());
+        }
+
         public string Execute(string templateText, dynamic model = null, RazorEngineHost host = null)
         {
             dynamic instance = GetTemplateInstance(templateText);

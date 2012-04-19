@@ -1,9 +1,11 @@
 ﻿<#@ template language="C#" hostspecific="true" #>
 <#@ output extension=".cs" #>
 <#@ import namespace="System.IO" #>
+<#@ import namespace="System.Collections.Generic" #>
 using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RazorPad.Compilation;
+using RazorPad.Persistence;
 
 namespace RazorPad.Core.Tests
 {
@@ -11,10 +13,12 @@ namespace RazorPad.Core.Tests
     public class AcceptanceTests
     {
         private TemplateCompiler _templateCompiler;
+        private RazorDocumentLoader _loader;
 
         [TestInitialize]
         public void TestInitialize()
         {
+            _loader = new RazorDocumentLoader();
             _templateCompiler = new TemplateCompiler();
         }
 
@@ -27,19 +31,23 @@ namespace RazorPad.Core.Tests
 		if(directory == "bin" || directory == "obj")
 			continue;
 
-		foreach(var file in directoryInfo.GetFiles("*.cshtml")) 
+		var razorDocuments = new List<FileInfo>();
+		razorDocuments.AddRange(directoryInfo.GetFiles("*.cshtml"));
+		razorDocuments.AddRange(directoryInfo.GetFiles("*.razorpad"));
+
+		foreach(var file in razorDocuments) 
         {
             string resourceName = "AcceptanceTests." + file.Name.Replace("\\", ".");
             string outputResourceName = resourceName + ".output";
-			string displayName = Path.GetFileNameWithoutExtension(System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(file.Name));
+			string displayName = Path.GetFileNameWithoutExtension(file.Name);
 #>
 
         [TestMethod]
         public void ShouldSupport<#= displayName #>()
         {
-            string template = LoadResource("<#= resourceName #>");
+            var document = LoadDocument("<#= resourceName #>");
 
-            var results = _templateCompiler.Execute(template);
+            var results = _templateCompiler.Execute(document);
 
             string output = LoadResource("<#= outputResourceName #>");
             Assert.AreEqual(results.Trim(), output);
@@ -50,11 +58,24 @@ namespace RazorPad.Core.Tests
     }
 #>
 
+
+        private RazorDocument LoadDocument(string name)
+        {
+            using (var reader = GetResourceStream(name))
+                return _loader.Load(reader);
+        }
+
         private string LoadResource(string name)
         {
-            var type = GetType();
-            using (var reader = new StreamReader(type.Assembly.GetManifestResourceStream(type, name)))
+            using (var stream = GetResourceStream(name))
+            using (var reader = new StreamReader(stream))
                 return reader.ReadToEnd();
+        }
+
+        private Stream GetResourceStream(string resourceName)
+        {
+            var type = GetType();
+            return type.Assembly.GetManifestResourceStream(type, resourceName);
         }
     }
 }

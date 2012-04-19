@@ -3,25 +3,21 @@ using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 
-namespace RazorPad
+namespace RazorPad.Persistence
 {
-    public class RazorDocumentStore
+    public class XmlRazorDocumentLoader : IRazorDocumentLoader
     {
         private readonly ModelProviderFactory _modelProviderFactory;
 
-        public RazorDocumentStore(ModelProviderFactory modelProviderFactory)
+        public XmlRazorDocumentLoader(ModelProviderFactory modelProviderFactory = null)
         {
             _modelProviderFactory = modelProviderFactory ?? new ModelProviderFactory();
         }
 
-        public RazorDocument Load(string uri)
+        public RazorDocument Load(string document)
         {
-            var source = XDocument.Load(uri);
-            
-            var document = Load(source);
-            document.Filename = uri;
-            
-            return document;
+            var source = XDocument.Parse(document);
+            return Load(source);
         }
 
         public RazorDocument Load(Stream stream)
@@ -47,12 +43,6 @@ namespace RazorPad
                     .ToDictionary(val => val.Key, val => val.Value);
 
             return new RazorDocument(templateEl.Value, modelProvider, metadata);
-        }
-
-        public RazorDocument Parse(string documentContents)
-        {
-            var source = XDocument.Parse(documentContents);
-            return Load(source);
         }
     }
 }

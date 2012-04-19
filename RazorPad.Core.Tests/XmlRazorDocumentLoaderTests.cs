@@ -1,13 +1,13 @@
-﻿using System.Xml.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using RazorPad.Persistence;
 using RazorPad.Providers;
 
 namespace RazorPad.Core.Tests
 {
     [TestClass]
-    public class RazorDocumentStoreTests
+    public class XmlRazorDocumentLoaderTests
     {
-        private RazorDocumentStore _store;
+        private XmlRazorDocumentLoader _loader;
         private const string DemoDocument = @"
                         <RazorDocument>
                             <Metadata>
@@ -33,20 +33,28 @@ namespace RazorPad.Core.Tests
         [TestInitialize]
         public void TestInitialize()
         {
-            _store = new RazorDocumentStore(null);
+            _loader = new XmlRazorDocumentLoader();
+        }
+
+        [TestMethod]
+        public void ShouldLoadEmptyDocument()
+        {
+            var document = _loader.Load("<RazorDocument />");
+
+           Assert.IsNotNull(document);
         }
 
         [TestMethod]
         public void ShouldLoadRazorDocument()
         {
-            var document = _store.Parse(DemoDocument);
+            var document = _loader.Load(DemoDocument);
 
-            Assert.AreEqual(document.Template.Trim(), "<h1>Hello, @Model.Name!</h1>");
-            Assert.AreEqual(document.Metadata["Title"], "Hello World!");
+            Assert.AreEqual("<h1>Hello, @Model.Name!</h1>", document.Template.Trim());
+            Assert.AreEqual("Hello World!", document.Metadata["Title"]);
             Assert.IsInstanceOfType(document.ModelProvider, typeof(JsonModelProvider));
 
             dynamic model = document.GetModel();
-            Assert.AreEqual(model.Name, "RazorPad");
+            Assert.AreEqual("RazorPad", model.Name);
         }
     }
 }
