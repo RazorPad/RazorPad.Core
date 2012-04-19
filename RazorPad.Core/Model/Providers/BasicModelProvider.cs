@@ -1,3 +1,5 @@
+using System;
+
 namespace RazorPad.Providers
 {
     public class BasicModelProvider : ModelProvider
@@ -18,7 +20,8 @@ namespace RazorPad.Providers
         }
         private dynamic _model;
 
-        public BasicModelProvider(object model = null) : base(null)
+        public BasicModelProvider(Type modelType = null, object model = null)
+            : base(modelType)
         {
             Model = model;
         }

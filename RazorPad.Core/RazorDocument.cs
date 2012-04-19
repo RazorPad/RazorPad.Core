@@ -17,10 +17,15 @@ namespace RazorPad
         public string TemplateBaseClassName { get; set; }
 
 
-        public RazorDocument(string template = null, dynamic model = null, IDictionary<string, string> metadata = null)
+        public RazorDocument(string template, object model, IDictionary<string, string> metadata = null)
+            : this(template, new BasicModelProvider(model: model), metadata)
+        {
+        }
+
+        public RazorDocument(string template = null, IModelProvider modelProvider = null, IDictionary<string, string> metadata = null)
         {
             Metadata = new Dictionary<string, string>(metadata ?? new Dictionary<string, string>());
-            ModelProvider = new BasicModelProvider(model);
+            ModelProvider = modelProvider ?? new BasicModelProvider();
             Template = template ?? string.Empty;
             TemplateBaseClassName = typeof(TemplateBase).FullName;
         }

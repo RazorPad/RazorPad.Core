@@ -1,0 +1,20 @@
+<RazorDocument>
+    <Metadata>
+        <Title>Hello World!</Title>
+        <Created>2012-04-19 12:42:19</Created>
+        <LastUpdated>2012-04-19 20:12:50</LastUpdated>
+    </Metadata>
+
+    <Model Provider="Json">
+    <![CDATA[
+        { Name: "RazorPad" }
+    ]]>
+    </Model>
+
+    <Template BaseClass="RazorPad.Compilation.TemplateBase">
+    <![CDATA[
+        <h1>Hello, @Model.Name!</h1>
+    ]]>
+    </Template>
+
+</RazorDocument>

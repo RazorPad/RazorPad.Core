@@ -83,6 +83,7 @@
     <Compile Include="Framework\DynamicDictionary.cs" />
     <Compile Include="Framework\EventArgs.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="ModelProviderFactory.cs" />
     <Compile Include="Model\Providers\BasicModelProvider.cs" />
     <Compile Include="Model\IModelProvider.cs" />
     <Compile Include="Model\Providers\JsonModelProvider.cs" />
@@ -90,6 +91,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Compilation\TemplateBase.cs" />
     <Compile Include="RazorDocument.cs" />
+    <Compile Include="RazorDocumentLoader.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="RazorPad.nuspec" />
