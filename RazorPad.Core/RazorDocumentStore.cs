@@ -5,11 +5,11 @@ using System.Xml.Linq;
 
 namespace RazorPad
 {
-    public class RazorDocumentLoader
+    public class RazorDocumentStore
     {
         private readonly ModelProviderFactory _modelProviderFactory;
 
-        public RazorDocumentLoader(ModelProviderFactory modelProviderFactory)
+        public RazorDocumentStore(ModelProviderFactory modelProviderFactory)
         {
             _modelProviderFactory = modelProviderFactory ?? new ModelProviderFactory();
         }
@@ -17,7 +17,11 @@ namespace RazorPad
         public RazorDocument Load(string uri)
         {
             var source = XDocument.Load(uri);
-            return Load(source);
+            
+            var document = Load(source);
+            document.Filename = uri;
+            
+            return document;
         }
 
         public RazorDocument Load(Stream stream)

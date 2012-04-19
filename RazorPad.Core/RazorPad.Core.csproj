@@ -91,7 +91,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Compilation\TemplateBase.cs" />
     <Compile Include="RazorDocument.cs" />
-    <Compile Include="RazorDocumentLoader.cs" />
+    <Compile Include="RazorDocumentStore.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="RazorPad.nuspec" />

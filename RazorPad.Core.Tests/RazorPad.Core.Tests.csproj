@@ -54,7 +54,7 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="RazorDocumentLoaderTests.cs" />
+    <Compile Include="RazorDocumentStoreTests.cs" />
     <None Include="AcceptanceTests.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>AcceptanceTests.cs</LastGenOutput>
@@ -65,7 +65,8 @@
       <DependentUpon>AcceptanceTests.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="HelloWorld.razorpad" />
+    <EmbeddedResource Include="AcceptanceTests\HelloWorld.razorpad" />
+    <None Include="AcceptanceTests\HelloWorld.razorpad.output" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\RazorPad.Core\RazorPad.Core.csproj">

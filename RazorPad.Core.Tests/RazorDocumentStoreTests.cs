@@ -14,7 +14,9 @@ namespace RazorPad.Core.Tests
         public void TestInitialize()
         {
             _store = new RazorDocumentStore(null);
-            _demoDoc = XDocument.Parse(@"
+            _demoDoc =
+                XDocument.Parse(
+                    @"
                         <RazorDocument>
                             <Metadata>
                                 <Title>Hello World!</Title>
@@ -34,7 +36,7 @@ namespace RazorPad.Core.Tests
                             ]]>
                             </Template>
 
-                        </RazorDocument>")
+                        </RazorDocument>");
         }
 
         [TestMethod]
