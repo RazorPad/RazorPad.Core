@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.IO;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RazorPad.Compilation;
 
 namespace RazorPad.Core.Tests
@@ -14,33 +15,48 @@ namespace RazorPad.Core.Tests
             _templateCompiler = new TemplateCompiler();
         }
 
+
         [TestMethod]
         public void ShouldSupportFunctions()
         {
-            const string template = @"@functions {  int MyValue = 1; }  @MyValue";
+            string template = LoadResource("AcceptanceTests.Functions.cshtml");
 
             var results = _templateCompiler.Execute(template);
 
-            Assert.AreEqual(results.Trim(), "1");
+            string output = LoadResource("AcceptanceTests.Functions.cshtml.output");
+            Assert.AreEqual(results.Trim(), output);
         }
-       
-       
+
+
         [TestMethod]
         public void ShouldSupportHelpers()
         {
-            const string template = @"
-@helper DisplayCurrency(decimal value)  {  
-    @value.ToString(""C2"")
-}
+            string template = LoadResource("AcceptanceTests.Helpers.cshtml");
 
-@DisplayCurrency(3.4m)
-";
-            var code = _templateCompiler.GenerateCode(template);
             var results = _templateCompiler.Execute(template);
 
-            Assert.AreEqual(results.Trim(), 3.4m.ToString("C2"));
+            string output = LoadResource("AcceptanceTests.Helpers.cshtml.output");
+            Assert.AreEqual(results.Trim(), output);
         }
 
 
+        [TestMethod]
+        public void ShouldSupportSimplerendering()
+        {
+            string template = LoadResource("AcceptanceTests.SimpleRendering.cshtml");
+
+            var results = _templateCompiler.Execute(template);
+
+            string output = LoadResource("AcceptanceTests.SimpleRendering.cshtml.output");
+            Assert.AreEqual(results.Trim(), output);
+        }
+
+
+        private string LoadResource(string name)
+        {
+            var type = GetType();
+            using (var reader = new StreamReader(type.Assembly.GetManifestResourceStream(type, name)))
+                return reader.ReadToEnd();
+        }
     }
 }

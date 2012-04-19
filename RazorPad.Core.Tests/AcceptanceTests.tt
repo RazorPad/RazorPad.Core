@@ -1,0 +1,60 @@
+﻿<#@ template language="C#" hostspecific="true" #>
+<#@ output extension=".cs" #>
+<#@ import namespace="System.IO" #>
+using System.IO;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using RazorPad.Compilation;
+
+namespace RazorPad.Core.Tests
+{
+    [TestClass]
+    public class AcceptanceTests
+    {
+        private TemplateCompiler _templateCompiler;
+
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            _templateCompiler = new TemplateCompiler();
+        }
+
+<# 
+	foreach(var directoryPath in Directory.GetDirectories(Host.ResolvePath(""))) 
+    {
+		var directoryInfo = new DirectoryInfo(directoryPath);
+		var directory = directoryInfo.Name;
+
+		if(directory == "bin" || directory == "obj")
+			continue;
+
+		foreach(var file in directoryInfo.GetFiles("*.cshtml")) 
+        {
+            string resourceName = "AcceptanceTests." + file.Name.Replace("\\", ".");
+            string outputResourceName = resourceName + ".output";
+			string displayName = Path.GetFileNameWithoutExtension(System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(file.Name));
+#>
+
+        [TestMethod]
+        public void ShouldSupport<#= displayName #>()
+        {
+            string template = LoadResource("<#= resourceName #>");
+
+            var results = _templateCompiler.Execute(template);
+
+            string output = LoadResource("<#= outputResourceName #>");
+            Assert.AreEqual(results.Trim(), output);
+        }
+
+<#
+        }
+    }
+#>
+
+        private string LoadResource(string name)
+        {
+            var type = GetType();
+            using (var reader = new StreamReader(type.Assembly.GetManifestResourceStream(type, name)))
+                return reader.ReadToEnd();
+        }
+    }
+}

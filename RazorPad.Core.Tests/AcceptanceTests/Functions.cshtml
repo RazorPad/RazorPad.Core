@@ -1,0 +1,15 @@
+﻿@functions {
+
+    private const int firstNumber = 10;
+
+    int Add(int x, int y)
+    {
+        return x + y;
+    }
+}
+
+@{
+    const int secondNumber = 5;
+}
+
+@firstNumber plus @secondNumber equals @Add(firstNumber, secondNumber)
