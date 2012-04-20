@@ -1,0 +1,75 @@
+﻿<Window x:Class="RazorPad.Views.MainDock"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:ad="clr-namespace:AvalonDock;assembly=AvalonDock"
+        xmlns:Views="clr-namespace:RazorPad.Views"
+        xmlns:AttachedProperties="clr-namespace:RazorPad.UI.Wpf;assembly=RazorPad.UI"
+        xmlns:ViewModels="clr-namespace:RazorPad.ViewModels" Title="MainDock" Height="700" Width="1000">
+    <Window.DataContext>
+        <ViewModels:MainWindowViewModel />
+    </Window.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="24"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="24"/>
+        </Grid.RowDefinitions>
+        <Menu x:Name="MainMenu" DockPanel.Dock="Top" IsMainMenu="True">
+            <MenuItem Header="_File">
+                <MenuItem Header="_Open" Click="OpenFile_Click" IsEnabled="True" />
+                <MenuItem Header="_Save" Click="SaveFile_Click" IsEnabled="True" />
+                <MenuItem Header="_Save As..." Click="SaveAsFile_Click" IsEnabled="True" />
+            </MenuItem>
+        </Menu>
+
+        <ad:DockingManager x:Name="dockManager" Grid.Row="1">
+
+            <ad:ResizingPanel Orientation="Vertical">
+                <ad:DocumentPane>
+                    <ad:DocumentContent Title="{Binding DisplayName}">
+                        <TabControl Grid.Row="0" ItemsSource="{Binding TemplateEditors}" SelectedValue="{Binding CurrentTemplate}">
+                            <TabControl.ContentTemplate>
+                                <DataTemplate>
+                                    <ScrollViewer Grid.Row="0">
+                                        <Views:RazorTemplateEditor />
+                                    </ScrollViewer>
+                                </DataTemplate>
+                            </TabControl.ContentTemplate>
+                            <TabControl.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock FontSize="14" Text="{Binding DisplayName}"/>
+                                </DataTemplate>
+                            </TabControl.ItemTemplate>
+                        </TabControl>
+                    </ad:DocumentContent>
+                </ad:DocumentPane>
+                <ad:DocumentPane>
+                    <ad:DocumentContent x:Name="ModelContent" Title="Model">
+                        <Views:Sidebar DockPanel.Dock="Right" DataContext="{Binding CurrentTemplate}" />
+                    </ad:DocumentContent>
+                </ad:DocumentPane>
+                <ad:DockablePane DataContext="{Binding CurrentTemplate}">
+                    <ad:DockableContent x:Name="BrowserTabContent" Title="Browser View">
+                        <WebBrowser AttachedProperties:BrowseBehavior.Html="{Binding ExecutedTemplateOutput}" />
+                    </ad:DockableContent>
+                    <ad:DockableContent x:Name="OutputTabContent" Title="Source View">
+                        <TextBox Text="{Binding ExecutedTemplateOutput}" 
+                                 IsReadOnly="True" 
+                                 HorizontalScrollBarVisibility="Auto"
+                        />
+                    </ad:DockableContent>
+                    <ad:DockableContent x:Name="CodeTabContent" Title="Generated Code">
+                        <TextBox Text="{Binding GeneratedTemplateCode}" IsReadOnly="True" />
+                    </ad:DockableContent>
+                </ad:DockablePane>
+            </ad:ResizingPanel>
+
+        </ad:DockingManager>
+
+        <StatusBar DockPanel.Dock="Bottom">
+            <StatusBarItem DockPanel.Dock="Right">
+                <TextBlock Text="{Binding StatusMessage}" />
+            </StatusBarItem>
+            <StatusBarItem />
+        </StatusBar>
+    </Grid>
+</Window>
