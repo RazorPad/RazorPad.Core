@@ -78,12 +78,19 @@ namespace RazorPad.ViewModels
         }
         private IModelProvider _modelProvider;
 
-        public TextWriter ErrorMessages
+        public InMemoryTextWriter Messages
         {
-            get { return _errorMessages = _errorMessages ?? Console.Error; }
-            set { _errorMessages = value; }
+            get { return _messages; }
+            set
+            {
+                if (_messages == value)
+                    return;
+
+                _messages = value;
+                OnPropertyChanged("Messages");
+            }
         }
-        private TextWriter _errorMessages;
+        private InMemoryTextWriter _messages;
 
         public string ExecutedTemplateInput
         {
@@ -181,10 +188,11 @@ namespace RazorPad.ViewModels
         }
 
 
-
         public RazorTemplateEditorViewModel(string filename = null, RazorDocumentLoader documentLoader = null)
         {
             _documentLoader = documentLoader ?? new RazorDocumentLoader();
+
+            Messages = new InMemoryTextWriter();
             TemplateCompiler = new TemplateCompiler();
 
             if(!string.IsNullOrWhiteSpace(filename))
@@ -200,7 +208,7 @@ namespace RazorPad.ViewModels
 
             GeneratedTemplateCode = string.Empty;
 
-            using (StringWriter writer = new StringWriter())
+            using (var writer = new StringWriter())
             {
                 GeneratorResults = TemplateCompiler.GenerateCode(TemplateText, writer);
                 
@@ -219,7 +227,8 @@ namespace RazorPad.ViewModels
             {
                 UpdateStatus("Template parsing failed!");
 
-                ErrorMessages.WriteLine("***  Template Parsing Failed  ***");
+                Log("***  Template Parsing Failed  ***");
+
                 if (GeneratorResults != null)
                 {
                     var errorBuilder = new StringBuilder();
@@ -229,7 +238,7 @@ namespace RazorPad.ViewModels
                     }
 
                     var errors = errorBuilder.ToString();
-                    ErrorMessages.WriteLine(errors);
+                    Log(errors);
                     ExecutedTemplateOutput = errors;
                 }
             }
@@ -237,23 +246,37 @@ namespace RazorPad.ViewModels
 
         public void Execute()
         {
-            UpdateStatus("Parsing template...");
+            Messages.Flush();
+
+            Log("Parsing template...");
             Parse();
 
             try
             {
-                UpdateStatus("Retrieving model...");
+                Log("Retrieving model...");
                 var model = ModelProvider.GetModel();
 
-                UpdateStatus("Executing template...");
+                Log("Executing template...");
                 ExecutedTemplateOutput = TemplateCompiler.Execute(TemplateText, model);
+                Log("Success!");
+
                 UpdateStatus("Success!");
             }
             catch (Exception ex)
             {
-                ErrorMessages.WriteLine(ex);
+                Log(ex);
                 UpdateStatus(ex.Message);
             }
+        }
+
+        private void Log(string message)
+        {
+            Messages.WriteLine("[{0}]  {1}", DateTime.Now.ToShortTimeString(), message);
+        }
+
+        private void Log(Exception ex)
+        {
+            Messages.WriteLine("[{0}]  {1}\r\n{2}", DateTime.Now.ToShortTimeString(), ex.Message, ex.StackTrace);
         }
 
         public void LoadFromFile(string fileName)
@@ -268,7 +291,7 @@ namespace RazorPad.ViewModels
             }
             catch (Exception ex)
             {
-                ErrorMessages.WriteLine(ex);
+                Log(ex);
                 UpdateStatus(ex.Message);
             }
         }
@@ -292,7 +315,7 @@ namespace RazorPad.ViewModels
             }
             catch (Exception ex)
             {
-                ErrorMessages.WriteLine(ex);
+                Log(ex);
                 UpdateStatus(ex.Message);
             }
         }

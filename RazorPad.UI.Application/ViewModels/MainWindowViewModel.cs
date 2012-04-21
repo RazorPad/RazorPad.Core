@@ -2,9 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
-using RazorPad.Persistence;
 using RazorPad.Providers;
-using RazorPad.UI;
 using RazorPad.UI.Json;
 using RazorPad.UI.Wpf;
 
@@ -54,19 +52,6 @@ namespace RazorPad.ViewModels
         }
         private string _statusMessage;
 
-        public InMemoryTextWriter ErrorMessages
-        {
-            get { return _errorMessages; }
-            set
-            {
-                if (_errorMessages == value)
-                    return;
-
-                _errorMessages = value;
-                OnPropertyChanged("ErrorMessages");
-            }
-        }
-        private InMemoryTextWriter _errorMessages;
 
         public MainWindowViewModel()
         {
@@ -122,7 +107,6 @@ namespace RazorPad.ViewModels
             }
 
             var templateEditor = new RazorTemplateEditorViewModel(filename) {
-                        ErrorMessages = ErrorMessages,
                         ModelBuilder = new JsonModelBuilder(),
                     };
             templateEditor.OnStatusUpdated += (sender, args) => StatusMessage = args.Message;

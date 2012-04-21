@@ -8,7 +8,17 @@ namespace RazorPad.UI
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private readonly StringBuilder _builder;
+        private StringBuilder _builder;
+
+        public string MessageBuffer
+        {
+            get { return _builder.ToString(); }
+            set
+            {
+                _builder = new StringBuilder(value);
+                OnPropertyChanged();
+            }
+        }
 
         public InMemoryTextWriter()
         {
@@ -19,8 +29,13 @@ namespace RazorPad.UI
         {
             _builder.Append(buffer, index, count);
 
-            if(PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs("Buffer"));
+            OnPropertyChanged();
+        }
+
+        private void OnPropertyChanged()
+        {
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs("MessageBuffer"));
         }
 
         public override void Flush()

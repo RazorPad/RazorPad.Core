@@ -67,7 +67,7 @@
                     </TabItem>
                     
                     <TabItem x:Name="OutputTab" Header="Source View">
-                        <ScrollViewer>
+                        <ScrollViewer HorizontalScrollBarVisibility="Auto">
                             <TextBox Text="{Binding ExecutedTemplateOutput}" 
                                      IsReadOnly="True" HorizontalScrollBarVisibility="Auto"
                             />
@@ -75,8 +75,14 @@
                     </TabItem>
                     
                     <TabItem x:Name="CodeTab" Header="Generated Code">
-                        <ScrollViewer>
+                        <ScrollViewer HorizontalScrollBarVisibility="Auto">
                             <TextBox Text="{Binding GeneratedTemplateCode}" IsReadOnly="True" />
+                        </ScrollViewer>
+                    </TabItem>
+
+                    <TabItem x:Name="MessagesTab" Header="Messages" >
+                        <ScrollViewer HorizontalScrollBarVisibility="Auto">
+                            <TextBox Text="{Binding MessageBuffer}" DataContext="{Binding Messages}" IsReadOnly="True" />
                         </ScrollViewer>
                     </TabItem>
                     
