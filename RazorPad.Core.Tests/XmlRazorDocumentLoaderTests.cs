@@ -39,7 +39,7 @@ namespace RazorPad.Core.Tests
         [TestMethod]
         public void ShouldLoadEmptyDocument()
         {
-            var document = _loader.Load("<RazorDocument />");
+            var document = _loader.Parse("<RazorDocument />");
 
            Assert.IsNotNull(document);
         }
@@ -47,7 +47,7 @@ namespace RazorPad.Core.Tests
         [TestMethod]
         public void ShouldLoadRazorDocument()
         {
-            var document = _loader.Load(DemoDocument);
+            var document = _loader.Parse(DemoDocument);
 
             Assert.AreEqual("<h1>Hello, @Model.Name!</h1>", document.Template.Trim());
             Assert.AreEqual("Hello World!", document.Metadata["Title"]);

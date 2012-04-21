@@ -5,12 +5,16 @@ using System.Text.RegularExpressions;
 using System.Web.Razor;
 using RazorPad.Compilation;
 using RazorPad.Framework;
+using RazorPad.Persistence;
 using RazorPad.UI;
+using RazorPad.UI.Json;
 
 namespace RazorPad.ViewModels
 {
     public class RazorTemplateEditorViewModel : ViewModelBase
     {
+        private readonly RazorDocumentLoader _documentLoader;
+
         public ITemplateCompiler TemplateCompiler { get; set; }
 
         public event EventHandler<EventArgs<string>> OnStatusUpdated;
@@ -178,8 +182,9 @@ namespace RazorPad.ViewModels
 
 
 
-        public RazorTemplateEditorViewModel(string filename = null)
+        public RazorTemplateEditorViewModel(string filename = null, RazorDocumentLoader documentLoader = null)
         {
+            _documentLoader = documentLoader ?? new RazorDocumentLoader();
             TemplateCompiler = new TemplateCompiler();
 
             if(!string.IsNullOrWhiteSpace(filename))
@@ -255,16 +260,17 @@ namespace RazorPad.ViewModels
         {
             try
             {
-                using (var reader = new StreamReader(File.OpenRead(fileName)))
-                    TemplateText = reader.ReadToEnd();
+                var document = _documentLoader.Load(fileName);
+                Filename = document.Filename;
+                ModelBuilder = new JsonModelBuilder { ModelProvider = document.ModelProvider };
+                TemplateText = document.Template;
+                ModelProvider.TriggerModelChanged();
             }
             catch (Exception ex)
             {
                 ErrorMessages.WriteLine(ex);
                 UpdateStatus(ex.Message);
             }
-
-            Filename = fileName;
         }
 
         public void SaveToFile(string fileName = null)
@@ -275,6 +281,9 @@ namespace RazorPad.ViewModels
             {
                 if (string.IsNullOrWhiteSpace(targetFilename))
                     throw new ApplicationException("No filename specified!");
+
+                if (targetFilename.EndsWith(".razorpad", StringComparison.OrdinalIgnoreCase))
+                    throw new NotImplementedException("Saving .razorpad documents has not been implemented yet -- coming soon!");
 
                 Filename = targetFilename;
 

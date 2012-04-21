@@ -66,8 +66,8 @@
       <DependentUpon>AcceptanceTests.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="AcceptanceTests\HelloWorld.razorpad" />
-    <EmbeddedResource Include="AcceptanceTests\HelloWorld.razorpad.output" />
+    <EmbeddedResource Include="AcceptanceTests\BasicRazorDocument.razorpad" />
+    <EmbeddedResource Include="AcceptanceTests\BasicRazorDocument.razorpad.output" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\RazorPad.Core\RazorPad.Core.csproj">

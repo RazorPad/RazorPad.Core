@@ -17,14 +17,14 @@ namespace RazorPad.Core.Tests
         [TestMethod]
         public void ShouldLoadXmlRazorDocument()
         {
-            var document = _loader.Load("<RazorDocument><Template><![CDATA[<h1>Hello, World!</h1>]]></Template></RazorDocument>");
+            var document = _loader.Parse("<RazorDocument><Template><![CDATA[<h1>Hello, World!</h1>]]></Template></RazorDocument>");
             Assert.AreEqual("<h1>Hello, World!</h1>", document.Template);
         }
 
         [TestMethod]
         public void ShouldLoadCSharpRazorTemplate()
         {
-            var document = _loader.Load(@"<h1>Hello, World!</h1>");
+            var document = _loader.Parse(@"<h1>Hello, World!</h1>");
             Assert.AreEqual("<h1>Hello, World!</h1>", document.Template.Trim());
         }
     }

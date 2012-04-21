@@ -12,13 +12,23 @@ namespace RazorPad.Persistence
         public RazorDocumentLoader(Encoding encoding = null, XmlRazorDocumentLoader xmlLoader = null)
         {
             _xmlLoader = xmlLoader ?? new XmlRazorDocumentLoader();
-            Encoding = encoding ?? Encoding.Unicode;
+            Encoding = encoding ?? Encoding.UTF8;
         }
 
-        public RazorDocument Load(string content)
+        public RazorDocument Parse(string content)
         {
             using (var stream = new MemoryStream(Encoding.GetBytes(content)))
                 return Load(stream);
+        }
+
+        public RazorDocument Load(string uri)
+        {
+            using (var stream = File.OpenRead(uri))
+            {
+                var document = Load(stream);
+                document.Filename = uri;
+                return document;
+            }
         }
 
         public RazorDocument Load(Stream stream)

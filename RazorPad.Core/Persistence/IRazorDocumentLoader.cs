@@ -4,7 +4,9 @@ namespace RazorPad.Persistence
 {
     public interface IRazorDocumentLoader
     {
-        RazorDocument Load(string content);
+        RazorDocument Parse(string content);
+
+        RazorDocument Load(string uri);
         RazorDocument Load(Stream stream);
     }
 }

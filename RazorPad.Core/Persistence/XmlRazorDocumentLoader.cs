@@ -14,9 +14,15 @@ namespace RazorPad.Persistence
             _modelProviderFactory = modelProviderFactory ?? new ModelProviderFactory();
         }
 
-        public RazorDocument Load(string document)
+        public RazorDocument Parse(string document)
         {
             var source = XDocument.Parse(document);
+            return Load(source);
+        }
+
+        public RazorDocument Load(string uri)
+        {
+            var source = XDocument.Load(uri);
             return Load(source);
         }
 

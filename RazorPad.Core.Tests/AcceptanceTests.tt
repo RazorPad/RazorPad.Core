@@ -50,7 +50,7 @@ namespace RazorPad.Core.Tests
             var results = _templateCompiler.Execute(document);
 
             string output = LoadResource("<#= outputResourceName #>");
-            Assert.AreEqual(results.Trim(), output);
+            Assert.AreEqual(output, results.Trim());
         }
 
 <#

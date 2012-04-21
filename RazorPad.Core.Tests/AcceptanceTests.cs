@@ -27,7 +27,7 @@ namespace RazorPad.Core.Tests
             var results = _templateCompiler.Execute(document);
 
             string output = LoadResource("AcceptanceTests.Functions.cshtml.output");
-            Assert.AreEqual(results.Trim(), output);
+            Assert.AreEqual(output, results.Trim());
         }
 
 
@@ -39,7 +39,7 @@ namespace RazorPad.Core.Tests
             var results = _templateCompiler.Execute(document);
 
             string output = LoadResource("AcceptanceTests.Helpers.cshtml.output");
-            Assert.AreEqual(results.Trim(), output);
+            Assert.AreEqual(output, results.Trim());
         }
 
 
@@ -51,19 +51,19 @@ namespace RazorPad.Core.Tests
             var results = _templateCompiler.Execute(document);
 
             string output = LoadResource("AcceptanceTests.SimpleRendering.cshtml.output");
-            Assert.AreEqual(results.Trim(), output);
+            Assert.AreEqual(output, results.Trim());
         }
 
 
         [TestMethod]
-        public void ShouldSupportHelloWorld()
+        public void ShouldSupportBasicRazorDocument()
         {
-            var document = LoadDocument("AcceptanceTests.HelloWorld.razorpad");
+            var document = LoadDocument("AcceptanceTests.BasicRazorDocument.razorpad");
 
             var results = _templateCompiler.Execute(document);
 
-            string output = LoadResource("AcceptanceTests.HelloWorld.razorpad.output");
-            Assert.AreEqual(results.Trim(), output);
+            string output = LoadResource("AcceptanceTests.BasicRazorDocument.razorpad.output");
+            Assert.AreEqual(output, results.Trim());
         }
 
 

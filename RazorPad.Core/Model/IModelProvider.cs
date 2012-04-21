@@ -9,5 +9,7 @@ namespace RazorPad
         Type ModelType { get; }
 
         dynamic GetModel();
+
+        void TriggerModelChanged();
     }
 }
