@@ -12,28 +12,36 @@ namespace RazorPad.UI.Wpf
             new FrameworkPropertyMetadata(OnHtmlChanged));
 
         [AttachedPropertyBrowsableForType(typeof(WebBrowser))]
-        public static string GetHtml(WebBrowser d)
+        public static string GetHtml(WebBrowser browser)
         {
-            return (string)d.GetValue(HtmlProperty);
+            return (string)browser.GetValue(HtmlProperty);
         }
 
-        public static void SetHtml(WebBrowser d, string value)
+        public static void SetHtml(WebBrowser browser, string value)
         {
-            d.SetValue(HtmlProperty, value);
+            browser.SetValue(HtmlProperty, value);
         }
 
         static void OnHtmlChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            WebBrowser wb = d as WebBrowser;
+            var browser = d as WebBrowser;
+            if (browser == null) return;
             
             var text = e.NewValue as string;
+
             if (string.IsNullOrWhiteSpace(text))
                 text = "<html/>";
 
-            if (wb != null)
+            dynamic document = browser.Document;
+
+            if (document == null || document.documentElement == null)
             {
-                wb.NavigateToString(text);
+                browser.NavigateToString("<html/>");
+                document = browser.Document;
             }
+
+            document.close();
+            document.write(text);
         }
     }
 }
