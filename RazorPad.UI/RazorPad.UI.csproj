@@ -42,22 +42,22 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ModelProviders\Json\JsonModelBuilder.xaml.cs">
+    <Compile Include="ModelBuilders\Json\JsonModelBuilder.xaml.cs">
       <DependentUpon>JsonModelBuilder.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ModelBuilders\ModelBuilder.cs" />
     <Compile Include="Wpf\BrowseBehavior.cs" />
     <Compile Include="Wpf\CommandSink.cs" />
     <Compile Include="Wpf\CommandSinkBinding.cs" />
     <Compile Include="Wpf\DelayedNotifyPropertyChangedTextBox.cs" />
     <Compile Include="Wpf\ICommandSink.cs" />
     <Compile Include="Util\InMemoryTextWriter.cs" />
-    <Compile Include="ModelProviders\ModelBuilder.cs" />
     <Compile Include="ViewModel\NotifyPropertyChanged.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="ModelProviders\Json\JsonModelBuilder.xaml">
+    <Page Include="ModelBuilders\Json\JsonModelBuilder.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
