@@ -18,7 +18,7 @@ namespace RazorPad.Core.Tests
             _templateCompiler = new TemplateCompiler();
         }
 
-
+		
         [TestMethod]
         public void ShouldSupportFunctions()
         {
@@ -30,7 +30,7 @@ namespace RazorPad.Core.Tests
             Assert.AreEqual(output, results.Trim());
         }
 
-
+		
         [TestMethod]
         public void ShouldSupportHelpers()
         {
@@ -42,7 +42,7 @@ namespace RazorPad.Core.Tests
             Assert.AreEqual(output, results.Trim());
         }
 
-
+		
         [TestMethod]
         public void ShouldSupportSimpleRendering()
         {
@@ -54,7 +54,7 @@ namespace RazorPad.Core.Tests
             Assert.AreEqual(output, results.Trim());
         }
 
-
+		
         [TestMethod]
         public void ShouldSupportBasicRazorDocument()
         {
