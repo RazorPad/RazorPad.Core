@@ -25,7 +25,7 @@ namespace RazorPad
         public RazorDocument(string template = null, IModelProvider modelProvider = null, IDictionary<string, string> metadata = null)
         {
             Metadata = new Dictionary<string, string>(metadata ?? new Dictionary<string, string>());
-            ModelProvider = modelProvider ?? new BasicModelProvider();
+            ModelProvider = modelProvider ?? new JsonModelProvider();
             Template = template ?? string.Empty;
             TemplateBaseClassName = typeof(TemplateBase).FullName;
         }

@@ -8,11 +8,13 @@ using RazorPad.Framework;
 using RazorPad.Persistence;
 using RazorPad.UI;
 using RazorPad.UI.Json;
+using RazorPad.UI.ModelBuilders;
 
 namespace RazorPad.ViewModels
 {
     public class RazorTemplateEditorViewModel : ViewModelBase
     {
+        private readonly ModelBuilderFactory _modelBuilderFactory;
         private readonly RazorDocumentLoader _documentLoader;
 
         public ITemplateCompiler TemplateCompiler { get; set; }
@@ -188,8 +190,9 @@ namespace RazorPad.ViewModels
         }
 
 
-        public RazorTemplateEditorViewModel(string filename = null, RazorDocumentLoader documentLoader = null)
+        public RazorTemplateEditorViewModel(string filename = null, RazorDocumentLoader documentLoader = null, ModelBuilderFactory modelBuilderFactory = null)
         {
+            _modelBuilderFactory = modelBuilderFactory ?? new ModelBuilderFactory();
             _documentLoader = documentLoader ?? new RazorDocumentLoader();
 
             Messages = new InMemoryTextWriter();
@@ -285,7 +288,7 @@ namespace RazorPad.ViewModels
             {
                 var document = _documentLoader.Load(fileName);
                 Filename = document.Filename;
-                ModelBuilder = new JsonModelBuilder { ModelProvider = document.ModelProvider };
+                ModelBuilder = _modelBuilderFactory.Create(document.ModelProvider);
                 TemplateText = document.Template;
                 ModelProvider.TriggerModelChanged();
             }

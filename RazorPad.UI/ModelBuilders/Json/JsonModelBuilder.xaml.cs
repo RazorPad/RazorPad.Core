@@ -1,7 +1,9 @@
-﻿using RazorPad.Providers;
+﻿using System.ComponentModel.Composition;
+using RazorPad.Providers;
 
 namespace RazorPad.UI.Json
 {
+    [Export(typeof(ModelBuilder))]
     public partial class JsonModelBuilder : ModelBuilder
     {
         protected JsonModelProvider ViewModel

@@ -1,18 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{147DFCE8-A33F-42F4-A8F1-7E999C02D1DC}</ProjectGuid>
+    <ProjectGuid>{BBCFFF3C-AFCF-4751-9834-C4AA7D29133D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>RazorPad.UI</RootNamespace>
-    <AssemblyName>RazorPad.UI</AssemblyName>
+    <AssemblyName>RazorPad.UI.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\RazorPad\</SolutionDir>
-    <RestorePackages>true</RestorePackages>
+    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <TestProjectType>UnitTest</TestProjectType>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -32,46 +31,46 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.Composition" />
-    <Reference Include="System.Core" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
     <Reference Include="System.Xaml" />
-    <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
+  <Choose>
+    <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
+      <ItemGroup>
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+      </ItemGroup>
+    </When>
+    <Otherwise>
+      <ItemGroup>
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
+      </ItemGroup>
+    </Otherwise>
+  </Choose>
   <ItemGroup>
-    <Compile Include="ModelBuilders\Json\JsonModelBuilder.xaml.cs">
-      <DependentUpon>JsonModelBuilder.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ModelBuilders\ModelBuilder.cs" />
-    <Compile Include="ModelBuilders\ModelBuilderFactory.cs" />
-    <Compile Include="Wpf\BrowseBehavior.cs" />
-    <Compile Include="Wpf\CommandSink.cs" />
-    <Compile Include="Wpf\CommandSinkBinding.cs" />
-    <Compile Include="Wpf\DelayedNotifyPropertyChangedTextBox.cs" />
-    <Compile Include="Wpf\ICommandSink.cs" />
-    <Compile Include="Util\InMemoryTextWriter.cs" />
-    <Compile Include="ViewModel\NotifyPropertyChanged.cs" />
-    <Compile Include="ViewModel\ViewModelBase.cs" />
+    <Compile Include="ModelBuilders\ModelBuilderFactoryTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="ModelBuilders\Json\JsonModelBuilder.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\RazorPad.Core\RazorPad.Core.csproj">
-      <Project>{511D144C-F4C7-40A3-B3B4-80D891FCE2F5}</Project>
+      <Project>{511d144c-f4c7-40a3-b3b4-80d891fce2f5}</Project>
       <Name>RazorPad.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RazorPad.UI.Application\RazorPad.UI.Application.csproj">
+      <Project>{a635596e-2215-4fef-bc10-92f63eaaaa97}</Project>
+      <Name>RazorPad.UI.Application</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RazorPad.UI\RazorPad.UI.csproj">
+      <Project>{147dfce8-a33f-42f4-a8f1-7e999c02d1dc}</Project>
+      <Name>RazorPad.UI</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
