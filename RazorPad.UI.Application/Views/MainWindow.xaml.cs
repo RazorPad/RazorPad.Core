@@ -56,13 +56,13 @@ namespace RazorPad.Views
 
         private void SaveFile_Click(object sender, RoutedEventArgs e)
         {
-            ViewModel.CurrentTemplate.SaveToFile();
+            ViewModel.SaveCurrentTemplate();
         }
 
         private void SaveAsFile_Click(object sender, RoutedEventArgs e)
         {
             var filename = GetSaveAsFilename(ViewModel.CurrentTemplate);
-            ViewModel.CurrentTemplate.SaveToFile(filename);
+            ViewModel.SaveCurrentTemplate(filename);
         }
     }
 }

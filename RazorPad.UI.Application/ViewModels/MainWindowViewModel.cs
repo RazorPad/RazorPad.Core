@@ -1,15 +1,18 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Windows.Input;
+using RazorPad.Persistence;
 using RazorPad.Providers;
-using RazorPad.UI.Json;
 using RazorPad.UI.Wpf;
 
 namespace RazorPad.ViewModels
 {
     public class MainWindowViewModel : CommandSink
     {
+        private readonly RazorDocumentLoader _documentLoader;
+
         public Func<RazorTemplateEditorViewModel, string> GetSaveAsFilename
         {
             get { return _getSaveAsFilename; }
@@ -55,6 +58,7 @@ namespace RazorPad.ViewModels
 
         public MainWindowViewModel()
         {
+            _documentLoader = new RazorDocumentLoader();
             InitializeTemplateEditors();
             RegisterCommands();
         }
@@ -63,7 +67,7 @@ namespace RazorPad.ViewModels
         {
             RegisterCommand(ApplicationCommands.Save,
                 x => CurrentTemplate != null && CurrentTemplate.CanSaveToCurrentlyLoadedFile,
-                x => CurrentTemplate.SaveToFile());
+                x => SaveCurrentTemplate());
 
             RegisterCommand(ApplicationCommands.SaveAs,
                 x => CurrentTemplate != null && CurrentTemplate.CanSaveAsNewFilename,
@@ -82,11 +86,13 @@ namespace RazorPad.ViewModels
         private void InitializeTemplateEditors()
         {
             TemplateEditors = new ObservableCollection<RazorTemplateEditorViewModel>();
-            
-            var defaultDocument = AddNewTemplateEditor();
-            defaultDocument.TemplateText = "<h1>Welcome to @Model.Name!</h1>\r\n<div>Start typing some text to get started.</div>\r\n<div>Or, try adding a property called 'Message' and see what happens...</div>\r\n\r\n<h3>@Model.Message</h3>";
-            defaultDocument.ModelProvider = new JsonModelProvider(json: "{\r\n\tName: 'RazorPad'\r\n}");
-            defaultDocument.Execute();
+
+            var defaultDocument = new RazorDocument {
+                    Template = "<h1>Welcome to @Model.Name!</h1>\r\n<div>Start typing some text to get started.</div>\r\n<div>Or, try adding a property called 'Message' and see what happens...</div>\r\n\r\n<h3>@Model.Message</h3>",
+                    ModelProvider = new JsonModelProvider(json: "{\r\n\tName: 'RazorPad'\r\n}")
+                };
+
+            AddNewTemplateEditor(new RazorTemplateEditorViewModel(defaultDocument)).Execute();
         }
 
         internal RazorTemplateEditorViewModel AddNewTemplateEditor(string filename = null, bool current = true)
@@ -98,24 +104,54 @@ namespace RazorPad.ViewModels
 
             if (loadedTemplate != null)
             {
-                loadedTemplate.LoadFromFile(filename);
-
                 if (current)
                     CurrentTemplate = loadedTemplate;
 
                 return loadedTemplate;
             }
 
-            var templateEditor = new RazorTemplateEditorViewModel(filename);
-            templateEditor.OnStatusUpdated += (sender, args) => StatusMessage = args.Message;
+            var document = _documentLoader.Load(filename);
 
+            return AddNewTemplateEditor(new RazorTemplateEditorViewModel(document));
+        }
+
+        internal RazorTemplateEditorViewModel AddNewTemplateEditor(RazorTemplateEditorViewModel templateEditor, bool current = true)
+        {
+            templateEditor.OnStatusUpdated += (sender, args) => StatusMessage = args.Message;
 
             TemplateEditors.Add(templateEditor);
 
             if (current)
                 CurrentTemplate = templateEditor;
 
+            templateEditor.Execute();
+
             return templateEditor;
         }
+
+        public void SaveCurrentTemplate(string fileName = null)
+        {
+            var template = CurrentTemplate;
+            var targetFilename = fileName ?? template.Filename;
+
+            try
+            {
+                if (string.IsNullOrWhiteSpace(targetFilename))
+                    throw new ApplicationException("No filename specified!");
+
+                if (targetFilename.EndsWith(".razorpad", StringComparison.OrdinalIgnoreCase))
+                    throw new NotImplementedException("Saving .razorpad documents has not been implemented yet -- coming soon!");
+
+                template.Filename = targetFilename;
+
+                using (var writer = new StreamWriter(File.OpenWrite(template.Filename)))
+                    writer.Write(template.TemplateText);
+            }
+            catch (Exception ex)
+            {
+                StatusMessage = ex.Message;
+            }
+        }
+
     }
 }

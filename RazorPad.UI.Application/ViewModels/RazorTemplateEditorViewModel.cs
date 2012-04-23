@@ -5,9 +5,7 @@ using System.Text.RegularExpressions;
 using System.Web.Razor;
 using RazorPad.Compilation;
 using RazorPad.Framework;
-using RazorPad.Persistence;
 using RazorPad.UI;
-using RazorPad.UI.Json;
 using RazorPad.UI.ModelBuilders;
 
 namespace RazorPad.ViewModels
@@ -15,7 +13,6 @@ namespace RazorPad.ViewModels
     public class RazorTemplateEditorViewModel : ViewModelBase
     {
         private readonly ModelBuilderFactory _modelBuilderFactory;
-        private readonly RazorDocumentLoader _documentLoader;
 
         public ITemplateCompiler TemplateCompiler { get; set; }
 
@@ -32,6 +29,21 @@ namespace RazorPad.ViewModels
             }
         }
 
+        public RazorDocument Document
+        {
+            get { return _document; }
+            private set
+            {
+                _document = value;
+
+                if (_document != null && _document.ModelProvider != null)
+                {
+                    _document.ModelProvider.ModelChanged += TriggerRefresh;
+                }
+            }
+        }
+        private RazorDocument _document;
+
         public TemplateCompilationParameters TemplateCompilationParameters
         {
             get
@@ -43,41 +55,8 @@ namespace RazorPad.ViewModels
 
         public ModelBuilder ModelBuilder
         {
-            get { return _modelBuilder ?? (ModelBuilder = _modelBuilderFactory.Create(_modelProvider)); }
-            set
-            {
-                if (_modelBuilder == value)
-                    return;
-
-                _modelBuilder = value;
-                OnPropertyChanged("ModelBuilder");
-            }
+            get { return _modelBuilderFactory.Create(Document.ModelProvider); }
         }
-        private ModelBuilder _modelBuilder;
-
-        public IModelProvider ModelProvider
-        {
-            get { return _modelProvider; }
-            set
-            {
-                if (_modelProvider == value)
-                    return;
-
-                if (_modelProvider != null)
-                    _modelProvider.ModelChanged -= TriggerRefresh;
-
-                _modelProvider = value;
-
-                if (_modelProvider != null)
-                    _modelProvider.ModelChanged += TriggerRefresh;
-
-                OnPropertyChanged("ModelProvider");
-
-                _modelBuilder = null;
-                OnPropertyChanged("ModelBuilder");
-            }
-        }
-        private IModelProvider _modelProvider;
 
         public InMemoryTextWriter Messages
         {
@@ -123,17 +102,16 @@ namespace RazorPad.ViewModels
 
         public string Filename
         {
-            get { return _filename; }
+            get { return Document.Filename; }
             set
             {
-                if (_filename == value)
+                if (Document.Filename == value)
                     return;
 
-                _filename = value;
+                Document.Filename = value;
                 OnPropertyChanged("Filename");
             }
         }
-        private string _filename;
 
         public string GeneratedTemplateCode
         {
@@ -165,18 +143,17 @@ namespace RazorPad.ViewModels
 
         public string TemplateText
         {
-            get { return _templateText; }
+            get { return Document.Template; }
             set
             {
-                if (_templateText == value)
+                if (Document.Template == value)
                     return;
 
-                _templateText = value;
+                Document.Template = value;
                 OnPropertyChanged("TemplateText");
                 Refresh();
             }
         }
-        private string _templateText;
 
         public bool CanSaveToCurrentlyLoadedFile
         {
@@ -189,18 +166,13 @@ namespace RazorPad.ViewModels
         }
 
 
-        public RazorTemplateEditorViewModel(string filename = null, RazorDocumentLoader documentLoader = null, ModelBuilderFactory modelBuilderFactory = null)
+        public RazorTemplateEditorViewModel(RazorDocument document = null, ModelBuilderFactory modelBuilderFactory = null)
         {
             _modelBuilderFactory = modelBuilderFactory ?? new ModelBuilderFactory();
-            _documentLoader = documentLoader ?? new RazorDocumentLoader();
 
+            Document = document ?? new RazorDocument();
             Messages = new InMemoryTextWriter();
             TemplateCompiler = new TemplateCompiler();
-
-            if(!string.IsNullOrWhiteSpace(filename))
-                LoadFromFile(filename);
-
-            Execute();
         }
 
 
@@ -256,7 +228,7 @@ namespace RazorPad.ViewModels
             try
             {
                 Log("Retrieving model...");
-                var model = ModelProvider.GetModel();
+                var model = Document.GetModel();
 
                 Log("Executing template...");
                 ExecutedTemplateOutput = TemplateCompiler.Execute(TemplateText, model);
@@ -279,47 +251,6 @@ namespace RazorPad.ViewModels
         private void Log(Exception ex)
         {
             Messages.WriteLine("[{0}]  {1}\r\n{2}", DateTime.Now.ToShortTimeString(), ex.Message, ex.StackTrace);
-        }
-
-        public void LoadFromFile(string fileName)
-        {
-            try
-            {
-                var document = _documentLoader.Load(fileName);
-                Filename = document.Filename;
-                TemplateText = document.Template;
-                ModelProvider = document.ModelProvider;
-                ModelProvider.TriggerModelChanged();
-            }
-            catch (Exception ex)
-            {
-                Log(ex);
-                UpdateStatus(ex.Message);
-            }
-        }
-
-        public void SaveToFile(string fileName = null)
-        {
-            var targetFilename = fileName ?? Filename;
-
-            try
-            {
-                if (string.IsNullOrWhiteSpace(targetFilename))
-                    throw new ApplicationException("No filename specified!");
-
-                if (targetFilename.EndsWith(".razorpad", StringComparison.OrdinalIgnoreCase))
-                    throw new NotImplementedException("Saving .razorpad documents has not been implemented yet -- coming soon!");
-
-                Filename = targetFilename;
-
-                using (var writer = new StreamWriter(File.OpenWrite(Filename)))
-                    writer.Write(TemplateText);
-            }
-            catch (Exception ex)
-            {
-                Log(ex);
-                UpdateStatus(ex.Message);
-            }
         }
 
         private void UpdateStatus(string statusMessage)
