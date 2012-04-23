@@ -106,9 +106,7 @@ namespace RazorPad.ViewModels
                 return loadedTemplate;
             }
 
-            var templateEditor = new RazorTemplateEditorViewModel(filename) {
-                        ModelBuilder = new JsonModelBuilder(),
-                    };
+            var templateEditor = new RazorTemplateEditorViewModel(filename);
             templateEditor.OnStatusUpdated += (sender, args) => StatusMessage = args.Message;
 
 

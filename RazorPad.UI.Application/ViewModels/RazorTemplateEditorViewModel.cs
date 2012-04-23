@@ -43,14 +43,13 @@ namespace RazorPad.ViewModels
 
         public ModelBuilder ModelBuilder
         {
-            get { return _modelBuilder; }
+            get { return _modelBuilder ?? (ModelBuilder = _modelBuilderFactory.Create(_modelProvider)); }
             set
             {
-                _modelBuilder = value;
+                if (_modelBuilder == value)
+                    return;
 
-                if (value != null && ModelProvider == null && _modelBuilder.ModelProvider != null)
-                    ModelProvider = _modelBuilder.ModelProvider;
-                
+                _modelBuilder = value;
                 OnPropertyChanged("ModelBuilder");
             }
         }
@@ -67,15 +66,15 @@ namespace RazorPad.ViewModels
                 if (_modelProvider != null)
                     _modelProvider.ModelChanged -= TriggerRefresh;
 
-                if (value != null)
-                    value.ModelChanged += TriggerRefresh;
-
-                if(ModelBuilder != null)
-                    ModelBuilder.ModelProvider = value;
-
                 _modelProvider = value;
 
+                if (_modelProvider != null)
+                    _modelProvider.ModelChanged += TriggerRefresh;
+
                 OnPropertyChanged("ModelProvider");
+
+                _modelBuilder = null;
+                OnPropertyChanged("ModelBuilder");
             }
         }
         private IModelProvider _modelProvider;
@@ -288,8 +287,8 @@ namespace RazorPad.ViewModels
             {
                 var document = _documentLoader.Load(fileName);
                 Filename = document.Filename;
-                ModelBuilder = _modelBuilderFactory.Create(document.ModelProvider);
                 TemplateText = document.Template;
+                ModelProvider = document.ModelProvider;
                 ModelProvider.TriggerModelChanged();
             }
             catch (Exception ex)

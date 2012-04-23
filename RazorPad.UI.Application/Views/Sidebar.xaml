@@ -6,6 +6,6 @@
              mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="300" 
              Width="300" Padding="5 0">
     
-    <ContentPresenter Content="{Binding ModelBuilder}" DataContext="{Binding ModelProvider}" />
+    <ContentPresenter Content="{Binding ModelBuilder}" />
     
 </UserControl>

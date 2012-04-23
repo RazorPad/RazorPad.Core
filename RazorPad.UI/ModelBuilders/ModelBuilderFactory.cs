@@ -7,34 +7,34 @@ namespace RazorPad.UI.ModelBuilders
 {
     public class ModelBuilderFactory
     {
-        private readonly IDictionary<string, ModelBuilder> _modelBuilders;
+        private readonly IDictionary<string, IModelBuilderBuilder> _modelBuilders;
+        private readonly IModelBuilderBuilder DefaultBuilder;
 
-        public ModelBuilder DefaultBuilder { get; set; }
 
         [ImportingConstructor]
-        public ModelBuilderFactory(IEnumerable<ModelBuilder> modelBuilders = null)
+        public ModelBuilderFactory(IEnumerable<IModelBuilderBuilder> modelBuilders = null)
         {
-            DefaultBuilder = new JsonModelBuilder();
+            DefaultBuilder = new JsonModelBuilderBuilder();
             _modelBuilders = (modelBuilders ?? new [] { DefaultBuilder })
                 .ToDictionary(x => x.GetType().Name.Replace("ModelBuilder", string.Empty), y => y);
         }
 
         public ModelBuilder Create(IModelProvider modelProvider)
         {
-            var providerName = modelProvider.GetType().Name.Replace("ModelProvider", string.Empty);
+            IModelBuilderBuilder builder = null;
+
+            if (modelProvider != null)
+            {
+                var providerName = modelProvider.GetType().Name.Replace("ModelProvider", string.Empty);
+
+                if (_modelBuilders.ContainsKey(providerName))
+                    builder = _modelBuilders[providerName];
+            }
             
-            var builder = Create(providerName);
-            builder.ModelProvider = modelProvider;
+            if (builder == null)
+                builder = DefaultBuilder;
 
-            return builder;
-        }
-
-        public ModelBuilder Create(string providerName)
-        {
-            if (_modelBuilders.ContainsKey(providerName))
-                return _modelBuilders[providerName];
-
-            return DefaultBuilder;
+            return builder.Build(modelProvider);
         }
     }
 }

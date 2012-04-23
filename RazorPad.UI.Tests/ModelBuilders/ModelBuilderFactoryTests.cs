@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RazorPad.Providers;
+using RazorPad.UI.Json;
 
 namespace RazorPad.UI.ModelBuilders
 {
@@ -11,14 +12,7 @@ namespace RazorPad.UI.ModelBuilders
         [TestInitialize]
         public void TestInitialize()
         {
-            _factory = new ModelBuilderFactory(new[] {new Json.JsonModelBuilder()});
-        }
-
-        [TestMethod]
-        public void ShouldInstantiateModelBuilderByNameExcludingModelBuilderSuffix()
-        {
-            var builder = _factory.Create("Json");
-            Assert.IsInstanceOfType(builder, typeof(Json.JsonModelBuilder));
+            _factory = new ModelBuilderFactory(new[] {new JsonModelBuilderBuilder()});
         }
 
         [TestMethod]
@@ -26,7 +20,7 @@ namespace RazorPad.UI.ModelBuilders
         {
             var jsonModelProvider = new JsonModelProvider();
             var builder = _factory.Create(jsonModelProvider);
-            Assert.IsInstanceOfType(builder, typeof(Json.JsonModelBuilder));
+            Assert.IsInstanceOfType(builder, typeof(JsonModelBuilder));
         }
 
         [TestMethod]
@@ -34,7 +28,8 @@ namespace RazorPad.UI.ModelBuilders
         {
             var jsonModelProvider = new JsonModelProvider();
             var builder = _factory.Create(jsonModelProvider);
-            Assert.AreSame(jsonModelProvider, builder.ModelProvider);
+            dynamic dataContext = builder.DataContext;
+            Assert.AreSame(jsonModelProvider, dataContext.ModelProvider);
         }
     }
 }
