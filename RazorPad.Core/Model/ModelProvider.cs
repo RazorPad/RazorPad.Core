@@ -32,12 +32,15 @@ namespace RazorPad
             return model;
         }
 
-        public void TriggerModelChanged()
+        protected void TriggerModelChanged()
         {
             if (_modelChanged != null)
                 _modelChanged(this, EventArgs.Empty);
         }
 
         protected abstract dynamic RebuildModel();
+
+        public abstract string Serialize();
+        public abstract void Deserialize(string serialized);
     }
 }

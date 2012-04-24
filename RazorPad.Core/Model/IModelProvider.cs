@@ -10,6 +10,7 @@ namespace RazorPad
 
         dynamic GetModel();
 
-        void TriggerModelChanged();
+        string Serialize();
+        void Deserialize(string serialized);
     }
 }

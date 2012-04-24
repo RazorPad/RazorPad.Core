@@ -25,6 +25,16 @@ namespace RazorPad.Providers
             Json = json;
         }
 
+        public override string Serialize()
+        {
+            return Json;
+        }
+
+        public override void Deserialize(string serialized)
+        {
+            Json = serialized;
+        }
+
         protected override dynamic RebuildModel()
         {
             var serializer = new JavaScriptSerializer();

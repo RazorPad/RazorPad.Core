@@ -1,4 +1,5 @@
 using System;
+using System.Web.Script.Serialization;
 
 namespace RazorPad.Providers
 {
@@ -24,6 +25,21 @@ namespace RazorPad.Providers
             : base(modelType)
         {
             Model = model;
+        }
+
+        public override string Serialize()
+        {
+            return new JavaScriptSerializer().Serialize(Model);
+        }
+
+        public override void Deserialize(string serialized)
+        {
+            var serializer = new JavaScriptSerializer();
+
+            if (ModelType == typeof(object))
+                Model = serializer.DeserializeObject(serialized);
+            else
+                Model = serializer.Deserialize(serialized, ModelType);
         }
 
         protected override dynamic RebuildModel()
