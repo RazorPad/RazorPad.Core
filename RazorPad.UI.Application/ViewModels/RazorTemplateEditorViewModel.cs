@@ -2,6 +2,7 @@
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Web.Razor;
 using RazorPad.Compilation;
 using RazorPad.Framework;
@@ -192,16 +193,18 @@ namespace RazorPad.ViewModels
         {
             Messages.Flush();
 
-            Log("Parsing template...");
-            Parse();
-
             try
             {
-                Log("Executing template...");
-                ExecutedTemplateOutput = TemplateCompiler.Execute(_document);
-                Log("Success!");
+                new TaskFactory().StartNew(() => {
+                    Log("Parsing template...");
+                    Parse();
 
-                UpdateStatus("Success!");
+                    Log("Executing template...");
+                    ExecutedTemplateOutput = TemplateCompiler.Execute(_document);
+                    Log("Success!");
+
+                    UpdateStatus("Success!");
+                });
             }
             catch (Exception ex)
             {
