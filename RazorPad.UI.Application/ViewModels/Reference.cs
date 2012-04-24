@@ -49,7 +49,10 @@ namespace RazorPad.ViewModels
 
 		private void Initialize(Assembly assembly)
 		{
-			if (assembly.IsDynamic) return;
+			if (assembly.IsDynamic)
+			{
+				throw new ArgumentException("Dynamic Assemblies are not supported.");
+			}
 
 			FullName = assembly.FullName;
 			Location = assembly.Location;

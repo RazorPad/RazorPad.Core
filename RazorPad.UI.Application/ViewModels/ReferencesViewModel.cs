@@ -39,7 +39,7 @@ namespace RazorPad.ViewModels
 		private static IEnumerable<Reference> GetMockFrameworkReferences()
 		{
 			var assemblies = AppDomain.CurrentDomain.GetAssemblies();
-			return assemblies.Select(a => new Reference(a));
+			return assemblies.Where(a => !a.IsDynamic).Select(a => new Reference(a));
 		}
 	}
 }
