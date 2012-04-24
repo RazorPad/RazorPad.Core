@@ -38,10 +38,8 @@ namespace RazorPad.ViewModels
 
 		private static IEnumerable<Reference> GetMockFrameworkReferences()
 		{
-			return new[] {
-				new Reference("System.Data", "2.0.0.0", null, null),
-				new Reference("Microsoft.Design", "3.5.0.0", null, null)
-			};
+			var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+			return assemblies.Select(a => new Reference(a));
 		}
 	}
 }

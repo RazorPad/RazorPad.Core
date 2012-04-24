@@ -9,6 +9,8 @@ namespace RazorPad.ViewModels
 {
 	public class Reference : ISearchable
 	{
+		private Assembly a;
+
 		public string Name { get; set; }
 		public string FullName { get; set; }
 		public string Location { get; set; }
@@ -16,6 +18,7 @@ namespace RazorPad.ViewModels
 		public string Culture { get; set; }
 		public string PublicKeyToken { get; set; }
 		public string ProcessorArchitecture { get; set; }
+		public bool Selected { get; set; }
 
 		public Reference(string name, string version, string culture, string publicKeyToken)
 		{
@@ -39,10 +42,18 @@ namespace RazorPad.ViewModels
 			{
 				throw new ArgumentException("Assembly specified is a not a .Net assembly.", ex);
 			}
-			
+
+			Initialize(assembly);
+
+		}
+
+		private void Initialize(Assembly assembly)
+		{
+			if (assembly.IsDynamic) return;
+
 			FullName = assembly.FullName;
-			Location = path;
-			
+			Location = assembly.Location;
+
 			var an = new AssemblyName(FullName);
 			Name = an.Name;
 			Version = an.Version.ToString();
@@ -51,6 +62,11 @@ namespace RazorPad.ViewModels
 			ProcessorArchitecture = an.ProcessorArchitecture.ToString();
 		}
 
-		public bool Selected { get; set; }
+		public Reference(Assembly assembly)
+		{
+			Initialize(assembly);
+		}
+
+		
 	}
 }
