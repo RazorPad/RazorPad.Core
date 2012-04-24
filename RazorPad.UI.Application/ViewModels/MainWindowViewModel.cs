@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
 using System.Windows.Input;
+using RazorPad.Framework;
 using RazorPad.Persistence;
 using RazorPad.Providers;
 using RazorPad.UI.Wpf;
@@ -11,7 +11,9 @@ namespace RazorPad.ViewModels
 {
     public class MainWindowViewModel : CommandSink
     {
-        private readonly RazorDocumentLoader _documentLoader;
+        private readonly RazorDocumentManager _documentManager;
+
+        public event EventHandler<EventArgs<string>> Error;
 
         public Func<RazorTemplateEditorViewModel, string> GetSaveAsFilename
         {
@@ -58,7 +60,7 @@ namespace RazorPad.ViewModels
 
         public MainWindowViewModel()
         {
-            _documentLoader = new RazorDocumentLoader();
+            _documentManager = new RazorDocumentManager();
             InitializeTemplateEditors();
             RegisterCommands();
         }
@@ -92,10 +94,10 @@ namespace RazorPad.ViewModels
                     ModelProvider = new JsonModelProvider(json: "{\r\n\tName: 'RazorPad'\r\n}")
                 };
 
-            AddNewTemplateEditor(new RazorTemplateEditorViewModel(defaultDocument)).Execute();
+            AddNewTemplateEditor(new RazorTemplateEditorViewModel(defaultDocument));
         }
 
-        internal RazorTemplateEditorViewModel AddNewTemplateEditor(string filename = null, bool current = true)
+        internal void AddNewTemplateEditor(string filename = null, bool current = true)
         {
             RazorTemplateEditorViewModel loadedTemplate =
                 TemplateEditors
@@ -107,15 +109,15 @@ namespace RazorPad.ViewModels
                 if (current)
                     CurrentTemplate = loadedTemplate;
 
-                return loadedTemplate;
+                return;
             }
 
-            var document = _documentLoader.Load(filename);
+            var document = _documentManager.Load(filename);
 
-            return AddNewTemplateEditor(new RazorTemplateEditorViewModel(document));
+            AddNewTemplateEditor(new RazorTemplateEditorViewModel(document));
         }
 
-        internal RazorTemplateEditorViewModel AddNewTemplateEditor(RazorTemplateEditorViewModel templateEditor, bool current = true)
+        internal void AddNewTemplateEditor(RazorTemplateEditorViewModel templateEditor, bool current = true)
         {
             templateEditor.OnStatusUpdated += (sender, args) => StatusMessage = args.Message;
 
@@ -125,33 +127,26 @@ namespace RazorPad.ViewModels
                 CurrentTemplate = templateEditor;
 
             templateEditor.Execute();
-
-            return templateEditor;
         }
 
         public void SaveCurrentTemplate(string fileName = null)
         {
-            var template = CurrentTemplate;
-            var targetFilename = fileName ?? template.Filename;
-
             try
             {
-                if (string.IsNullOrWhiteSpace(targetFilename))
-                    throw new ApplicationException("No filename specified!");
+                var document = CurrentTemplate.Document;
 
-                if (targetFilename.EndsWith(".razorpad", StringComparison.OrdinalIgnoreCase))
-                    throw new NotImplementedException("Saving .razorpad documents has not been implemented yet -- coming soon!");
+                _documentManager.Save(document, fileName);
 
-                template.Filename = targetFilename;
-
-                using (var writer = new StreamWriter(File.OpenWrite(template.Filename)))
-                    writer.Write(template.Template);
+                if(fileName != null)
+                {
+                    if(!fileName.Equals(document.Filename, StringComparison.OrdinalIgnoreCase))
+                        CurrentTemplate.Filename = fileName;
+                }
             }
             catch (Exception ex)
             {
-                StatusMessage = ex.Message;
+                Error.SafeInvoke(ex.Message);
             }
         }
-
     }
 }

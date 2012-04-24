@@ -19,6 +19,9 @@ namespace RazorPad.Views
         {
             InitializeComponent();
 
+            ViewModel.Error +=
+                (sender, args) => MessageBox.Show(args.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+
             ViewModel.GetSaveAsFilename += GetSaveAsFilename;
         }
 

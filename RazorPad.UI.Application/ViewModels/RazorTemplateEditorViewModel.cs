@@ -30,6 +30,11 @@ namespace RazorPad.ViewModels
             }
         }
 
+        public RazorDocument Document
+        {
+            get { return _document; }
+        }
+
         public ModelBuilder ModelBuilder
         {
             get { return _modelBuilderFactory.Create(_document.ModelProvider); }

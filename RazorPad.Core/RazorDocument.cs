@@ -16,7 +16,22 @@ namespace RazorPad
 
         public string TemplateBaseClassName { get; set; }
 
+        public RazorDocumentKind DocumentKind
+        {
+            get
+            {
+                if(_documentKind != null)
+                    return _documentKind.Value;
 
+                if(string.IsNullOrWhiteSpace(Filename) || Filename.EndsWith(".cshtml"))
+                    return RazorDocumentKind.TemplateOnly;
+
+                return RazorDocumentKind.Full;
+            }
+            set { _documentKind = value; }
+        }
+        private RazorDocumentKind? _documentKind;
+        
         public RazorDocument(string template, object model, IDictionary<string, string> metadata = null)
             : this(template, new BasicModelProvider(model: model), metadata)
         {

@@ -9,12 +9,12 @@ namespace RazorPad.Core.Tests
     public class AcceptanceTests
     {
         private TemplateCompiler _templateCompiler;
-        private RazorDocumentLoader _loader;
+        private RazorDocumentManager _manager;
 
         [TestInitialize]
         public void TestInitialize()
         {
-            _loader = new RazorDocumentLoader();
+            _manager = new RazorDocumentManager();
             _templateCompiler = new TemplateCompiler();
         }
 
@@ -71,7 +71,7 @@ namespace RazorPad.Core.Tests
         private RazorDocument LoadDocument(string name)
         {
             using (var reader = GetResourceStream(name))
-                return _loader.Load(reader);
+                return _manager.Load(reader);
         }
 
         private string LoadResource(string name)
