@@ -64,5 +64,20 @@ namespace RazorPad.Views
             var filename = GetSaveAsFilename(ViewModel.CurrentTemplate);
             ViewModel.CurrentTemplate.SaveToFile(filename);
         }
+
+    	private void AddReference_Click(object sender, RoutedEventArgs e)
+    	{
+			var dlg = new ReferencesDialogWindow {Owner = this};
+
+    		// Open the dialog box modally 
+			dlg.ShowDialog();
+
+			if (dlg.DialogResult == true)
+			{
+				// Update refs
+				dlg.Close();
+			}
+
+    	}
     }
 }
