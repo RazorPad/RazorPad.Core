@@ -19,45 +19,10 @@ namespace RazorPad.Views
 	/// <summary>
 	/// Interaction logic for AssemblyReferences.xaml
 	/// </summary>
-	public partial class AssemblyReferences : UserControl
+	public partial class AssemblyReferences
 	{
 		// parses the filter string
-		private Filter _filter = new Filter();
-
-		private class Filter
-		{
-			// main filer text
-			private string _text;
-
-			/// <summary>
-			/// Indicates if the filter is empty.
-			/// </summary>
-			public bool IsEmpty
-			{
-				get { return string.IsNullOrEmpty(_text); }
-			}
-
-			/// <summary>
-			/// Parse the filter text, determines if doing an operation,
-			/// for example 'red > 100'.
-			/// </summary>
-			public void Parse(string text)
-			{
-				// store main text
-				_text = text.Trim().ToLower();
-
-				// enhancement: add regex filtering support				
-			}
-
-			/// <summary>
-			/// Return true if the Reference matches the filter.
-			/// </summary>
-			public bool Matches(Reference item)
-			{
-				// check name
-				return item.Name.ToLower().Contains(_text);
-			}
-		}
+		private static readonly Filter<Reference> Filter = new Filter<Reference>();
 
 		public AssemblyReferences()
 		{
@@ -73,31 +38,30 @@ namespace RazorPad.Views
 		}
 
 		/// <summary>
-		/// Filter the list synchronously. Alternately, you can use Dispatcher 
-		/// to filter the list in the background, or BackgroundWorker to filter 
-		/// the list using a separate thread.
+		/// Filter the list synchronously. 
 		/// </summary>
 		private void FilterList()
 		{
-			// parse the filter string once, the _filter object
+			// parse the filter string once, the Filter object
 			// is used later in the FilterCallback method
-			_filter.Parse(FilterText.Text);
+			Filter.Parse(FilterText.Text);
 
 			// get the data the ListView is bound to
 			var view = CollectionViewSource.GetDefaultView(ReferencesListView.ItemsSource);
 
 			// clear the list if the filter is empty, otherwise filter the list
-			view.Filter = (_filter.IsEmpty) ? null :
-				view.Filter = FilterCallback;
+			view.Filter = (Filter.IsEmpty)
+			              	? null
+			              	: view.Filter = FilterCallback;
 		}
 
 		/// <summary>
 		/// Called for each item in the list. Return true if it
 		/// should be in the list, or false to not be in the list.
 		/// </summary>
-		private bool FilterCallback(object item)
+		private static bool FilterCallback(object item)
 		{
-			return (_filter.Matches(item as Reference));
+			return (Filter.Matches(item as Reference));
 		}
 
 		/// <summary>
@@ -106,8 +70,16 @@ namespace RazorPad.Views
 		private void UpdateResult()
 		{
 			Result.Content = string.Format("{0} item{1}",
-				ReferencesListView.Items.Count,
-				ReferencesListView.Items.Count == 1 ? "" : "s");
+			                               ReferencesListView.Items.Count,
+			                               ReferencesListView.Items.Count == 1 ? "" : "s");
 		}
+
+		private void HandleDoubleClick(object sender, MouseButtonEventArgs e)
+		{
+			var reference = ((ListViewItem)sender).Content as Reference;
+			if (reference != null)
+				reference.Selected = !reference.Selected;
+		}
+
 	}
 }

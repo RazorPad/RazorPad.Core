@@ -63,10 +63,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ViewModels\Filter.cs" />
     <Compile Include="ViewModels\Reference.cs" />
     <Compile Include="ViewModels\ReferencesDialogWindow.xaml.cs">
       <DependentUpon>ReferencesDialogWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\ReferencesViewModel.cs" />
     <Compile Include="ViewModels\SearchableReferencesViewModel.cs" />
     <Compile Include="Views\AssemblyReferences.xaml.cs">
       <DependentUpon>AssemblyReferences.xaml</DependentUpon>

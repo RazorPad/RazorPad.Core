@@ -5,7 +5,7 @@ using System.Text;
 
 namespace RazorPad.ViewModels
 {
-	public class Reference
+	public class Reference : ISearchable
 	{
 		public string Name { get; set; }
 		public string Location { get; set; }
@@ -23,5 +23,7 @@ namespace RazorPad.ViewModels
 			: this("<name not set>") { }
 
 
+
+		public bool Selected { get; set; }
 	}
 }

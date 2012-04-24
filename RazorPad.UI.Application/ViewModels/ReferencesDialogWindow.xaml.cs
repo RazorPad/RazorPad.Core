@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -23,9 +24,28 @@ namespace RazorPad.ViewModels
 			InitializeComponent();
 		}
 
-		private void okButton_Click(object sender, RoutedEventArgs e)
+		private void OkButtonClick(object sender, RoutedEventArgs e)
 		{
-			// TODO : Add reference
+			DialogResult = true;
+		}
+
+		private void BrowseButtonClicked(object sender, RoutedEventArgs e)
+		{
+			var ofd = new OpenFileDialog {
+				DefaultExt = ".dll", 
+				Filter = "Executables (.dll)|*.dll"
+			};
+
+
+			var result = ofd.ShowDialog();
+			// Process open file dialog box results
+			if (result == System.Windows.Forms.DialogResult.OK)
+			{
+				// Set value to textbox which will update the property of VM
+				//txtFileName.Text = ofd.FileName;
+				var vm = this.DataContext as ReferencesViewModel;
+				vm.RecentReferences.References.Add(new Reference(ofd.FileName));
+			}
 		}
 	}
 }
