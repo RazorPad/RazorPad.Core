@@ -18,8 +18,15 @@
         <ListView x:Name="ReferencesListView"
                   ItemsSource="{Binding References}"
                   VirtualizingStackPanel.IsVirtualizing="True"
-                  ItemContainerStyle="{DynamicResource ListViewItemStyleEvent}"
                   >
+            <ListView.Resources>
+                <DataTemplate x:Key="Templ">
+                    <TextBlock HorizontalAlignment="Left" Text="{Binding}"/>
+                </DataTemplate>
+                <Style x:Key="HeaderStyle" TargetType="GridViewColumnHeader">
+                    <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                </Style>
+            </ListView.Resources>
             <ListView.View>
                 <GridView>
                     <GridViewColumn Width="30">
@@ -31,20 +38,18 @@
                     </GridViewColumn>
                     <GridViewColumn Header="Name"
                                     DisplayMemberBinding="{Binding Name}"
-                                    Width="250"/>
+                                    Width="200"
+                                    HeaderContainerStyle="{StaticResource HeaderStyle}" />
                     <GridViewColumn Header="Version"
                                     DisplayMemberBinding="{Binding Version}"
-                                    Width="100" />
+                                    Width="80"
+                                    HeaderContainerStyle="{StaticResource HeaderStyle}"/>
                     <GridViewColumn Header="Path"
                                     DisplayMemberBinding="{Binding Location}" 
-                                    Width="200" />
+                                    Width="270"
+                                    HeaderContainerStyle="{StaticResource HeaderStyle}" />
                 </GridView>
             </ListView.View>
-            <ListView.Resources>
-                <Style x:Key="ListViewItemStyleEvent" TargetType="{x:Type ListViewItem}" >
-                    <EventSetter Event="MouseDoubleClick" Handler="HandleDoubleClick" />
-                </Style>
-            </ListView.Resources>
         </ListView>
     </DockPanel>
 </UserControl>

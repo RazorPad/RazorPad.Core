@@ -65,7 +65,7 @@
     </ApplicationDefinition>
     <Compile Include="ViewModels\Filter.cs" />
     <Compile Include="ViewModels\Reference.cs" />
-    <Compile Include="ViewModels\ReferencesDialogWindow.xaml.cs">
+    <Compile Include="Views\ReferencesDialogWindow.xaml.cs">
       <DependentUpon>ReferencesDialogWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\ReferencesViewModel.cs" />
@@ -84,7 +84,7 @@
     </Compile>
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\RazorTemplateEditorViewModel.cs" />
-    <Page Include="ViewModels\ReferencesDialogWindow.xaml">
+    <Page Include="Views\ReferencesDialogWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

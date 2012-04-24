@@ -29,19 +29,18 @@ namespace RazorPad.ViewModels
 		private static IEnumerable<Reference> GetMockRecentReferences()
 		{
 			return new[] {
-				new Reference("System") { Version = "4.0.0.0" },
-				new Reference("System.Web") { Version = "4.0.0.0" },
-				new Reference("System.Data") { Version = "2.0.0.0" },
-				new Reference("Microsoft.Design") { Version = "3.5.0.0" }
+				new Reference("System", "4.0.0.0", null, null),
+				new Reference("System.Web", "4.0.0.0", null, null),
+				new Reference("System.Data", "2.0.0.0", null, null),
+				new Reference("Microsoft.Design", "3.5.0.0", null, null)
 			};
 		}
 
 		private static IEnumerable<Reference> GetMockFrameworkReferences()
 		{
 			return new[] {
-				new Reference("System") { Version = "4.0.0.0" },
-				new Reference("System.Web") { Version = "4.0.0.0" },
-				new Reference("Microsoft.Design") { Version = "3.5.0.0" }
+				new Reference("System.Data", "2.0.0.0", null, null),
+				new Reference("Microsoft.Design", "3.5.0.0", null, null)
 			};
 		}
 	}

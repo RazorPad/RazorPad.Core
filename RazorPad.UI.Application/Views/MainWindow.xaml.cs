@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using Microsoft.Win32;
@@ -69,24 +70,15 @@ namespace RazorPad.Views
 		private void AddReference_Click(object sender, RoutedEventArgs e)
 		{
 			var dlg = new ReferencesDialogWindow { Owner = this };
-			var referencesVM = new ReferencesViewModel();
-			dlg.DataContext = referencesVM;
-
-			// Open the dialog box modally 
+			
 			dlg.ShowDialog();
 
-			if (dlg.DialogResult == true)
-			{
-				// Update refs
-				dlg.Close();
+			if (dlg.DialogResult != true) return;
 
+			var referencesVM = dlg.DataContext as ReferencesViewModel;
+			if (referencesVM != null)
 				foreach (var reference in referencesVM.SelectedReferences)
-				{
 					ViewModel.CurrentTemplate.TemplateCompiler.CompilationParameters.AddAssemblyReference(reference.Location);
-				}
-
-			}
-
 		}
 	}
 }
