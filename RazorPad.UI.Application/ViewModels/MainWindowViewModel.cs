@@ -145,7 +145,7 @@ namespace RazorPad.ViewModels
                 template.Filename = targetFilename;
 
                 using (var writer = new StreamWriter(File.OpenWrite(template.Filename)))
-                    writer.Write(template.TemplateText);
+                    writer.Write(template.Template);
             }
             catch (Exception ex)
             {

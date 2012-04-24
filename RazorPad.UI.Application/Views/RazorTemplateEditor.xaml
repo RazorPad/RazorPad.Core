@@ -4,7 +4,7 @@
         xmlns:RazorPadExt="clr-namespace:RazorPad.UI.Wpf;assembly=RazorPad.UI">
 
     <RazorPadExt:DelayedNotifyPropertyChangedTextBox x:Name="TemplateTextBox"
-             Text="{Binding Path=TemplateText, UpdateSourceTrigger=Explicit}"
+             Text="{Binding Path=Template, UpdateSourceTrigger=Explicit}"
              AcceptsReturn="True" AcceptsTab="true" 
              AllowDrop="True" AutoWordSelection="True" />
 

@@ -13,6 +13,7 @@ namespace RazorPad.ViewModels
     public class RazorTemplateEditorViewModel : ViewModelBase
     {
         private readonly ModelBuilderFactory _modelBuilderFactory;
+        private readonly RazorDocument _document;
 
         public ITemplateCompiler TemplateCompiler { get; set; }
 
@@ -29,33 +30,9 @@ namespace RazorPad.ViewModels
             }
         }
 
-        public RazorDocument Document
-        {
-            get { return _document; }
-            private set
-            {
-                _document = value;
-
-                if (_document != null && _document.ModelProvider != null)
-                {
-                    _document.ModelProvider.ModelChanged += TriggerRefresh;
-                }
-            }
-        }
-        private RazorDocument _document;
-
-        public TemplateCompilationParameters TemplateCompilationParameters
-        {
-            get
-            {
-                return TemplateCompiler == null ? null : TemplateCompiler.CompilationParameters;
-            }
-        }
-
-
         public ModelBuilder ModelBuilder
         {
-            get { return _modelBuilderFactory.Create(Document.ModelProvider); }
+            get { return _modelBuilderFactory.Create(_document.ModelProvider); }
         }
 
         public InMemoryTextWriter Messages
@@ -71,20 +48,6 @@ namespace RazorPad.ViewModels
             }
         }
         private InMemoryTextWriter _messages;
-
-        public string ExecutedTemplateInput
-        {
-            get { return _executedTemplateInput; }
-            set
-            {
-                if (_executedTemplateInput == value)
-                    return;
-
-                _executedTemplateInput = value;
-                OnPropertyChanged("ExecutedTemplateInput");
-            }
-        }
-        private string _executedTemplateInput;
 
         public string ExecutedTemplateOutput
         {
@@ -102,13 +65,13 @@ namespace RazorPad.ViewModels
 
         public string Filename
         {
-            get { return Document.Filename; }
+            get { return _document.Filename; }
             set
             {
-                if (Document.Filename == value)
+                if (_document.Filename == value)
                     return;
 
-                Document.Filename = value;
+                _document.Filename = value;
                 OnPropertyChanged("Filename");
             }
         }
@@ -141,16 +104,16 @@ namespace RazorPad.ViewModels
         }
         private GeneratorResults _generatorResults;
 
-        public string TemplateText
+        public string Template
         {
-            get { return Document.Template; }
+            get { return _document.Template; }
             set
             {
-                if (Document.Template == value)
+                if (_document.Template == value)
                     return;
 
-                Document.Template = value;
-                OnPropertyChanged("TemplateText");
+                _document.Template = value;
+                OnPropertyChanged("Template");
                 Refresh();
             }
         }
@@ -168,11 +131,13 @@ namespace RazorPad.ViewModels
 
         public RazorTemplateEditorViewModel(RazorDocument document = null, ModelBuilderFactory modelBuilderFactory = null)
         {
+            _document = document ?? new RazorDocument();
             _modelBuilderFactory = modelBuilderFactory ?? new ModelBuilderFactory();
-
-            Document = document ?? new RazorDocument();
             Messages = new InMemoryTextWriter();
             TemplateCompiler = new TemplateCompiler();
+
+            if (_document.ModelProvider != null)
+                _document.ModelProvider.ModelChanged += (sender, args) => Refresh();
         }
 
 
@@ -184,7 +149,7 @@ namespace RazorPad.ViewModels
 
             using (var writer = new StringWriter())
             {
-                GeneratorResults = TemplateCompiler.GenerateCode(TemplateText, writer);
+                GeneratorResults = TemplateCompiler.GenerateCode(_document, writer);
                 
                 var generatedCode = writer.ToString();
                 generatedCode = Regex.Replace(generatedCode, "//.*", string.Empty);
@@ -227,11 +192,8 @@ namespace RazorPad.ViewModels
 
             try
             {
-                Log("Retrieving model...");
-                var model = Document.GetModel();
-
                 Log("Executing template...");
-                ExecutedTemplateOutput = TemplateCompiler.Execute(TemplateText, model);
+                ExecutedTemplateOutput = TemplateCompiler.Execute(_document);
                 Log("Success!");
 
                 UpdateStatus("Success!");
@@ -241,6 +203,11 @@ namespace RazorPad.ViewModels
                 Log(ex);
                 UpdateStatus(ex.Message);
             }
+        }
+
+        public void Refresh()
+        {
+            Execute();
         }
 
         private void Log(string message)
@@ -256,16 +223,6 @@ namespace RazorPad.ViewModels
         private void UpdateStatus(string statusMessage)
         {
             OnStatusUpdated.SafeInvoke(statusMessage);
-        }
-
-        public void Refresh()
-        {
-            Execute();
-        }
-
-        private void TriggerRefresh(object sender, EventArgs args)
-        {
-            Refresh();
         }
     }
 }

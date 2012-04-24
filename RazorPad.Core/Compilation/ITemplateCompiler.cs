@@ -20,4 +20,22 @@ namespace RazorPad.Compilation
         Type GetTemplateModelType(string templateText);
     }
 
+    public static class ITemplateCompilerExtensions
+    {
+        public static CompilerResults Compile(this ITemplateCompiler compiler, RazorDocument document)
+        {
+            return compiler.Compile(document.Template);
+        }
+
+        public static string Execute(this ITemplateCompiler compiler, RazorDocument document, RazorEngineHost host = null)
+        {
+            return compiler.Execute(document.Template, document.GetModel(), host);
+        }
+
+        public static GeneratorResults GenerateCode(this ITemplateCompiler compiler, RazorDocument document, TextWriter codeWriter = null, RazorEngineHost host = null)
+        {
+            return compiler.GenerateCode(document.Template, codeWriter, host);
+        }
+    }
+
 }
