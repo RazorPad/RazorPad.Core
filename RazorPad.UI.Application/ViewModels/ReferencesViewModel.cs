@@ -22,11 +22,23 @@ namespace RazorPad.ViewModels
 
 		public ReferencesViewModel()
 		{
-			FrameworkReferences = new SearchableReferencesViewModel(GetMockFrameworkReferences());
+            FrameworkReferences = new SearchableReferencesViewModel(LoadStandardReferences());
 			RecentReferences = new SearchableReferencesViewModel(GetMockRecentReferences());
 		}
 
-		private static IEnumerable<Reference> GetMockRecentReferences()
+        private static IEnumerable<Reference> LoadStandardReferences()
+	    {
+	        var paths = StandardDotNetReferencesLocator.GetStandardDotNetReferencePaths() ?? Enumerable.Empty<string>();
+
+            foreach (var path in paths)
+            {
+                Reference reference = null;
+                string message;
+                if (Reference.TryLoadReference(path, out reference, out message)) yield return reference;
+            }
+	    }
+
+	    private static IEnumerable<Reference> GetMockRecentReferences()
 		{
 			return new[] {
 				new Reference("System", "4.0.0.0", null, null),
@@ -34,12 +46,6 @@ namespace RazorPad.ViewModels
 				new Reference("System.Data", "2.0.0.0", null, null),
 				new Reference("Microsoft.Design", "3.5.0.0", null, null)
 			};
-		}
-
-		private static IEnumerable<Reference> GetMockFrameworkReferences()
-		{
-			var assemblies = AppDomain.CurrentDomain.GetAssemblies();
-			return assemblies.Where(a => !a.IsDynamic).Select(a => new Reference(a));
-		}
+		}		
 	}
 }

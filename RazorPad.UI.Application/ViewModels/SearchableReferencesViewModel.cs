@@ -13,7 +13,7 @@ namespace RazorPad.ViewModels
 	{
 		public SearchableReferencesViewModel(IEnumerable<Reference> references)
 		{
-			References = new ObservableCollection<Reference>(references);
+            References = new ObservableCollection<Reference>(references.Distinct().OrderBy(r => r.Name).ThenBy(r => r.Version));
 		}
 
 		public ObservableCollection<Reference> References { get; private set; }
