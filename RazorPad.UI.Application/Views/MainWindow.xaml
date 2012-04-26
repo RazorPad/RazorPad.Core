@@ -17,7 +17,7 @@
                 <MenuItem Header="_Save As..." Click="SaveAsFile_Click" IsEnabled="True" />
             </MenuItem>
             <MenuItem Header="_References">
-                <MenuItem Header="_Add References..." Click="AddReference_Click" IsEnabled="True" />
+                <MenuItem Header="_Manage References..." Click="ManageReference_Click" IsEnabled="True" />
             </MenuItem>
         </Menu>
 

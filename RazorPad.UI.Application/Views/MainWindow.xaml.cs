@@ -67,10 +67,22 @@ namespace RazorPad.Views
 			ViewModel.CurrentTemplate.SaveToFile(filename);
 		}
 
-		private void AddReference_Click(object sender, RoutedEventArgs e)
+		private void ManageReference_Click(object sender, RoutedEventArgs e)
 		{
-			var dlg = new ReferencesDialogWindow { Owner = this };
-			
+			var loadedReferencesTempArray = new string[ViewModel.CurrentTemplate.TemplateCompiler.CompilationParameters.CompilerParameters.ReferencedAssemblies.Count];
+
+			// get the loaded assembly names from the stupid collection to an enumerable one
+			ViewModel.CurrentTemplate.TemplateCompiler.CompilationParameters.CompilerParameters.ReferencedAssemblies.CopyTo(
+				loadedReferencesTempArray, 0);
+
+			var loadedReferences = loadedReferencesTempArray.Select(s => new Reference(s));
+
+			var dlg = new ReferencesDialogWindow
+			{
+				Owner = this,
+				DataContext = new ReferencesViewModel(loadedReferences)
+			};
+
 			dlg.ShowDialog();
 
 			if (dlg.DialogResult != true) return;
