@@ -1,40 +1,30 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.Composition;
-using System.Linq;
-using RazorPad.UI.Json;
-
-namespace RazorPad.UI.ModelBuilders
+namespace RazorPad.UI
 {
-    public class ModelBuilderFactory
+    public class ModelBuilderFactory<TModelProvider, TModelBuilder> : IModelBuilderFactory
+        where TModelProvider : class, IModelProvider
+        where TModelBuilder : ModelBuilder, new()
     {
-        private readonly IDictionary<string, IModelBuilderBuilder> _modelBuilders;
-        private readonly IModelBuilderBuilder DefaultBuilder;
-
-
-        [ImportingConstructor]
-        public ModelBuilderFactory(IEnumerable<IModelBuilderBuilder> modelBuilders = null)
+        public bool CanBuild(IModelProvider provider)
         {
-            DefaultBuilder = new JsonModelBuilderBuilder();
-            _modelBuilders = (modelBuilders ?? new [] { DefaultBuilder })
-                .ToDictionary(x => x.GetType().Name.Replace("ModelBuilder", string.Empty), y => y);
+            return provider is TModelProvider;
         }
 
-        public ModelBuilder Create(IModelProvider modelProvider)
+        public ModelBuilder Build(IModelProvider provider = null)
         {
-            IModelBuilderBuilder builder = null;
+            var modelProvider = provider as TModelProvider;
+            dynamic builder = new TModelBuilder();
 
-            if (modelProvider != null)
-            {
-                var providerName = modelProvider.GetType().Name.Replace("ModelProvider", string.Empty);
+            var viewModel = ViewModel(modelProvider);
+            if (viewModel != null)
+                builder.DataContext = viewModel;
 
-                if (_modelBuilders.ContainsKey(providerName))
-                    builder = _modelBuilders[providerName];
-            }
-            
-            if (builder == null)
-                builder = DefaultBuilder;
+            builder.InitializeComponent();
+            return builder;
+        }
 
-            return builder.Build(modelProvider);
+        protected virtual dynamic ViewModel(TModelProvider provider)
+        {
+            return null;
         }
     }
 }

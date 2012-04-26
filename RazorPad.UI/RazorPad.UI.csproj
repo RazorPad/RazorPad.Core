@@ -43,13 +43,12 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ModelBuilders\IModelBuilderBuilder.cs" />
+    <Compile Include="ModelBuilders\IModelBuilderFactory.cs" />
+    <Compile Include="ModelBuilders\Json\JsonModelBuilderFactory.cs" />
     <Compile Include="ModelBuilders\Json\JsonModelBuilderViewModel.cs" />
-    <Compile Include="ModelBuilders\Json\JsonModelBuilder.xaml.cs">
-      <DependentUpon>JsonModelBuilder.xaml</DependentUpon>
-    </Compile>
     <Compile Include="ModelBuilders\ModelBuilder.cs" />
     <Compile Include="ModelBuilders\ModelBuilderFactory.cs" />
+    <Compile Include="ModelBuilders\ModelBuilders.cs" />
     <Compile Include="ModelBuilders\ModelBuilderViewModel.cs" />
     <Compile Include="Wpf\BrowseBehavior.cs" />
     <Compile Include="Wpf\CommandSink.cs" />

@@ -6,6 +6,17 @@
              mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="300" 
              Width="300" Padding="5 0">
     
-    <ContentPresenter Content="{Binding ModelBuilder}" />
-    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <Label Grid.Row="0">Model Provider:</Label>
+        <ComboBox Grid.Row="1" ItemsSource="{Binding AvailableModelProviders}" SelectedValue="{Binding SelectedModelProvider}" />
+
+        <ContentPresenter Grid.Row="2" Content="{Binding ModelBuilder}" />
+    </Grid>
+
 </UserControl>

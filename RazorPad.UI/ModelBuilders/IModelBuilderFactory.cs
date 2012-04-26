@@ -1,7 +1,8 @@
 namespace RazorPad.UI
 {
-    public interface IModelBuilderBuilder
+    public interface IModelBuilderFactory
     {
+        bool CanBuild(IModelProvider provider);
         ModelBuilder Build(IModelProvider provider = null);
     }
 }

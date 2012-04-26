@@ -4,10 +4,6 @@
         xmlns:Views="clr-namespace:RazorPad.Views"
         xmlns:AttachedProperties="clr-namespace:RazorPad.UI.Wpf;assembly=RazorPad.UI" Title="Razor Pad" Height="700" Width="1000">
 
-    <Window.DataContext>
-        <ViewModels:MainWindowViewModel />
-    </Window.DataContext>
-
     <DockPanel LastChildFill="True">
 
         <Menu x:Name="MainMenu" DockPanel.Dock="Top" IsMainMenu="True">

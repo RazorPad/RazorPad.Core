@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.Composition;
 using System.Web.Script.Serialization;
 
 namespace RazorPad.Providers
@@ -46,6 +47,16 @@ namespace RazorPad.Providers
                 return serializer.DeserializeObject(json);
             else
                 return serializer.Deserialize(json, modelType);
+        }
+
+
+        [Export(typeof(IModelProviderFactory))]
+        public class JsonModelProviderFactory : IModelProviderFactory
+        {
+            public IModelProvider Create(dynamic model = null)
+            {
+                return new JsonModelProvider(json: model);
+            }
         }
     }
 }

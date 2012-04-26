@@ -1,9 +1,11 @@
 using System;
+using System.ComponentModel.Composition;
 using System.IO;
 using System.Text;
 
 namespace RazorPad.Persistence
 {
+    [Export]
     public class RazorDocumentManager : IRazorDocumentLoader, IRazorDocumentSaver
     {
         private readonly XmlRazorDocumentSource _xmlDataSource;
@@ -14,7 +16,13 @@ namespace RazorPad.Persistence
             set { _xmlDataSource.Encoding = value; }
         }
 
-        public RazorDocumentManager(Encoding encoding = null, XmlRazorDocumentSource xmlLoader = null)
+        [ImportingConstructor]
+        public RazorDocumentManager()
+            : this(null, null)
+        {
+        }
+
+        public RazorDocumentManager(Encoding encoding, XmlRazorDocumentSource xmlLoader)
         {
             _xmlDataSource = xmlLoader ?? new XmlRazorDocumentSource();
             Encoding = encoding ?? Encoding;

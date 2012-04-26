@@ -7,12 +7,12 @@ namespace RazorPad.UI.ModelBuilders
     [TestClass]
     public class ModelBuilderFactoryTests
     {
-        private ModelBuilderFactory _factory;
+        private ModelBuilders _factory;
 
         [TestInitialize]
         public void TestInitialize()
         {
-            _factory = new ModelBuilderFactory(new[] {new JsonModelBuilderBuilder()});
+            _factory = new ModelBuilders(new[] {new JsonModelBuilderFactory()});
         }
 
         [TestMethod]

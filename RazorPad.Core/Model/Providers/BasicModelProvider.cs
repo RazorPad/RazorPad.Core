@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.Composition;
 using System.Web.Script.Serialization;
 
 namespace RazorPad.Providers
@@ -45,6 +46,16 @@ namespace RazorPad.Providers
         protected override dynamic RebuildModel()
         {
             return Model;
+        }
+
+
+        [Export(typeof(IModelProviderFactory))]
+        public class BasicModelProviderFactory : IModelProviderFactory
+        {
+            public IModelProvider Create(dynamic model = null)
+            {
+                return new BasicModelProvider(model: model);
+            }
         }
     }
 }

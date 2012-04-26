@@ -9,13 +9,13 @@ namespace RazorPad.Persistence
 {
     public class XmlRazorDocumentSource : IRazorDocumentLoader, IRazorDocumentSaver
     {
-        private readonly ModelProviderFactory _modelProviderFactory;
+        private readonly ModelProviders _modelProviderFactory;
 
         public Encoding Encoding { get; set; }
 
-        public XmlRazorDocumentSource(ModelProviderFactory modelProviderFactory = null)
+        public XmlRazorDocumentSource(ModelProviders modelProviderFactory = null)
         {
-            _modelProviderFactory = modelProviderFactory ?? new ModelProviderFactory();
+            _modelProviderFactory = modelProviderFactory ?? ModelProviders.Current;
             Encoding = Encoding.UTF8;
         }
 
@@ -39,6 +39,9 @@ namespace RazorPad.Persistence
 
         public RazorDocument Load(XDocument source)
         {
+            if(source == null || source.Root == null)
+                return null;
+
             var root = source.Root;
             var metadataEl = root.Element("Metadata") ?? new XElement("Metadata");
             var modelEl = root.Element("Model") ?? new XElement("Model");

@@ -1,28 +1,29 @@
 ﻿using System.IO;
 using System.Windows;
 using Microsoft.Win32;
+using RazorPad.Framework;
 using RazorPad.ViewModels;
 
 namespace RazorPad.Views
 {
-    /// <summary>
-    /// Interaction logic for Main.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         protected MainWindowViewModel ViewModel
         {
             get { return (MainWindowViewModel)DataContext; }
+            private set { DataContext = value; }
         }
 
         public MainWindow()
         {
-            InitializeComponent();
+            ServiceLocator.Initialize();
 
-            ViewModel.Error +=
-                (sender, args) => MessageBox.Show(args.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            ViewModel = ServiceLocator.Get<MainWindowViewModel>();
 
+            ViewModel.Error += OnViewModelOnError;
             ViewModel.GetSaveAsFilename += GetSaveAsFilename;
+
+            InitializeComponent();
         }
 
         private static string GetSaveAsFilename(RazorTemplateEditorViewModel template)
@@ -38,6 +39,11 @@ namespace RazorPad.Views
                 return dlg.FileName;
             else
                 return null;
+        }
+
+        private void OnViewModelOnError(object sender, EventArgs<string> args)
+        {
+            MessageBox.Show(args.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
         private void OpenFile_Click(object sender, RoutedEventArgs e)

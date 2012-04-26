@@ -1,17 +1,22 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel.Composition;
 using System.Linq;
 using System.Windows.Input;
 using RazorPad.Framework;
 using RazorPad.Persistence;
 using RazorPad.Providers;
+using RazorPad.UI.ModelBuilders;
 using RazorPad.UI.Wpf;
 
 namespace RazorPad.ViewModels
 {
+    [Export]
     public class MainWindowViewModel : CommandSink
     {
         private readonly RazorDocumentManager _documentManager;
+        private readonly ModelProviders _modelProviders;
+        private readonly ModelBuilders _modelBuilders;
 
         public event EventHandler<EventArgs<string>> Error;
 
@@ -57,10 +62,13 @@ namespace RazorPad.ViewModels
         }
         private string _statusMessage;
 
-
-        public MainWindowViewModel()
+        [ImportingConstructor]
+        public MainWindowViewModel(RazorDocumentManager documentManager, ModelProviders modelProviders, ModelBuilders modelBuilders)
         {
-            _documentManager = new RazorDocumentManager();
+            _documentManager = documentManager;
+            _modelBuilders = modelBuilders;
+            _modelProviders = modelProviders;
+            
             InitializeTemplateEditors();
             RegisterCommands();
         }
@@ -94,7 +102,7 @@ namespace RazorPad.ViewModels
                     ModelProvider = new JsonModelProvider(json: "{\r\n\tName: 'RazorPad'\r\n}")
                 };
 
-            AddNewTemplateEditor(new RazorTemplateEditorViewModel(defaultDocument));
+            AddNewTemplateEditor(new RazorTemplateEditorViewModel(defaultDocument, _modelBuilders, _modelProviders));
         }
 
         internal void AddNewTemplateEditor(string filename = null, bool current = true)
@@ -114,7 +122,7 @@ namespace RazorPad.ViewModels
 
             var document = _documentManager.Load(filename);
 
-            AddNewTemplateEditor(new RazorTemplateEditorViewModel(document));
+            AddNewTemplateEditor(new RazorTemplateEditorViewModel(document, _modelBuilders, _modelProviders));
         }
 
         internal void AddNewTemplateEditor(RazorTemplateEditorViewModel templateEditor, bool current = true)

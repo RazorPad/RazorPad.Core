@@ -83,11 +83,14 @@
     <Compile Include="Framework\DynamicDictionary.cs" />
     <Compile Include="Framework\EventArgs.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
-    <Compile Include="ModelProviderFactory.cs" />
+    <Compile Include="Model\IModelProviderFactory.cs" />
+    <Compile Include="Model\ModelProviderName.cs" />
+    <Compile Include="Model\ModelProviders.cs" />
     <Compile Include="Model\Providers\BasicModelProvider.cs" />
     <Compile Include="Model\IModelProvider.cs" />
     <Compile Include="Model\Providers\JsonModelProvider.cs" />
     <Compile Include="Model\ModelProvider.cs" />
+    <Compile Include="Framework\SimpleName.cs" />
     <Compile Include="Persistence\IRazorDocumentLoader.cs" />
     <Compile Include="Persistence\IRazorDocumentSaver.cs" />
     <Compile Include="Persistence\RazorDocumentManager.cs" />
