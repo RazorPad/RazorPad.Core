@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -13,9 +14,11 @@ namespace RazorPad.ViewModels
 	{
 		public SearchableReferencesViewModel(IEnumerable<Reference> references)
 		{
-            References = new ObservableCollection<Reference>(references.Distinct().OrderBy(r => r.Name).ThenBy(r => r.Version));
+			References = new BindingList<Reference>(references.Distinct().OrderBy(r => r.Name).ThenBy(r => r.Version).ToList());
 		}
 
-		public ObservableCollection<Reference> References { get; private set; }
+		public BindingList<Reference> References { get; set; }
+
+		
 	}
 }

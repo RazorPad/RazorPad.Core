@@ -57,9 +57,15 @@ namespace RazorPad.Views
 		/// </summary>
 		private void UpdateResult()
 		{
-			Result.Content = string.Format("{0} item{1}",
-			                               ReferencesListView.Items.Count,
-			                               ReferencesListView.Items.Count == 1 ? "" : "s");
+			if (Filter.IsEmpty)
+				Result.Content = "No filter applied. To search for a reference by name, enter few letters in the textbox.";
+			else
+			{
+				Result.Content = string.Format("{0} item{1} containing \"{2}\".",
+				                               ReferencesListView.Items.Count,
+				                               ReferencesListView.Items.Count == 1 ? "" : "s",
+											   FilterText.Text);
+			}
 		}
 	}
 }

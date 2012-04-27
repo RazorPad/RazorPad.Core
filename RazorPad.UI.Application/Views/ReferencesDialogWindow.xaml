@@ -26,7 +26,7 @@
         <DockPanel Grid.Row="0">
             <TabControl>
                 <TabItem Header="Framework">
-                    <Views:AssemblyReferences DataContext="{Binding FrameworkReferences}" />
+                    <Views:AssemblyReferences DataContext="{Binding StandardReferences}" />
                 </TabItem>
                 <TabItem Header="Recent">
                     <Views:AssemblyReferences DataContext="{Binding RecentReferences}" />

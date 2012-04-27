@@ -20,9 +20,6 @@
                   VirtualizingStackPanel.IsVirtualizing="True"
                   >
             <ListView.Resources>
-                <DataTemplate x:Key="Templ">
-                    <TextBlock HorizontalAlignment="Left" Text="{Binding}"/>
-                </DataTemplate>
                 <Style x:Key="HeaderStyle" TargetType="GridViewColumnHeader">
                     <Setter Property="HorizontalContentAlignment" Value="Left"/>
                 </Style>
@@ -32,7 +29,9 @@
                     <GridViewColumn Width="30">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <CheckBox IsChecked="{Binding Selected}" Name="Selected" IsThreeState="False" />
+                                <CheckBox IsEnabled="{Binding IsNotReadOnly}" 
+                                          IsChecked="{Binding IsInstalled, UpdateSourceTrigger=PropertyChanged}" 
+                                          Name="Selected" IsThreeState="False" />
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
@@ -48,7 +47,9 @@
                                     DisplayMemberBinding="{Binding Location}" 
                                     Width="270"
                                     HeaderContainerStyle="{StaticResource HeaderStyle}" />
+                    
                 </GridView>
+                
             </ListView.View>
         </ListView>
     </DockPanel>

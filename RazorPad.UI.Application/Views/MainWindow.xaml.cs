@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows;
 using Microsoft.Win32;
+using RazorPad.Compilation.Hosts;
 using RazorPad.ViewModels;
 
 namespace RazorPad.Views
@@ -12,9 +14,16 @@ namespace RazorPad.Views
 	/// </summary>
 	public partial class MainWindow : Window
 	{
+		private IEnumerable<string> _coreReferences;
+
 		protected MainWindowViewModel ViewModel
 		{
 			get { return (MainWindowViewModel)DataContext; }
+		}
+
+		protected IEnumerable<string> CoreReferences
+		{
+			get { return _coreReferences ?? (_coreReferences = RazorPadHost.DefaultIncludes.Select(di => di.Location)); }
 		}
 
 		public MainWindow()
@@ -75,22 +84,34 @@ namespace RazorPad.Views
 			ViewModel.CurrentTemplate.TemplateCompiler.CompilationParameters.CompilerParameters.ReferencedAssemblies.CopyTo(
 				loadedReferencesTempArray, 0);
 
-			var loadedReferences = loadedReferencesTempArray.Select(s => new Reference(s));
+			var loadedReferences = loadedReferencesTempArray
+											.Select(s =>
+												new Reference(s)
+												{
+													//Filters = 
+													//{
+														IsNotReadOnly = !CoreReferences.Contains(s),
+														IsInstalled = true,
+													//}
+												});
 
+			var dialogDataContext = new ReferencesViewModel(loadedReferences);
 			var dlg = new ReferencesDialogWindow
 			{
 				Owner = this,
-				DataContext = new ReferencesViewModel(loadedReferences)
+				DataContext = dialogDataContext
 			};
 
 			dlg.ShowDialog();
 
 			if (dlg.DialogResult != true) return;
 
-			var referencesVM = dlg.DataContext as ReferencesViewModel;
-			if (referencesVM != null)
-				foreach (var reference in referencesVM.SelectedReferences)
-					ViewModel.CurrentTemplate.TemplateCompiler.CompilationParameters.AddAssemblyReference(reference.Location);
+			// clear existing ones
+			ViewModel.CurrentTemplate.TemplateCompiler.CompilationParameters.CompilerParameters.ReferencedAssemblies.Clear();
+
+			foreach (var reference in dialogDataContext.InstalledReferences.References)
+				ViewModel.CurrentTemplate.TemplateCompiler.CompilationParameters.AddAssemblyReference(reference.Location);
 		}
+
 	}
 }

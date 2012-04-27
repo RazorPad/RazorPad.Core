@@ -39,9 +39,4 @@ namespace RazorPad.ViewModels
 			return item.Name.ToLower().Contains(_text);
 		}
 	}
-
-	internal interface ISearchable
-	{
-		string Name { get; set; }
-	}
 }

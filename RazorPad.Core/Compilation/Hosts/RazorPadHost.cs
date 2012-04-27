@@ -13,6 +13,18 @@ namespace RazorPad.Compilation.Hosts
     public class RazorPadHost : RazorEngineHost
     {
         private static readonly ISet<string> GlobalImports = new HashSet<string>();
+    	private static readonly Assembly[] _defaultIncludes = new[] {
+    			                         	typeof(TemplateBase).Assembly,
+    			                         	typeof(DynamicAttribute).Assembly,
+    			                         	typeof(INotifyPropertyChanged).Assembly,
+    			                         	typeof(Microsoft.CSharp.RuntimeBinder.Binder).Assembly,
+    			                         };
+
+    	public static IEnumerable<Assembly> DefaultIncludes
+    	{
+    		get { return _defaultIncludes; }
+    	}
+
 
         public RazorPadHost(RazorCodeLanguage language = null)
         {
@@ -71,16 +83,7 @@ namespace RazorPad.Compilation.Hosts
 
         protected virtual void AddAssemblyReferences(CodeCompileUnit codeCompileUnit)
         {
-            IEnumerable<Assembly> defaultIncludes = new[] {
-                typeof(TemplateBase).Assembly,
-                typeof(DynamicAttribute).Assembly,
-                typeof(INotifyPropertyChanged).Assembly,
-                typeof(Microsoft.CSharp.RuntimeBinder.Binder).Assembly,
-            };
-
-            IEnumerable<string> referencedAssemblies =
-                defaultIncludes.Select(x => x.Location);
-
+            var referencedAssemblies = DefaultIncludes.Select(x => x.Location);
             codeCompileUnit.ReferencedAssemblies.AddRange(referencedAssemblies.ToArray());
         }
 
