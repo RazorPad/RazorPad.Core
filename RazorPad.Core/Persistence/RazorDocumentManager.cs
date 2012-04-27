@@ -17,15 +17,9 @@ namespace RazorPad.Persistence
         }
 
         [ImportingConstructor]
-        public RazorDocumentManager()
-            : this(null, null)
-        {
-        }
-
-        public RazorDocumentManager(Encoding encoding, XmlRazorDocumentSource xmlLoader)
+        public RazorDocumentManager(XmlRazorDocumentSource xmlLoader)
         {
             _xmlDataSource = xmlLoader ?? new XmlRazorDocumentSource();
-            Encoding = encoding ?? Encoding;
         }
 
         public RazorDocument Parse(string content)
@@ -65,8 +59,11 @@ namespace RazorPad.Persistence
 
             if (string.IsNullOrWhiteSpace(destination))
                 throw new ApplicationException("No filename specified!");
+            
+            document.Filename = destination;
 
-            Save(document, File.Open(destination, FileMode.OpenOrCreate, FileAccess.Write));
+            using(var fileStream = File.Open(destination, FileMode.OpenOrCreate, FileAccess.Write))
+                Save(document, fileStream);
         }
 
         public void Save(RazorDocument document, Stream stream)

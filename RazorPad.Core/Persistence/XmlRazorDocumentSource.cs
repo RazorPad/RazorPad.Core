@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -7,17 +8,20 @@ using System.Xml.Linq;
 
 namespace RazorPad.Persistence
 {
+    [Export]
     public class XmlRazorDocumentSource : IRazorDocumentLoader, IRazorDocumentSaver
     {
         private readonly ModelProviders _modelProviderFactory;
 
         public Encoding Encoding { get; set; }
 
+        [ImportingConstructor]
         public XmlRazorDocumentSource(ModelProviders modelProviderFactory = null)
         {
             _modelProviderFactory = modelProviderFactory ?? ModelProviders.Current;
             Encoding = Encoding.UTF8;
         }
+
 
         public RazorDocument Parse(string document)
         {
@@ -83,7 +87,7 @@ namespace RazorPad.Persistence
 
             var serializedModel = document.ModelProvider.Serialize();
             writer.WriteStartElement("Model");
-            writer.WriteAttributeString("Provider", document.ModelProvider.GetType().Name.Replace("ModelProvider", string.Empty));
+            writer.WriteAttributeString("Provider", new ModelProviderName(document.ModelProvider));
             writer.WriteCData(serializedModel);
             writer.WriteEndElement();
 

@@ -13,6 +13,7 @@ namespace RazorPad.UI.ModelBuilders.Json
         public JsonModelBuilderViewModel(JsonModelProvider modelProvider = null) 
             : base(modelProvider ?? new JsonModelProvider())
         {
+            modelProvider.ModelChanged += (sender, args) => OnModelChanged();
         }
 
         protected override void OnModelChanged()
