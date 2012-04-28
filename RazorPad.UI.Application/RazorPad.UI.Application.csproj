@@ -45,13 +45,6 @@
     <NoWin32Manifest>true</NoWin32Manifest>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AvalonDock">
-      <HintPath>..\packages\AvalonDock.Unofficial.1.3.1\lib\net40\AvalonDock.dll</HintPath>
-    </Reference>
-    <Reference Include="AvalonDock.Themes">
-      <HintPath>..\packages\AvalonDock.Unofficial.1.3.1\lib\net40\AvalonDock.Themes.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Web.Razor, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
@@ -72,8 +65,21 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="ServiceLocator.cs" />
-    <Compile Include="Views\MainDock.xaml.cs">
-      <DependentUpon>MainDock.xaml</DependentUpon>
+    <Compile Include="ViewModels\Filter.cs" />
+    <Compile Include="ViewModels\ISearchable.cs" />
+    <Compile Include="ViewModels\Reference.cs" />
+    <Compile Include="ViewModels\StandardDotNetReferencesLocator.cs" />
+    <Compile Include="ViewModels\ViewFilters.cs" />
+    <Compile Include="Views\ReferencesDialogWindow.xaml.cs">
+      <DependentUpon>ReferencesDialogWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\ReferencesViewModel.cs" />
+    <Compile Include="ViewModels\SearchableReferencesViewModel.cs" />
+    <Compile Include="Views\AssemblyReferences.xaml.cs">
+      <DependentUpon>AssemblyReferences.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ListViewFilterText.xaml.cs">
+      <DependentUpon>ListViewFilterText.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -83,7 +89,15 @@
     </Compile>
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\RazorTemplateEditorViewModel.cs" />
-    <Page Include="Views\MainDock.xaml">
+    <Page Include="Views\ReferencesDialogWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AssemblyReferences.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ListViewFilterText.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
