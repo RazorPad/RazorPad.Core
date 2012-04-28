@@ -1,3 +1,4 @@
+using System;
 using System.Diagnostics.Contracts;
 
 namespace RazorPad.UI.ModelBuilders
@@ -12,7 +13,14 @@ namespace RazorPad.UI.ModelBuilders
                 if (_modelProvider == value)
                     return;
 
+                if (_modelProvider != null)
+                    _modelProvider.ModelChanged -= InternalOnModelChangedHandler;
+
                 _modelProvider = value;
+
+                if (_modelProvider != null)
+                    _modelProvider.ModelChanged += InternalOnModelChangedHandler;
+
                 OnPropertyChanged("ModelProvider");
             }
         }
@@ -21,9 +29,12 @@ namespace RazorPad.UI.ModelBuilders
         protected ModelBuilderViewModel(IModelProvider modelProvider)
         {
             Contract.Requires(modelProvider != null);
+            ModelProvider = modelProvider;
+        }
 
-            _modelProvider = modelProvider;
-            _modelProvider.ModelChanged += (sender, args) => OnModelChanged();
+        private void InternalOnModelChangedHandler(object sender, EventArgs args)
+        {
+            OnModelChanged();
         }
 
         protected virtual void OnModelChanged()

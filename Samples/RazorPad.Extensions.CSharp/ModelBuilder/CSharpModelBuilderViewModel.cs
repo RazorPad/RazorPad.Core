@@ -14,7 +14,6 @@ namespace RazorPad.Extensions.CSharp.ModelBuilder
         public CSharpModelBuilderViewModel(CSharpModelProvider modelProvider = null) 
             : base(modelProvider ?? new CSharpModelProvider())
         {
-            modelProvider.ModelChanged += (sender, args) => OnModelChanged();
         }
 
         protected override void OnModelChanged()
