@@ -30,7 +30,7 @@
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <CheckBox IsEnabled="{Binding IsNotReadOnly}" 
-                                          IsChecked="{Binding IsInstalled, UpdateSourceTrigger=PropertyChanged}" 
+                                          IsChecked="{Binding IsInstalled}" 
                                           Name="Selected" IsThreeState="False" />
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>

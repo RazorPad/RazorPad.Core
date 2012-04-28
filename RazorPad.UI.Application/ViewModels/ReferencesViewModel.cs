@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Text;
 
 namespace RazorPad.ViewModels
 {
@@ -24,51 +21,67 @@ namespace RazorPad.ViewModels
 
 
             StandardReferences = new SearchableReferencesViewModel(standardReferences);
-            StandardReferences.References.ListChanged += StandardReferences_ListChanged;
+            StandardReferences.References.ItemPropertyChanged += StandardReferences_ListChanged;
 
             RecentReferences = new SearchableReferencesViewModel(recentReferences);
-            RecentReferences.References.ListChanged += RecentReferences_ListChanged;
+            RecentReferences.References.ItemPropertyChanged += RecentReferences_ListChanged;
 
             InstalledReferences = new SearchableReferencesViewModel(allReferences.Where(r => r.IsInstalled));
         }
 
 
 
-        void StandardReferences_ListChanged(object sender, ListChangedEventArgs e)
+        void StandardReferences_ListChanged(object sender, PropertyChangedEventArgs e)
         {
             // prevent stack overflow
-            StandardReferences.References.ListChanged -= StandardReferences_ListChanged;
-            RecentReferences.References.ListChanged -= RecentReferences_ListChanged;
+            StandardReferences.References.ItemPropertyChanged -= StandardReferences_ListChanged;
+            RecentReferences.References.ItemPropertyChanged -= RecentReferences_ListChanged;
 
-            var reference = StandardReferences.References.ElementAt(e.NewIndex);
+            var reference = sender as Reference;
+            if (reference == null) return;
+
             if (reference.IsInstalled)
             {
                 if (!InstalledReferences.References.Contains(reference))
                 {
                     InstalledReferences.References.Add(reference);
                 }
-                if (!RecentReferences.References.Contains(reference))
+
+                // find the handle by equality operator
+                var recentReferenceIndex = RecentReferences.References.IndexOf(reference);
+
+                // if not found, add it
+                if (recentReferenceIndex == -1)
                 {
                     RecentReferences.References.Add(reference);
                 }
+                // reassign the reference for auto syncing
+                else
+                {
+                    RecentReferences.References.RemoveAt(recentReferenceIndex);
+                    RecentReferences.References.Add(reference);
+                }
+                
             }
             else
             {
                 var index = InstalledReferences.References.IndexOf(reference);
                 if (index >= 0) InstalledReferences.References.RemoveAt(index);
-                
+
             }
 
-            StandardReferences.References.ListChanged += StandardReferences_ListChanged;
-            RecentReferences.References.ListChanged += RecentReferences_ListChanged;
+            StandardReferences.References.ItemPropertyChanged += StandardReferences_ListChanged;
+            RecentReferences.References.ItemPropertyChanged += RecentReferences_ListChanged;
         }
 
-        void RecentReferences_ListChanged(object sender, ListChangedEventArgs e)
+        void RecentReferences_ListChanged(object sender, PropertyChangedEventArgs e)
         {
             // prevent stack overflow
-            RecentReferences.References.ListChanged -= RecentReferences_ListChanged;
+            RecentReferences.References.ItemPropertyChanged -= RecentReferences_ListChanged;
 
-            var reference = RecentReferences.References.ElementAt(e.NewIndex);
+            var reference = sender as Reference;
+            if (reference == null) return;
+
             if (reference.IsInstalled)
             {
                 if (!InstalledReferences.References.Contains(reference))
@@ -82,7 +95,7 @@ namespace RazorPad.ViewModels
                 if (index >= 0) InstalledReferences.References.RemoveAt(index);
             }
 
-            RecentReferences.References.ListChanged += RecentReferences_ListChanged;
+            RecentReferences.References.ItemPropertyChanged += RecentReferences_ListChanged;
         }
 
 
