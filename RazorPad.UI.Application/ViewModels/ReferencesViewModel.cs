@@ -133,6 +133,7 @@ namespace RazorPad.ViewModels
                                     //}
                                 });
                 }
+
                 catch (Exception)
                 {
                     // TODO: Log the exception maybe?

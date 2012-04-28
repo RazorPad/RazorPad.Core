@@ -77,7 +77,7 @@ namespace RazorPad.ViewModels
 				return false;
 			}
 			catch (Exception)
-			{
+			{ 
 				message = string.Format("Unexpected error happened while loading {0}", path);
 				return false;
 			}
