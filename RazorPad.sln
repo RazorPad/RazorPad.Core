@@ -13,7 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RazorPad.UI.Tests", "RazorP
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{BC5126B0-DB22-49DE-9592-A6E9791CBAF1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RazorPad.Extensions", "Samples\RazorPad.Extensions\RazorPad.Extensions.csproj", "{ED3011EE-DFF1-4561-9E8D-F96767FEC4F8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RazorPad.Extensions.Xml", "Samples\RazorPad.Extensions.Xml\RazorPad.Extensions.Xml.csproj", "{ED3011EE-DFF1-4561-9E8D-F96767FEC4F8}"
 EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
