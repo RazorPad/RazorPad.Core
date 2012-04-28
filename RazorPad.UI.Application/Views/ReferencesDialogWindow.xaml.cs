@@ -50,6 +50,7 @@ namespace RazorPad.Views
                     {
                         reference.IsInstalled = reference.IsRecent = true;
                         vm.RecentReferences.References.Add(reference);
+                        vm.InstalledReferences.References.Add(reference);
                     }
                     else
                     {

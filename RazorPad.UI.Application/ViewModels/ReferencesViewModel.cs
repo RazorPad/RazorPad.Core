@@ -124,14 +124,11 @@ namespace RazorPad.ViewModels
                 {
                     return File
                             .ReadAllLines(recentReferencesFilePath)
-                            .Select(r =>
-                                new Reference(r)
-                                {
-                                    //Filters =
-                                    //{
-                                    IsRecent = true
-                                    //}
-                                });
+                            .Where(File.Exists)
+                            .Select(r =>  new Reference(r)
+                                            {
+                                                IsRecent = true
+                                            });
                 }
 
                 catch (Exception)
