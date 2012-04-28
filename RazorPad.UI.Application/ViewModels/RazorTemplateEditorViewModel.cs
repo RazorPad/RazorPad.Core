@@ -252,6 +252,11 @@ namespace RazorPad.ViewModels
             Execute();
         }
 
+        private void OnModelChanged(object sender, EventArgs args)
+        {
+            Refresh();
+        }
+
         private void Log(string message)
         {
             Messages.WriteLine("[{0}]  {1}", DateTime.Now.ToShortTimeString(), message);
@@ -264,21 +269,29 @@ namespace RazorPad.ViewModels
 
         private void UpdateModelProvider(string providerName)
         {
-            var modelProvider = _document.ModelProvider;
+            var newModelProvider = _modelProviderFactory.Create(providerName);
+            UpdateModelProvider(newModelProvider);
+        }
 
+        private void UpdateModelProvider(IModelProvider newModelProvider)
+        {
+            var oldModelProvider = _document.ModelProvider;
 
-            if (modelProvider != null)
-                _savedModels[modelProvider.GetType()] = modelProvider.Serialize();
+            if (oldModelProvider != null)
+            {
+                _savedModels[oldModelProvider.GetType()] = oldModelProvider.Serialize();
+                oldModelProvider.ModelChanged -= OnModelChanged;
+            }
 
-            _document.ModelProvider = _modelProviderFactory.Create(providerName);
-            modelProvider = _document.ModelProvider;
+            _document.ModelProvider = newModelProvider;
+            newModelProvider.ModelChanged += OnModelChanged;
 
             OnPropertyChanged("ModelBuilder");
 
             string currentlySavedModel;
-            if (modelProvider != null && _savedModels.TryGetValue(modelProvider.GetType(), out currentlySavedModel))
+            if (newModelProvider != null && _savedModels.TryGetValue(newModelProvider.GetType(), out currentlySavedModel))
             {
-                modelProvider.Deserialize(currentlySavedModel);
+                newModelProvider.Deserialize(currentlySavedModel);
             }
         }
 
