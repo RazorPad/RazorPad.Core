@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -171,6 +172,9 @@ namespace RazorPad.ViewModels
 
             Messages = new InMemoryTextWriter();
             TemplateCompiler = new TemplateCompiler();
+
+            // TODO: Replace with real logging
+            Trace.Listeners.Add(new TextWriterTraceListener(Messages));
 
             if (_document.ModelProvider != null)
                 _document.ModelProvider.ModelChanged += (sender, args) => Refresh();

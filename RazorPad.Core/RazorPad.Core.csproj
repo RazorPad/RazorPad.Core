@@ -77,6 +77,7 @@
     <Compile Include="Compilation\TemplateLanguage.cs" />
     <Compile Include="Compilation\ViewComponentCSharpRazorCodeGenerator.cs" />
     <Compile Include="Compilation\ViewComponentCSharpRazorCodeParser.cs" />
+    <Compile Include="Extensions\CompilerErrorCollectionExtensions.cs" />
     <Compile Include="Extensions\EventHandlerExtensions.cs" />
     <Compile Include="Framework\DictionaryPropertyDescriptor.cs" />
     <Compile Include="Framework\DictionaryPropertyGridAdapter.cs" />
