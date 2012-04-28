@@ -23,6 +23,7 @@ namespace RazorPad.ViewModels
 		//public ReferenceViewFilters Filters { get; set; }
 
 		private bool _isInstalled;
+        public bool IsStandard;
 		public bool IsNotReadOnly { get; set; }
 		public bool IsInstalled
 		{

@@ -9,100 +9,124 @@ using System.Text;
 
 namespace RazorPad.ViewModels
 {
-	public class ReferencesViewModel
-	{
-		//public SearchableReferencesViewModel AssemblyReferences { get; set; }
+    public class ReferencesViewModel
+    {
 
-		public SearchableReferencesViewModel StandardReferences { get; set; }
-		public SearchableReferencesViewModel RecentReferences { get; set; }
-		public SearchableReferencesViewModel InstalledReferences { get; set; }
+        public SearchableReferencesViewModel StandardReferences { get; set; }
+        public SearchableReferencesViewModel RecentReferences { get; set; }
+        public SearchableReferencesViewModel InstalledReferences { get; set; }
 
-		public ReferencesViewModel(IEnumerable<Reference> loadedReferences)
-		{
-			var standardReferences = LoadStandardReferences().ToList();
-			var recentReferences = GetRecentReferences().ToList();
-			//var allReferences = loadedReferences.Union(standardReferences).Union(recentReferences).ToList();
-
-
-			//AssemblyReferences = new SearchableReferencesViewModel(allReferences);
-			
-			StandardReferences = new SearchableReferencesViewModel(standardReferences);
-			StandardReferences.References.ListChanged += StandardReferences_ListChanged;
-	
-			RecentReferences = new SearchableReferencesViewModel(recentReferences);
-			RecentReferences.References.ListChanged += RecentReferences_ListChanged;
-
-			InstalledReferences = new SearchableReferencesViewModel(loadedReferences);
-			InstalledReferences.References.ListChanged += InstalledReferences_ListChanged;
-		}
-
-	
-
-		void StandardReferences_ListChanged(object sender, ListChangedEventArgs e)
-		{
-			var items = e.ListChangedType;
-
-			var reference = StandardReferences.References.ElementAt(e.NewIndex);
-			InstalledReferences.References.Add(reference);
-
-			// update assemblye refs
-		}
-
-		void RecentReferences_ListChanged(object sender, ListChangedEventArgs e)
-		{
-			var items = e.ListChangedType;
-
-			// update assemblye refs
-		}
-
-		void InstalledReferences_ListChanged(object sender, ListChangedEventArgs e)
-		{
-			var items = e.ListChangedType;
-
-			// update assemblye refs
-		}
+        public ReferencesViewModel(IEnumerable<Reference> loadedReferences)
+        {
+            var standardReferences = LoadStandardReferences().ToList();
+            var recentReferences = GetRecentReferences().ToList();
+            var allReferences = loadedReferences.Union(standardReferences).Union(recentReferences).ToList();
 
 
-		private static IEnumerable<Reference> LoadStandardReferences()
-		{
-			var paths = StandardDotNetReferencesLocator.GetStandardDotNetReferencePaths() ?? Enumerable.Empty<string>();
+            StandardReferences = new SearchableReferencesViewModel(standardReferences);
+            StandardReferences.References.ListChanged += StandardReferences_ListChanged;
 
-			foreach (var path in paths)
-			{
-				Reference reference;
-				string message;
-				var assmeblyLoadable = Reference.TryLoadReference(path, out reference, out message);
-				if (!assmeblyLoadable) continue;
-				//reference.Filters.IsStandard = true;
-				yield return reference;
-			}
-		}
+            RecentReferences = new SearchableReferencesViewModel(recentReferences);
+            RecentReferences.References.ListChanged += RecentReferences_ListChanged;
 
-		private static IEnumerable<Reference> GetRecentReferences()
-		{
-			const string recentReferencesFilePath = "RecentReferences.txt";
-			if (File.Exists(recentReferencesFilePath))
-			{
-				try
-				{
-					return File
-							.ReadAllLines(recentReferencesFilePath)
-							.Select(r =>
-								new Reference(r)
-								{
-									//Filters =
-									//{
-										IsRecent = true
-									//}
-								});
-				}
-				catch (Exception ex)
-				{
-					// TODO: Log the exception maybe?
-				}
-			}
+            InstalledReferences = new SearchableReferencesViewModel(allReferences.Where(r => r.IsInstalled));
+        }
 
-			return Enumerable.Empty<Reference>();
-		}
-	}
+
+
+        void StandardReferences_ListChanged(object sender, ListChangedEventArgs e)
+        {
+            // prevent stack overflow
+            StandardReferences.References.ListChanged -= StandardReferences_ListChanged;
+            RecentReferences.References.ListChanged -= RecentReferences_ListChanged;
+
+            var reference = StandardReferences.References.ElementAt(e.NewIndex);
+            if (reference.IsInstalled)
+            {
+                if (!InstalledReferences.References.Contains(reference))
+                {
+                    InstalledReferences.References.Add(reference);
+                }
+                if (!RecentReferences.References.Contains(reference))
+                {
+                    RecentReferences.References.Add(reference);
+                }
+            }
+            else
+            {
+                var index = InstalledReferences.References.IndexOf(reference);
+                if (index >= 0) InstalledReferences.References.RemoveAt(index);
+                
+            }
+
+            StandardReferences.References.ListChanged += StandardReferences_ListChanged;
+            RecentReferences.References.ListChanged += RecentReferences_ListChanged;
+        }
+
+        void RecentReferences_ListChanged(object sender, ListChangedEventArgs e)
+        {
+            // prevent stack overflow
+            RecentReferences.References.ListChanged -= RecentReferences_ListChanged;
+
+            var reference = RecentReferences.References.ElementAt(e.NewIndex);
+            if (reference.IsInstalled)
+            {
+                if (!InstalledReferences.References.Contains(reference))
+                {
+                    InstalledReferences.References.Add(reference);
+                }
+            }
+            else
+            {
+                var index = InstalledReferences.References.IndexOf(reference);
+                if (index >= 0) InstalledReferences.References.RemoveAt(index);
+            }
+
+            RecentReferences.References.ListChanged += RecentReferences_ListChanged;
+        }
+
+
+
+        private static IEnumerable<Reference> LoadStandardReferences()
+        {
+            var paths = StandardDotNetReferencesLocator.GetStandardDotNetReferencePaths() ?? Enumerable.Empty<string>();
+
+            foreach (var path in paths)
+            {
+                Reference reference;
+                string message;
+                var assmeblyLoadable = Reference.TryLoadReference(path, out reference, out message);
+                if (!assmeblyLoadable) continue;
+                reference.IsStandard = true;
+                yield return reference;
+            }
+        }
+
+        private static IEnumerable<Reference> GetRecentReferences()
+        {
+            const string recentReferencesFilePath = "RecentReferences.txt";
+            if (File.Exists(recentReferencesFilePath))
+            {
+                try
+                {
+                    return File
+                            .ReadAllLines(recentReferencesFilePath)
+                            .Select(r =>
+                                new Reference(r)
+                                {
+                                    //Filters =
+                                    //{
+                                    IsRecent = true
+                                    //}
+                                });
+                }
+                catch (Exception ex)
+                {
+                    // TODO: Log the exception maybe?
+                }
+            }
+
+            return Enumerable.Empty<Reference>();
+        }
+    }
 }

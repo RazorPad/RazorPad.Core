@@ -42,7 +42,7 @@ namespace RazorPad.Views
 					foreach (var filePath in ofd.FileNames)
 						try
 						{
-							vm.InstalledReferences.References.Add(
+							vm.RecentReferences.References.Add(
 								new Reference(filePath)
 								{
 									//Filters =
