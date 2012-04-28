@@ -13,14 +13,6 @@ namespace RazorPad
         }
         private event EventHandler _modelChanged;
 
-        public Type ModelType { get; set; }
-
-
-        protected ModelProvider(Type modelType)
-        {
-            ModelType = modelType ?? typeof(object);
-        }
-
 
         public virtual dynamic GetModel()
         {

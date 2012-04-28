@@ -6,8 +6,6 @@ namespace RazorPad
     {
         event EventHandler ModelChanged;
 
-        Type ModelType { get; }
-
         dynamic GetModel();
 
         string Serialize();
