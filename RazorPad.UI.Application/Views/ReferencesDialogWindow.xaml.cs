@@ -10,76 +10,79 @@ using MessageBox = System.Windows.MessageBox;
 
 namespace RazorPad.Views
 {
-	/// <summary>
-	/// Interaction logic for ReferencesDialogWindow.xaml
-	/// </summary>
-	public partial class ReferencesDialogWindow
-	{
-		public ReferencesDialogWindow()
-		{
-			InitializeComponent();
-		}
+    /// <summary>
+    /// Interaction logic for ReferencesDialogWindow.xaml
+    /// </summary>
+    public partial class ReferencesDialogWindow
+    {
+        public ReferencesDialogWindow()
+        {
+            InitializeComponent();
+        }
 
-		private void OkButtonClick(object sender, RoutedEventArgs e)
-		{
-			DialogResult = true;
-		}
+        private void OkButtonClick(object sender, RoutedEventArgs e)
+        {
+            DialogResult = true;
+        }
 
-		private void BrowseButtonClicked(object sender, RoutedEventArgs e)
-		{
-			var ofd = new OpenFileDialog
-			{
-				DefaultExt = ".dll",
-				Filter = "Component Files (.dll)|*.dll"
-			};
+        private void BrowseButtonClicked(object sender, RoutedEventArgs e)
+        {
+            var ofd = new OpenFileDialog
+            {
+                DefaultExt = ".dll",
+                Filter = "Component Files (.dll)|*.dll"
+            };
 
-			var result = ofd.ShowDialog();
-			if (result == System.Windows.Forms.DialogResult.OK)
-			{
-				var vm = DataContext as ReferencesViewModel;
-				if (vm != null)
-				{
-					foreach (var filePath in ofd.FileNames)
-						try
-						{
-							vm.RecentReferences.References.Add(
-								new Reference(filePath)
-								{
-									//Filters =
-									//{
-										IsInstalled = true,
-										IsRecent = true
-									//}
-								});
-						}
-						catch (ArgumentException aex)
-						{
-							MessageBox.Show("Could not add reference due to: " + aex.Message, "Add Reference Error", MessageBoxButton.OK,
-											MessageBoxImage.Error);
-						}
-				}
-			}
-		}
+            var result = ofd.ShowDialog();
+            if (result != System.Windows.Forms.DialogResult.OK) return;
+            
+            var vm = DataContext as ReferencesViewModel;
+            if (vm == null) return;
 
-		protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
-		{
-			UpdateRecentReferences();
-			base.OnClosing(e);
-		}
+            foreach (var filePath in ofd.FileNames)
+                try
+                {
+                    string message;
+                    Reference reference;
 
-		void UpdateRecentReferences()
-		{
-			var vm = DataContext as ReferencesViewModel;
-			if (vm == null) return;
+                    var refCanBeLoaded = Reference.TryLoadReference(filePath, out reference, out message);
+                    if (refCanBeLoaded)
+                    {
+                        reference.IsInstalled = reference.IsRecent = true;
+                        vm.RecentReferences.References.Add(reference);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Could not add reference due to: " + message, "Add Reference Error", MessageBoxButton.OK,
+                                        MessageBoxImage.Error);
+                    }
+                }
+                catch (ArgumentException aex)
+                {
+                    MessageBox.Show("Could not add reference due to: " + aex.Message, "Add Reference Error", MessageBoxButton.OK,
+                                    MessageBoxImage.Error);
+                }
+        }
 
-			var recentReferences = vm.RecentReferences.References;
+        protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
+        {
+            UpdateRecentReferences();
+            base.OnClosing(e);
+        }
 
-			using (var fs = File.OpenWrite("References.txt"))
-			{
-				var txt = string.Join(Environment.NewLine, recentReferences.Distinct().Take(50));
-				fs.Write(Encoding.ASCII.GetBytes(txt), 0, txt.Length);
-				fs.Close();
-			}
-		}
-	}
+        void UpdateRecentReferences()
+        {
+            var vm = DataContext as ReferencesViewModel;
+            if (vm == null) return;
+
+            var recentReferences = vm.RecentReferences.References;
+
+            using (var fs = File.OpenWrite("RecentReferences.txt"))
+            {
+                var txt = string.Join(Environment.NewLine, recentReferences.Distinct().Take(50).Select(r => r.Location));
+                fs.Write(Encoding.ASCII.GetBytes(txt), 0, txt.Length);
+                fs.Close();
+            }
+        }
+    }
 }
