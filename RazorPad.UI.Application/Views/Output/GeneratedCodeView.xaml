@@ -1,0 +1,9 @@
+﻿<UserControl x:Class="RazorPad.Views.Output.GeneratedCodeView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <ScrollViewer HorizontalScrollBarVisibility="Auto">
+        <TextBox Text="{Binding GeneratedTemplateCode}" IsReadOnly="True" />
+    </ScrollViewer>
+
+</UserControl>
