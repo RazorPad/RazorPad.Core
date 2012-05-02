@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
-using Microsoft.Win32;
 using RazorPad.Compilation.Hosts;
-using RazorPad.Framework;
 using RazorPad.ViewModels;
 
 namespace RazorPad.Views
@@ -32,86 +30,7 @@ namespace RazorPad.Views
 
             ViewModel = ServiceLocator.Get<MainWindowViewModel>();
 
-            ViewModel.ConfirmSaveDirtyDocument = ConfirmSaveDirtyDocument;
-            ViewModel.Error += OnViewModelOnError;
-            ViewModel.GetSaveAsFilename = GetSaveAsFilename;
-
             InitializeComponent();
-        }
-
-        private static MessageBoxResult ConfirmSaveDirtyDocument(RazorTemplateEditorViewModel document)
-        {
-            return
-                MessageBox.Show(
-                    "You've made changes to this document - save them before closing?", 
-                    "Save Changes", 
-                    MessageBoxButton.YesNoCancel,
-                    MessageBoxImage.Question
-                );
-        }
-
-        private static string GetSaveAsFilename(RazorTemplateEditorViewModel template)
-        {
-            var dlg = new SaveFileDialog();
-            dlg.DefaultExt = ".razorpad";
-            dlg.Filter = "RazorPad Documents|*.razorpad";
-            dlg.Filter = "C# Razor Documents|*.cshtml";
-            dlg.Filter = "VB Razor Documents|*.vbhtml";
-            dlg.Filter = "All Files|*.*";
-
-            string directory = template.FileDirectory;
-
-            if (!string.IsNullOrWhiteSpace(directory))
-                dlg.InitialDirectory = directory;
-
-            if (dlg.ShowDialog().GetValueOrDefault())
-                return dlg.FileName;
-            else
-                return null;
-        }
-
-        private void OnViewModelOnError(object sender, EventArgs<string> args)
-        {
-            MessageBox.Show(
-                args.Message, 
-                "Error", 
-                MessageBoxButton.OK, 
-                MessageBoxImage.Error
-            );
-        }
-
-        private void OpenFile_Click(object sender, RoutedEventArgs e)
-        {
-            // Create OpenFileDialog
-            var dlg = new OpenFileDialog();
-
-            // Set filter for file extension and default file extension
-            dlg.DefaultExt = ".cshtml";
-            dlg.Filter = "RazorPad Documents|*.razorpad";
-            dlg.Filter = "C# Razor Documents|*.cshtml";
-            dlg.Filter = "VB Razor Documents|*.vbhtml";
-            dlg.Filter = "All Files|*.*";
-
-            if (dlg.ShowDialog().GetValueOrDefault())
-            {
-                ViewModel.AddNewTemplateEditor(dlg.FileName);
-            }
-        }
-
-        private void CloseFile_Click(object sender, RoutedEventArgs e)
-        {
-            ViewModel.Close(ViewModel.CurrentTemplate);
-        }
-
-        private void SaveFile_Click(object sender, RoutedEventArgs e)
-        {
-            ViewModel.Save(ViewModel.CurrentTemplate);
-        }
-
-        private void SaveAsFile_Click(object sender, RoutedEventArgs e)
-        {
-            var filename = GetSaveAsFilename(ViewModel.CurrentTemplate);
-            ViewModel.Save(ViewModel.CurrentTemplate.Document, filename);
         }
 
 

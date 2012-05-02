@@ -51,7 +51,6 @@
     <Compile Include="ModelBuilders\ModelBuilders.cs" />
     <Compile Include="ModelBuilders\ModelBuilderViewModel.cs" />
     <Compile Include="Wpf\BrowseBehavior.cs" />
-    <Compile Include="Wpf\CommandSink.cs" />
     <Compile Include="Wpf\CommandSinkBinding.cs" />
     <Compile Include="Wpf\DelayedNotifyPropertyChangedTextBox.cs" />
     <Compile Include="Wpf\ICommandSink.cs" />
@@ -59,6 +58,7 @@
     <Compile Include="ViewModel\NotifyPropertyChanged.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Wpf\RelayCommand.cs" />
     <Compile Include="Wpf\TheRealObservableCollection.cs" />
   </ItemGroup>
   <ItemGroup>

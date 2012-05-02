@@ -68,6 +68,7 @@
     <Compile Include="ServiceLocator.cs" />
     <Compile Include="ViewModels\Filter.cs" />
     <Compile Include="ViewModels\ISearchable.cs" />
+    <Compile Include="ViewModels\MessageBoxHelpers.cs" />
     <Compile Include="ViewModels\Reference.cs" />
     <Compile Include="ViewModels\StandardDotNetReferencesLocator.cs" />
     <Compile Include="ViewModels\ViewFilters.cs" />
