@@ -15,6 +15,7 @@
         <Menu x:Name="MainMenu" IsMainMenu="True">
             <MenuItem Header="_File">
                 <MenuItem Header="_Open" Click="OpenFile_Click" IsEnabled="True" />
+                <MenuItem Header="_Close" Click="CloseFile_Click" IsEnabled="True" />
                 <MenuItem Header="_Save" Click="SaveFile_Click" IsEnabled="True" />
                 <MenuItem Header="_Save As..." Click="SaveAsFile_Click" IsEnabled="True" />
             </MenuItem>

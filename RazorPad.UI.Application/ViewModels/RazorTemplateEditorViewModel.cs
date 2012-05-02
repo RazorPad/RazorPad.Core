@@ -37,6 +37,19 @@ namespace RazorPad.ViewModels
             }
         }
 
+        public string FileDirectory
+        {
+            get
+            {
+                string currentFilename = Filename;
+
+                if (string.IsNullOrWhiteSpace(currentFilename))
+                    return null;
+
+                return Path.GetDirectoryName(currentFilename);
+            }
+        }
+
         public RazorDocument Document
         {
             get { return _document; }
@@ -158,6 +171,20 @@ namespace RazorPad.ViewModels
             get { return true; }
         }
 
+        public bool IsDirty
+        {
+            get { return _isDirty; }
+            private set
+            {
+                if (_isDirty == value)
+                    return;
+
+                _isDirty = value;
+                OnPropertyChanged("IsDirty");
+            }
+        }
+        private bool _isDirty;
+
 
         public RazorTemplateEditorViewModel(RazorDocument document = null, ModelBuilders modelBuilderFactory = null, ModelProviders modelProviders = null)
         {
@@ -177,7 +204,7 @@ namespace RazorPad.ViewModels
             Trace.Listeners.Add(new TextWriterTraceListener(Messages));
 
             if (_document.ModelProvider != null)
-                _document.ModelProvider.ModelChanged += (sender, args) => Refresh();
+                _document.ModelProvider.ModelChanged += OnTemplateChanged;
         }
 
 
@@ -247,12 +274,19 @@ namespace RazorPad.ViewModels
             }
         }
 
-        public void Refresh()
+        protected void Refresh()
         {
+            UpdateIsDirty();
             Execute();
         }
 
-        private void OnModelChanged(object sender, EventArgs args)
+        private void UpdateIsDirty()
+        {
+            // TODO: Make this better
+            IsDirty = true;
+        }
+
+        private void OnTemplateChanged(object sender, EventArgs args)
         {
             Refresh();
         }
@@ -280,11 +314,11 @@ namespace RazorPad.ViewModels
             if (oldModelProvider != null)
             {
                 _savedModels[oldModelProvider.GetType()] = oldModelProvider.Serialize();
-                oldModelProvider.ModelChanged -= OnModelChanged;
+                oldModelProvider.ModelChanged -= OnTemplateChanged;
             }
 
             _document.ModelProvider = newModelProvider;
-            newModelProvider.ModelChanged += OnModelChanged;
+            newModelProvider.ModelChanged += OnTemplateChanged;
 
             OnPropertyChanged("ModelBuilder");
 

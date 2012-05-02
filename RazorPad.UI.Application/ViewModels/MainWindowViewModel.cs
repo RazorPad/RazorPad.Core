@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
+using System.Diagnostics;
 using System.Linq;
+using System.Windows;
 using System.Windows.Input;
 using RazorPad.Framework;
 using RazorPad.Persistence;
@@ -20,12 +22,20 @@ namespace RazorPad.ViewModels
 
         public event EventHandler<EventArgs<string>> Error;
 
+        public Func<RazorTemplateEditorViewModel, MessageBoxResult> ConfirmSaveDirtyDocument
+        {
+            get { return _confirmSaveDirtyDocument; }
+            set { _confirmSaveDirtyDocument = value; }
+        }
+        private Func<RazorTemplateEditorViewModel, MessageBoxResult> _confirmSaveDirtyDocument =
+            template => { throw new NotImplementedException(); };
+
         public Func<RazorTemplateEditorViewModel, string> GetSaveAsFilename
         {
             get { return _getSaveAsFilename; }
             set { _getSaveAsFilename = value; }
         }
-        private Func<RazorTemplateEditorViewModel, string> _getSaveAsFilename = 
+        private Func<RazorTemplateEditorViewModel, string> _getSaveAsFilename =
             template => template.Filename;
 
         public RazorTemplateEditorViewModel CurrentTemplate
@@ -68,7 +78,7 @@ namespace RazorPad.ViewModels
             _documentManager = documentManager;
             _modelBuilders = modelBuilders;
             _modelProviders = modelProviders;
-            
+
             InitializeTemplateEditors();
             RegisterCommands();
         }
@@ -77,11 +87,11 @@ namespace RazorPad.ViewModels
         {
             RegisterCommand(ApplicationCommands.Save,
                 x => CurrentTemplate != null && CurrentTemplate.CanSaveToCurrentlyLoadedFile,
-                x => SaveCurrentTemplate());
+                x => Save(CurrentTemplate));
 
             RegisterCommand(ApplicationCommands.SaveAs,
                 x => CurrentTemplate != null && CurrentTemplate.CanSaveAsNewFilename,
-                x => GetSaveAsFilename.Invoke(CurrentTemplate));
+                x => Save(CurrentTemplate.Document, null));
 
             RegisterCommand(ApplicationCommands.New,
                             x => CanAddNewTemplate,
@@ -97,10 +107,11 @@ namespace RazorPad.ViewModels
         {
             TemplateEditors = new ObservableCollection<RazorTemplateEditorViewModel>();
 
-            var defaultDocument = new RazorDocument {
-                    Template = "<h1>Welcome to @Model.Name!</h1>\r\n<div>Start typing some text to get started.</div>\r\n<div>Or, try adding a property called 'Message' and see what happens...</div>\r\n\r\n<h3>@Model.Message</h3>",
-                    ModelProvider = new JsonModelProvider(json: "{\r\n\tName: 'RazorPad'\r\n}")
-                };
+            var defaultDocument = new RazorDocument
+            {
+                Template = "<h1>Welcome to @Model.Name!</h1>\r\n<div>Start typing some text to get started.</div>\r\n<div>Or, try adding a property called 'Message' and see what happens...</div>\r\n\r\n<h3>@Model.Message</h3>",
+                ModelProvider = new JsonModelProvider(json: "{\r\n\tName: 'RazorPad'\r\n}")
+            };
 
             AddNewTemplateEditor(new RazorTemplateEditorViewModel(defaultDocument, _modelBuilders, _modelProviders));
         }
@@ -137,19 +148,49 @@ namespace RazorPad.ViewModels
             templateEditor.Execute();
         }
 
-        public void SaveCurrentTemplate(string fileName = null)
+
+        public void Close(RazorTemplateEditorViewModel document, bool? save = null)
+        {
+            if (document.IsDirty && save.GetValueOrDefault(true))
+            {
+                var shouldSave = ConfirmSaveDirtyDocument(document);
+
+                switch (shouldSave)
+                {
+                    case MessageBoxResult.Cancel:
+                        return;
+
+                    case MessageBoxResult.Yes:
+                        Save(document);
+                        break;
+                }
+            }
+
+            TemplateEditors.Remove(document);
+        }
+
+        public void Save(RazorTemplateEditorViewModel document)
+        {
+            Save(document.Document, document.Filename);
+        }
+
+        public void Save(RazorDocument document, string filename)
         {
             try
             {
-                var document = CurrentTemplate.Document;
+                if (filename == null)
+                    filename = GetSaveAsFilename(CurrentTemplate);
 
-                _documentManager.Save(document, fileName);
-
-                if(fileName != null)
+                if (string.IsNullOrWhiteSpace(filename))
                 {
-                    if(!fileName.Equals(document.Filename, StringComparison.OrdinalIgnoreCase))
-                        CurrentTemplate.Filename = fileName;
+                    Trace.TraceWarning("Filename is empty - skipping save");
+                    return;
                 }
+
+                _documentManager.Save(document, filename);
+
+                if (!filename.Equals(document.Filename, StringComparison.OrdinalIgnoreCase))
+                    document.Filename = filename;
             }
             catch (Exception ex)
             {
