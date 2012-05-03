@@ -45,6 +45,12 @@
     <NoWin32Manifest>true</NoWin32Manifest>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AvalonDock">
+      <HintPath>..\packages\AvalonDock.2.0.0345\lib\net40\AvalonDock.dll</HintPath>
+    </Reference>
+    <Reference Include="AvalonDock.Themes.VS2010">
+      <HintPath>..\packages\AvalonDock.2.0.0345\lib\net40\AvalonDock.Themes.VS2010.dll</HintPath>
+    </Reference>
     <Reference Include="CustomMarshalers" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
@@ -66,6 +72,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="ServiceLocator.cs" />
+    <Compile Include="Views\ActiveDocumentConverter.cs" />
     <Compile Include="ViewModels\Filter.cs" />
     <Compile Include="ViewModels\ISearchable.cs" />
     <Compile Include="ViewModels\MessageBoxHelpers.cs" />

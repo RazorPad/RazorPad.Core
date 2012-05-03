@@ -83,6 +83,7 @@ namespace RazorPad.ViewModels
         }
         private string _statusMessage;
 
+
         [ImportingConstructor]
         public MainWindowViewModel(RazorDocumentManager documentManager, ModelProviders modelProviders, ModelBuilders modelBuilders)
         {
@@ -93,31 +94,32 @@ namespace RazorPad.ViewModels
             TemplateEditors = new ObservableCollection<RazorTemplateEditorViewModel>();
 
             RegisterCommands();
-
             CreateDemoTemplate();
         }
+
 
         private void RegisterCommands()
         {
             CloseCommand = new RelayCommand(
-                    p => Close(CurrentTemplate), 
+                    p => Close(CurrentTemplate),
                     p => HasCurrentTemplate
                 );
 
             NewCommand = new RelayCommand(() => AddNewTemplateEditor());
 
-            OpenCommand = new RelayCommand(p => {
-                    var filename = GetOpenFilenameThunk();
-                    AddNewTemplateEditor(filename);
-                });
+            OpenCommand = new RelayCommand(p =>
+            {
+                var filename = GetOpenFilenameThunk();
+                AddNewTemplateEditor(filename);
+            });
 
             SaveCommand = new RelayCommand(
-                    p => Save(CurrentTemplate), 
+                    p => Save(CurrentTemplate),
                     p => HasCurrentTemplate
                 );
 
             SaveAsCommand = new RelayCommand(
-                    p => SaveAs(CurrentTemplate.Document), 
+                    p => SaveAs(CurrentTemplate.Document),
                     p => HasCurrentTemplate && CurrentTemplate.CanSaveAsNewFilename
                 );
         }
@@ -224,6 +226,5 @@ namespace RazorPad.ViewModels
                 Error.SafeInvoke(ex.Message);
             }
         }
-
     }
 }
