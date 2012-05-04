@@ -82,6 +82,10 @@
                                     <Output:GeneratedCodeView DataContext="{Binding CurrentTemplate}"/>
                                 </avalonDockLayout:LayoutAnchorable>
 
+                                <avalonDockLayout:LayoutAnchorable x:Name="ErrorsTab" Title="Errors" >
+                                    <Output:ErrorsView DataContext="{Binding CurrentTemplate}"/>
+                                </avalonDockLayout:LayoutAnchorable>
+
                                 <avalonDockLayout:LayoutAnchorable x:Name="MessagesTab" Title="Messages" >
                                     <Output:MessagesView DataContext="{Binding CurrentTemplate}"/>
                                 </avalonDockLayout:LayoutAnchorable>

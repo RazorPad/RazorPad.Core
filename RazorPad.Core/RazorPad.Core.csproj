@@ -72,6 +72,7 @@
     <Compile Include="Compilation\EmbeddedResources\RazorViewComponentAssembly.cs" />
     <Compile Include="Compilation\EmbeddedResources\RazorViewComponentAssemblyCompilationException.cs" />
     <Compile Include="Compilation\EmbeddedResources\RazorViewComponentAssemblyCompilationResults.cs" />
+    <Compile Include="Compilation\ErrorExtensions.cs" />
     <Compile Include="Compilation\TemplateCompilationParameters.cs" />
     <Compile Include="Compilation\TemplateCompiler.cs" />
     <Compile Include="Compilation\TemplateLanguage.cs" />
@@ -84,6 +85,7 @@
     <Compile Include="Framework\DynamicDictionary.cs" />
     <Compile Include="Framework\EventArgs.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Model\RazorPadError.cs" />
     <Compile Include="Model\IModelProviderFactory.cs" />
     <Compile Include="Model\ModelProviderName.cs" />
     <Compile Include="Model\ModelProviders.cs" />

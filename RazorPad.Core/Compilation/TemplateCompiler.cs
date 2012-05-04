@@ -1,7 +1,7 @@
 ﻿using System;
 using System.CodeDom.Compiler;
+using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Web.Razor;
 using RazorPad.Compilation.Hosts;
@@ -62,21 +62,26 @@ namespace RazorPad.Compilation
         }
 
 
-        public CompilerResults Compile(string templateText)
-        {
-            var generatorResults = GenerateCode(templateText);
-            var compilerResults = Compile(generatorResults);
-
-            return compilerResults;
-        }
-
         public CompilerResults Compile(GeneratorResults generatorResults)
         {
+            Trace.TraceInformation("Compiling generated code...");
+
             var parameters = CompilationParameters.CompilerParameters;
             var codeProvider = CompilationParameters.CodeProvider;
             var generatedCode = generatorResults.GeneratedCode;
 
             var compiledCode = codeProvider.CompileAssemblyFromDom(parameters, generatedCode);
+
+            if (compiledCode.Errors.HasErrors)
+            {
+                Trace.TraceWarning("Compilation FAILED");
+                Trace.WriteLine(compiledCode.Errors.Render());
+            }
+            else
+            {
+                Trace.TraceInformation("Compilation succeeded");
+            }
+
             return compiledCode;
         }
 
@@ -87,13 +92,18 @@ namespace RazorPad.Compilation
 
         public string Execute(string templateText, dynamic model = null, RazorEngineHost host = null)
         {
+            Trace.WriteLine(string.Format("Template text: {0}", templateText));
+
             dynamic instance = GetTemplateInstance(templateText);
 
             instance.Model = model ?? new DynamicDictionary();
 
+            Trace.TraceInformation("Executing template...");
             instance.Execute();
 
-            var templateOutput = instance.Buffer.ToString();
+            string templateOutput = instance.Buffer.ToString();
+
+            Trace.WriteLine(string.Format("Executed template output: {0}", templateOutput));
 
             return templateOutput;
         }
@@ -105,16 +115,28 @@ namespace RazorPad.Compilation
             var generatorResults = GenerateCode(templateText, null, host: host);
 
             if (!generatorResults.Success)
+            {
+                Trace.TraceError("Failed to parse template: ", generatorResults.ParserErrors.Render());
                 throw new CodeGenerationException(generatorResults);
+            }
 
             var compilerResults = Compile(generatorResults);
 
             if (compilerResults.Errors.Count > 0)
+            {
                 throw new CompilationException(compilerResults);
+            }
 
             var typeName = string.Format("{0}.{1}", host.DefaultNamespace, host.DefaultClassName);
+            return CreateTemplateInstance(typeName, compilerResults);
+        }
+
+        private dynamic CreateTemplateInstance(string typeName, CompilerResults compilerResults)
+        {
+            Trace.TraceInformation("Creating instance of template {0}...", typeName);
+
             var type = compilerResults.CompiledAssembly.GetType(typeName);
-            return TemplateInstanceInstatiator.Invoke(type);
+            return TemplateInstanceInstatiator(type);
         }
 
 
@@ -135,7 +157,7 @@ namespace RazorPad.Compilation
 
         public GeneratorResults GenerateCode(string templateText, TextWriter codeWriter, RazorEngineHost host = null)
         {
-            host = host ?? RazorEngineHostFactory.Invoke(CompilationParameters.Language);
+            host = host ?? RazorEngineHostFactory(CompilationParameters.Language);
             var engine = new RazorTemplateEngine(host);
 
             var results = engine.GenerateCode(templateText.ToTextReader());
@@ -149,25 +171,6 @@ namespace RazorPad.Compilation
             }
 
             return results;
-        }
-
-        public Type GetTemplateModelType(string templateText)
-        {
-            TemplateBase instance = GetTemplateInstance(templateText);
-
-            if (instance == null)
-                return null;
-
-            if (instance.Model != null)
-                return instance.Model.GetType();
-
-            var type = instance.GetType()
-                        .GetProperties()
-                        .Where(x => x.Name == "Model")
-                        .Select(x => x.PropertyType)
-                        .FirstOrDefault();
-
-            return type;
         }
     }
 }

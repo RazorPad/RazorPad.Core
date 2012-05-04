@@ -4,30 +4,19 @@ using System.Text;
 
 namespace RazorPad.UI
 {
-    public class InMemoryTextWriter : TextWriter, INotifyPropertyChanged
+    public class ObservableTextWriter : StringWriter, INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private StringBuilder _builder;
-
         public string MessageBuffer
         {
-            get { return _builder.ToString(); }
-            set
-            {
-                _builder = new StringBuilder(value);
-                OnPropertyChanged();
-            }
-        }
-
-        public InMemoryTextWriter()
-        {
-            _builder = new StringBuilder();
+            get { return base.GetStringBuilder().ToString(); }
+            set {}
         }
 
         public override void Write(char[] buffer, int index, int count)
         {
-            _builder.Append(buffer, index, count);
+            base.Write(buffer, index, count);
 
             OnPropertyChanged();
         }
@@ -38,16 +27,9 @@ namespace RazorPad.UI
                 PropertyChanged(this, new PropertyChangedEventArgs("MessageBuffer"));
         }
 
-        public override void Flush()
+        public void Clear()
         {
-            _builder.Clear();
-            base.Flush();
-        }
-
-        public override void Close()
-        {
-            _builder.Clear();
-            base.Close();
+            base.GetStringBuilder().Clear();
         }
 
         public override Encoding Encoding

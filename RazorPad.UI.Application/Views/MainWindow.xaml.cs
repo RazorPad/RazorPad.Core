@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using RazorPad.Compilation.Hosts;
+using RazorPad.Providers;
+using RazorPad.UI;
 using RazorPad.ViewModels;
 
 namespace RazorPad.Views
@@ -27,12 +31,35 @@ namespace RazorPad.Views
 
         public MainWindow()
         {
+            // TODO: Replace with real logging
+            var traceWriter = new ObservableTextWriter();
+            Trace.Listeners.Add(new TextWriterTraceListener(traceWriter) { TraceOutputOptions = TraceOptions.None });
+
+            Trace.TraceInformation("Initializing application...");
+
             ServiceLocator.Initialize();
 
             ViewModel = ServiceLocator.Get<MainWindowViewModel>();
+            ViewModel.Messages = traceWriter;
+            
+            CreateDemoTemplate();
 
             InitializeComponent();
+            
+            Trace.TraceInformation("Done initializing");
         }
+
+        private void CreateDemoTemplate()
+        {
+            var demoDocument = new RazorDocument
+            {
+                Template = "<h1>Welcome to @Model.Name!</h1>\r\n<div>Start typing some text to get started.</div>\r\n<div>Or, try adding a property called 'Message' and see what happens...</div>\r\n\r\n<h3>@Model.Message</h3>",
+                ModelProvider = new JsonModelProvider(json: "{\r\n\tName: 'RazorPad'\r\n}")
+            };
+
+            ViewModel.AddNewTemplateEditor(demoDocument);
+        }
+
 
 
         private void ManageReference_Click(object sender, RoutedEventArgs e)

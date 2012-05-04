@@ -82,6 +82,9 @@
     <Compile Include="Views\Output\BrowserView.xaml.cs">
       <DependentUpon>BrowserView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Output\ErrorsView.xaml.cs">
+      <DependentUpon>ErrorsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Output\GeneratedCodeView.xaml.cs">
       <DependentUpon>GeneratedCodeView.xaml</DependentUpon>
     </Compile>
@@ -113,6 +116,10 @@
     <Page Include="Views\Output\BrowserView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Output\ErrorsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\Output\GeneratedCodeView.xaml">
       <SubType>Designer</SubType>

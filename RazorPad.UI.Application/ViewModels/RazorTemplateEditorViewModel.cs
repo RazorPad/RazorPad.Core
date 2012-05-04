@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
+using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web.Razor;
 using RazorPad.Compilation;
 using RazorPad.Framework;
+using RazorPad.Model;
 using RazorPad.UI;
 using RazorPad.UI.ModelBuilders;
 
@@ -32,7 +32,7 @@ namespace RazorPad.ViewModels
             {
                 if (string.IsNullOrWhiteSpace(Filename))
                     return "New File";
-                
+
                 return new FileInfo(Filename).Name;
             }
         }
@@ -78,7 +78,7 @@ namespace RazorPad.ViewModels
             get { return _modelBuilderFactory.Create(_document.ModelProvider); }
         }
 
-        public InMemoryTextWriter Messages
+        public ObservableTextWriter Messages
         {
             get { return _messages; }
             set
@@ -90,7 +90,7 @@ namespace RazorPad.ViewModels
                 OnPropertyChanged("Messages");
             }
         }
-        private InMemoryTextWriter _messages;
+        private ObservableTextWriter _messages;
 
         public string ExecutedTemplateOutput
         {
@@ -118,6 +118,20 @@ namespace RazorPad.ViewModels
                 OnPropertyChanged("Filename");
             }
         }
+
+        public ObservableCollection<RazorPadError> Errors
+        {
+            get { return _errors; }
+            set
+            {
+                if (_errors == value)
+                    return;
+
+                _errors = value;
+                OnPropertyChanged("Errors");
+            }
+        }
+        private ObservableCollection<RazorPadError> _errors;
 
         public string GeneratedTemplateCode
         {
@@ -193,31 +207,26 @@ namespace RazorPad.ViewModels
             _modelProviderFactory = modelProviders ?? ModelProviders.Current;
             _savedModels = new Dictionary<Type, string>();
 
-            var modelProviderNames = _modelProviderFactory.Providers.Select(x => (string) new ModelProviderFactoryName(x.Value));
+            var modelProviderNames = _modelProviderFactory.Providers.Select(x => (string)new ModelProviderFactoryName(x.Value));
             AvailableModelProviders = new ObservableCollection<string>(modelProviderNames);
             _selectedModelProvider = new ModelProviderName(_document.ModelProvider);
 
-            Messages = new InMemoryTextWriter();
+            Errors = new ObservableCollection<RazorPadError>();
+            Messages = new ObservableTextWriter();
             TemplateCompiler = new TemplateCompiler();
 
-            // TODO: Replace with real logging
-            Trace.Listeners.Add(new TextWriterTraceListener(Messages));
-
-            if (_document.ModelProvider != null)
-                _document.ModelProvider.ModelChanged += OnTemplateChanged;
+            ListenForModelProviderEvents(_document.ModelProvider);
         }
 
 
         public void Parse()
         {
-            UpdateStatus("Parsing template...");
-
             GeneratedTemplateCode = string.Empty;
 
             using (var writer = new StringWriter())
             {
                 GeneratorResults = TemplateCompiler.GenerateCode(_document, writer);
-                
+
                 var generatedCode = writer.ToString();
                 generatedCode = Regex.Replace(generatedCode, "//.*", string.Empty);
                 generatedCode = Regex.Replace(generatedCode, "#.*", string.Empty);
@@ -225,57 +234,44 @@ namespace RazorPad.ViewModels
                 GeneratedTemplateCode = generatedCode.Trim();
             }
 
-            if (GeneratorResults != null && GeneratorResults.Success)
+            if (GeneratorResults == null || !GeneratorResults.Success)
             {
-                UpdateStatus("Template successfully parsed");
-            }
-            else
-            {
-                UpdateStatus("Template parsing failed!");
-
                 Log("***  Template Parsing Failed  ***");
 
                 if (GeneratorResults != null)
                 {
-                    var errorBuilder = new StringBuilder();
-                    foreach (var error in GeneratorResults.ParserErrors)
-                    {
-                        errorBuilder.AppendFormat("\nLine {0}: {1}", error.Location.LineIndex, error.Message);
-                    }
-
-                    var errors = errorBuilder.ToString();
-                    Log(errors);
-                    ExecutedTemplateOutput = errors;
+                    var viewModels = GeneratorResults.ParserErrors.Select(x => (RazorPadError)x);
+                    Errors = new ObservableCollection<RazorPadError>(viewModels);
                 }
             }
         }
 
         public void Execute()
         {
-            Messages.Flush();
-
-            try
+            new TaskFactory().StartNew(() =>
             {
-                new TaskFactory().StartNew(() => {
-                    Log("Parsing template...");
+                try
+                {
                     Parse();
-
-                    Log("Executing template...");
                     ExecutedTemplateOutput = TemplateCompiler.Execute(_document);
-                    Log("Success!");
-
-                    UpdateStatus("Success!");
-                });
-            }
-            catch (Exception ex)
-            {
-                Log(ex);
-                UpdateStatus(ex.Message);
-            }
+                }
+                catch (Exception ex)
+                {
+                    Log(ex);
+                    Dispatcher.Invoke(new Action(() => Errors.Add(new RazorPadError(ex))));
+                }
+            });
         }
 
         protected void Refresh()
         {
+            if(_document.ModelProvider != null && _document.ModelProvider.Errors != null)
+                _document.ModelProvider.Errors.Clear();
+
+            Errors.Clear();
+            Messages.Clear();
+            ExecutedTemplateOutput = string.Empty;
+            GeneratedTemplateCode = string.Empty;
             UpdateIsDirty();
             Execute();
         }
@@ -284,6 +280,18 @@ namespace RazorPad.ViewModels
         {
             // TODO: Make this better
             IsDirty = true;
+        }
+
+        private void OnErrorCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action != NotifyCollectionChangedAction.Add) return;
+
+            Dispatcher.Invoke(new Action(() => {
+                foreach (RazorPadError item in e.NewItems)
+                {
+                    Errors.Add(item);
+                }
+            }));
         }
 
         private void OnTemplateChanged(object sender, EventArgs args)
@@ -315,23 +323,33 @@ namespace RazorPad.ViewModels
             {
                 _savedModels[oldModelProvider.GetType()] = oldModelProvider.Serialize();
                 oldModelProvider.ModelChanged -= OnTemplateChanged;
+
+                if (oldModelProvider.Errors != null)
+                oldModelProvider.Errors.CollectionChanged -= OnErrorCollectionChanged;
             }
 
             _document.ModelProvider = newModelProvider;
-            newModelProvider.ModelChanged += OnTemplateChanged;
 
-            OnPropertyChanged("ModelBuilder");
+            ListenForModelProviderEvents(newModelProvider);
 
             string currentlySavedModel;
             if (newModelProvider != null && _savedModels.TryGetValue(newModelProvider.GetType(), out currentlySavedModel))
             {
                 newModelProvider.Deserialize(currentlySavedModel);
             }
+
+            OnPropertyChanged("ModelBuilder");
         }
 
-        private void UpdateStatus(string statusMessage)
+        private void ListenForModelProviderEvents(IModelProvider modelProvider)
         {
-            OnStatusUpdated.SafeInvoke(statusMessage);
+            if (modelProvider == null)
+                return;
+
+            modelProvider.ModelChanged += OnTemplateChanged;
+
+            if (modelProvider.Errors != null)
+                modelProvider.Errors.CollectionChanged += OnErrorCollectionChanged;
         }
     }
 }

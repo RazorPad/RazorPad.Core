@@ -81,6 +81,9 @@ namespace RazorPad.ViewModels
                 OnPropertyChanged("StatusMessage");
             }
         }
+
+        public ObservableTextWriter Messages { get; set; }
+
         private string _statusMessage;
 
 
@@ -94,7 +97,6 @@ namespace RazorPad.ViewModels
             TemplateEditors = new ObservableCollection<RazorTemplateEditorViewModel>();
 
             RegisterCommands();
-            CreateDemoTemplate();
         }
 
 
@@ -124,17 +126,6 @@ namespace RazorPad.ViewModels
                 );
         }
 
-        private void CreateDemoTemplate()
-        {
-            var demoDocument = new RazorDocument
-            {
-                Template = "<h1>Welcome to @Model.Name!</h1>\r\n<div>Start typing some text to get started.</div>\r\n<div>Or, try adding a property called 'Message' and see what happens...</div>\r\n\r\n<h3>@Model.Message</h3>",
-                ModelProvider = new JsonModelProvider(json: "{\r\n\tName: 'RazorPad'\r\n}")
-            };
-
-            AddNewTemplateEditor(new RazorTemplateEditorViewModel(demoDocument, _modelBuilders, _modelProviders));
-        }
-
         internal void AddNewTemplateEditor(string filename = null, bool current = true)
         {
             RazorTemplateEditorViewModel loadedTemplate =
@@ -157,12 +148,23 @@ namespace RazorPad.ViewModels
             else
                 document = _documentManager.Load(filename);
 
-            AddNewTemplateEditor(new RazorTemplateEditorViewModel(document, _modelBuilders, _modelProviders));
+            AddNewTemplateEditor(document, current);
+        }
+
+        internal void AddNewTemplateEditor(RazorDocument document, bool current = true)
+        {
+            AddNewTemplateEditor(new RazorTemplateEditorViewModel(document, _modelBuilders, _modelProviders), current);
         }
 
         internal void AddNewTemplateEditor(RazorTemplateEditorViewModel templateEditor, bool current = true)
         {
-            templateEditor.OnStatusUpdated += (sender, args) => StatusMessage = args.Message;
+            templateEditor.OnStatusUpdated += (sender, args) =>
+                                                  {
+                                                      Trace.TraceInformation(args.Message);
+                                                      StatusMessage = args.Message;
+                                                  };
+
+            templateEditor.Messages = Messages;
 
             TemplateEditors.Add(templateEditor);
 

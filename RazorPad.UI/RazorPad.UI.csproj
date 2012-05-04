@@ -54,7 +54,7 @@
     <Compile Include="Wpf\CommandSinkBinding.cs" />
     <Compile Include="Wpf\DelayedNotifyPropertyChangedTextBox.cs" />
     <Compile Include="Wpf\ICommandSink.cs" />
-    <Compile Include="Util\InMemoryTextWriter.cs" />
+    <Compile Include="Util\ObservableTextWriter.cs" />
     <Compile Include="ViewModel\NotifyPropertyChanged.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
