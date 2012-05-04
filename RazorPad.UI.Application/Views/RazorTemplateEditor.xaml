@@ -4,8 +4,8 @@
         xmlns:CodeEditors="clr-namespace:RazorPad.UI.CodeEditors;assembly=RazorPad.UI">
 
     <CodeEditors:RazorCodeEditor 
-        Document="{Binding Path=Template, Mode=OneTime, Converter={CodeEditors:TextDocumentConverter}}" 
-        DelayedTextChanged="OnDelayedTextChanged"
+        Text="{Binding Path=Template, Mode=OneTime}" 
+        DelayedText="{Binding Path=Template, Mode=OneWayToSource}"
     />
 
 </UserControl>

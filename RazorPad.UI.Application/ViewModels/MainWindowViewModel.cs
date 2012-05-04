@@ -7,7 +7,6 @@ using System.Windows;
 using System.Windows.Input;
 using RazorPad.Framework;
 using RazorPad.Persistence;
-using RazorPad.Providers;
 using RazorPad.UI;
 using RazorPad.UI.ModelBuilders;
 
@@ -103,7 +102,7 @@ namespace RazorPad.ViewModels
         private void RegisterCommands()
         {
             AnchorableCloseCommand = new RelayCommand(
-                OnAnchorableClosed, 
+                () => { /* Ignore */ }, 
                 () => false);
 
             CloseCommand = new RelayCommand(
@@ -128,11 +127,6 @@ namespace RazorPad.ViewModels
                     p => SaveAs(CurrentTemplate.Document),
                     p => HasCurrentTemplate && CurrentTemplate.CanSaveAsNewFilename
                 );
-        }
-
-        private void OnAnchorableClosed()
-        {
-            
         }
 
         internal void AddNewTemplateEditor(string filename = null, bool current = true)
