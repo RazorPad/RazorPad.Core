@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Web.Razor;
 using RazorPad.Compilation.Hosts;
+using RazorPad.Framework;
 
 namespace RazorPad.Compilation
 {
@@ -88,8 +89,7 @@ namespace RazorPad.Compilation
         {
             dynamic instance = GetTemplateInstance(templateText);
 
-            if (model != null)
-                instance.Model = model;
+            instance.Model = model ?? new DynamicDictionary();
 
             instance.Execute();
 

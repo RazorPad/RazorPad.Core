@@ -70,8 +70,8 @@
 
                             <avalonDockLayout:LayoutAnchorablePane x:Name="BottomPane" DockMinHeight="100" DockHeight="250">
 
-                                <avalonDockLayout:LayoutAnchorable x:Name="BrowserTab" Title="Browser View" >
-                                    <Output:BrowserView DataContext="{Binding CurrentTemplate}"/>
+                                <avalonDockLayout:LayoutAnchorable x:Name="BrowserTab" Title="Browser View">
+                                    <Output:BrowserView  DataContext="{Binding CurrentTemplate}"/>
                                 </avalonDockLayout:LayoutAnchorable>
 
                                 <avalonDockLayout:LayoutAnchorable x:Name="OutputTab" Title="Source View">

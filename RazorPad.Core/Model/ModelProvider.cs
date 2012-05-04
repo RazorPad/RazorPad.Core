@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using RazorPad.Framework;
 
 namespace RazorPad
@@ -16,12 +17,20 @@ namespace RazorPad
 
         public virtual dynamic GetModel()
         {
-            var model = RebuildModel();
+            try
+            {
+                var model = RebuildModel();
 
-            if (model is IDictionary<string, object>)
-                model = new DynamicDictionary((IDictionary<string, object>)model);
+                if (model is IDictionary<string, object>)
+                    model = new DynamicDictionary((IDictionary<string, object>)model);
 
-            return model;
+                return model;
+            }
+            catch (Exception ex)
+            {
+                Trace.TraceError("Error rebuilding model: {0}", ex);
+                return (object) null;
+            }
         }
 
         protected void TriggerModelChanged()
