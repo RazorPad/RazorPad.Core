@@ -108,8 +108,8 @@
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Sidebar.xaml.cs">
-      <DependentUpon>Sidebar.xaml</DependentUpon>
+    <Compile Include="Views\ModelBuilder.xaml.cs">
+      <DependentUpon>ModelBuilder.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\RazorTemplateEditorViewModel.cs" />
@@ -157,7 +157,7 @@
       <DependentUpon>RazorTemplateEditor.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\Sidebar.xaml">
+    <Page Include="Views\ModelBuilder.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

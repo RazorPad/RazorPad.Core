@@ -5,9 +5,9 @@ namespace RazorPad.Views
     /// <summary>
     /// Interaction logic for Sidebar.xaml
     /// </summary>
-    public partial class Sidebar : UserControl
+    public partial class ModelBuilder : UserControl
     {
-        public Sidebar()
+        public ModelBuilder()
         {
             InitializeComponent();
         }

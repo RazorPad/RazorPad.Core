@@ -23,6 +23,7 @@ namespace RazorPad.ViewModels
 
         public event EventHandler<EventArgs<string>> Error;
 
+        public ICommand AnchorableCloseCommand { get; private set; }
         public ICommand CloseCommand { get; private set; }
         public ICommand NewCommand { get; private set; }
         public ICommand OpenCommand { get; private set; }
@@ -102,6 +103,10 @@ namespace RazorPad.ViewModels
 
         private void RegisterCommands()
         {
+            AnchorableCloseCommand = new RelayCommand(
+                OnAnchorableClosed, 
+                () => false);
+
             CloseCommand = new RelayCommand(
                     p => Close(CurrentTemplate),
                     p => HasCurrentTemplate
@@ -124,6 +129,11 @@ namespace RazorPad.ViewModels
                     p => SaveAs(CurrentTemplate.Document),
                     p => HasCurrentTemplate && CurrentTemplate.CanSaveAsNewFilename
                 );
+        }
+
+        private void OnAnchorableClosed()
+        {
+            
         }
 
         internal void AddNewTemplateEditor(string filename = null, bool current = true)

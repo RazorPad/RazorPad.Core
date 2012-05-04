@@ -9,8 +9,9 @@
         Title="Razor Pad" Height="700" Width="1000">
     <Window.Resources>
         <Views:ActiveDocumentConverter x:Key="ActiveDocumentConverter"/>
+        <avalonDockThemes:VS2010Theme x:Key="VS2010Theme"/>
     </Window.Resources>
-    
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -31,16 +32,14 @@
             </MenuItem>
         </Menu>
 
-        <avalonDock:DockingManager x:Name="dockManager" 
+        <avalonDock:DockingManager x:Name="dockManager" Grid.Row="1"
                                    ActiveContent="{Binding CurrentTemplate, Mode=TwoWay, Converter={StaticResource ActiveDocumentConverter}}"
                                    DocumentCloseCommand="{Binding CloseCommand}"
                                    DocumentsSource="{Binding TemplateEditors}"
-                                   Grid.Row="1">
+                                   AnchorableCloseCommand="{Binding AnchorableCloseCommand}"
+                                   AnchorableHideCommand="{Binding AnchorableCloseCommand}"
+                                   Theme="{StaticResource VS2010Theme}">
 
-            <avalonDock:DockingManager.Theme>
-                <avalonDockThemes:VS2010Theme/>
-            </avalonDock:DockingManager.Theme>
-            
             <avalonDock:DockingManager.DocumentTemplate>
                 <DataTemplate>
                     <Views:RazorTemplateEditor />
@@ -62,43 +61,53 @@
             <avalonDockLayout:LayoutRoot>
                 <avalonDockLayout:LayoutRoot.RootPanel>
 
-                    <avalonDockLayout:LayoutPanel Orientation="Horizontal">
+                    <avalonDockLayout:LayoutPanel Orientation="Vertical">
 
-                        <avalonDockLayout:LayoutPanel Orientation="Vertical">
+                        <avalonDockLayout:LayoutPanel Orientation="Horizontal">
+                            
+                            <avalonDockLayout:LayoutDocumentPane x:Name="DocumentPane" />
 
-                            <avalonDockLayout:LayoutDocumentPane />
-
-                            <avalonDockLayout:LayoutAnchorablePane x:Name="BottomPane" DockMinHeight="100" DockHeight="250">
-
-                                <avalonDockLayout:LayoutAnchorable x:Name="BrowserTab" Title="Browser View">
-                                    <Output:BrowserView  DataContext="{Binding CurrentTemplate}"/>
+                            <avalonDockLayout:LayoutAnchorablePane x:Name="ModelBuilderTab" DockMinWidth="150" DockWidth="300">
+                                <avalonDockLayout:LayoutAnchorable Title="Model Builder">
+                                    <Views:ModelBuilder DataContext="{Binding CurrentTemplate}" />
                                 </avalonDockLayout:LayoutAnchorable>
-
-                                <avalonDockLayout:LayoutAnchorable x:Name="OutputTab" Title="Source View">
-                                    <Output:SourceView DataContext="{Binding CurrentTemplate}"/>
-                                </avalonDockLayout:LayoutAnchorable>
-
-                                <avalonDockLayout:LayoutAnchorable x:Name="CodeTab" Title="Generated Code">
-                                    <Output:GeneratedCodeView DataContext="{Binding CurrentTemplate}"/>
-                                </avalonDockLayout:LayoutAnchorable>
-
-                                <avalonDockLayout:LayoutAnchorable x:Name="ErrorsTab" Title="Errors" >
-                                    <Output:ErrorsView DataContext="{Binding CurrentTemplate}"/>
-                                </avalonDockLayout:LayoutAnchorable>
-
-                                <avalonDockLayout:LayoutAnchorable x:Name="MessagesTab" Title="Messages" >
-                                    <Output:MessagesView DataContext="{Binding CurrentTemplate}"/>
-                                </avalonDockLayout:LayoutAnchorable>
-
                             </avalonDockLayout:LayoutAnchorablePane>
-
+                            
                         </avalonDockLayout:LayoutPanel>
 
-                        <avalonDockLayout:LayoutAnchorablePane x:Name="Sidebar" DockMinWidth="150" DockWidth="250">
-                            <avalonDockLayout:LayoutAnchorable>
-                                <Views:Sidebar DataContext="{Binding CurrentTemplate}" />
-                            </avalonDockLayout:LayoutAnchorable>
-                        </avalonDockLayout:LayoutAnchorablePane>
+                        <avalonDockLayout:LayoutPanel Orientation="Horizontal" DockMinHeight="100" DockHeight="250">
+
+                            <avalonDockLayout:LayoutPanel Orientation="Horizontal">
+
+                                <avalonDockLayout:LayoutAnchorablePane>
+
+                                    <avalonDockLayout:LayoutAnchorable x:Name="BrowserTab" Title="Browser View">
+                                        <Output:BrowserView  DataContext="{Binding CurrentTemplate}"/>
+                                    </avalonDockLayout:LayoutAnchorable>
+
+                                    <avalonDockLayout:LayoutAnchorable x:Name="OutputTab" Title="Source View">
+                                        <Output:SourceView DataContext="{Binding CurrentTemplate}"/>
+                                    </avalonDockLayout:LayoutAnchorable>
+
+                                    <avalonDockLayout:LayoutAnchorable x:Name="CodeTab" Title="Generated Code">
+                                        <Output:GeneratedCodeView DataContext="{Binding CurrentTemplate}"/>
+                                    </avalonDockLayout:LayoutAnchorable>
+                                </avalonDockLayout:LayoutAnchorablePane>
+
+                                <avalonDockLayout:LayoutAnchorablePane>
+
+                                    <avalonDockLayout:LayoutAnchorable x:Name="ErrorsTab" Title="Errors" >
+                                        <Output:ErrorsView DataContext="{Binding CurrentTemplate}"/>
+                                    </avalonDockLayout:LayoutAnchorable>
+
+                                    <avalonDockLayout:LayoutAnchorable x:Name="MessagesTab" Title="Messages" >
+                                        <Output:MessagesView DataContext="{Binding CurrentTemplate}"/>
+                                    </avalonDockLayout:LayoutAnchorable>
+
+                                </avalonDockLayout:LayoutAnchorablePane>
+
+                            </avalonDockLayout:LayoutPanel>
+                        </avalonDockLayout:LayoutPanel>
 
                     </avalonDockLayout:LayoutPanel>
 
