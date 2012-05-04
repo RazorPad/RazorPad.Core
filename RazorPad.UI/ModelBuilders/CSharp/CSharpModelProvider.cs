@@ -3,8 +3,9 @@ using System.CodeDom.Compiler;
 using System.IO;
 using System.Runtime.CompilerServices;
 using Microsoft.CSharp;
+using RazorPad.Extensions;
 
-namespace RazorPad.Extensions.CSharp.ModelProvider
+namespace RazorPad.UI.ModelBuilders.CSharp
 {
     public class CSharpModelProvider : RazorPad.ModelProvider
     {

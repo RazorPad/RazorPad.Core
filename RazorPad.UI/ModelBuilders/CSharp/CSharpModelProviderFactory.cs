@@ -1,6 +1,6 @@
 using System.ComponentModel.Composition;
 
-namespace RazorPad.Extensions.CSharp.ModelProvider
+namespace RazorPad.UI.ModelBuilders.CSharp
 {
     [Export(typeof(IModelProviderFactory))]
     public class CSharpModelProviderFactory : IModelProviderFactory

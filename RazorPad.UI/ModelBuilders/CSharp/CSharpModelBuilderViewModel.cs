@@ -1,7 +1,4 @@
-﻿using RazorPad.Extensions.CSharp.ModelProvider;
-using RazorPad.UI.ModelBuilders;
-
-namespace RazorPad.Extensions.CSharp.ModelBuilder
+﻿namespace RazorPad.UI.ModelBuilders.CSharp
 {
     public class CSharpModelBuilderViewModel : ModelBuilderViewModel<CSharpModelProvider>
     {

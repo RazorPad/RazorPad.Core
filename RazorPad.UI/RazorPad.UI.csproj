@@ -47,6 +47,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CodeEditors\TextDocumentConverter.cs" />
+    <Compile Include="ModelBuilders\CSharp\CSharpModelBuilderFactory.cs" />
+    <Compile Include="ModelBuilders\CSharp\CSharpModelBuilderViewModel.cs" />
+    <EmbeddedResource Include="ModelBuilders\CSharp\CSharpModelEvaluatorTemplate.cs" />
+    <Compile Include="ModelBuilders\CSharp\CSharpModelProvider.cs" />
+    <Compile Include="ModelBuilders\CSharp\CSharpModelProviderFactory.cs" />
     <Compile Include="ModelBuilders\IModelBuilderFactory.cs" />
     <Compile Include="ModelBuilders\Json\JsonModelBuilderFactory.cs" />
     <Compile Include="ModelBuilders\Json\JsonModelBuilderViewModel.cs" />
@@ -70,6 +75,10 @@
     <Compile Include="Util\TheRealObservableCollection.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="ModelBuilders\CSharp\CSharpModelBuilder.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="ModelBuilders\Json\JsonModelBuilder.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
