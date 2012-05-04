@@ -3,7 +3,7 @@ using System.Timers;
 using System.Windows.Controls;
 using System.Windows.Threading;
 
-namespace RazorPad.UI.Wpf
+namespace RazorPad.UI
 {
     public class DelayedNotifyPropertyChangedTextBox : TextBox
     {
@@ -20,24 +20,19 @@ namespace RazorPad.UI.Wpf
         public DelayedNotifyPropertyChangedTextBox()
         {
             _textChangedTimer = new Timer { Interval = DefaultTextChangedEventDelay };
-            InitializeTextChangedTimer();
-            TextChanged += OnTextChanged;
-        }
-
-        private void InitializeTextChangedTimer()
-        {
             _textChangedTimer.Elapsed += (x, y) =>
-            {
-                var bindingExpression = GetBindingExpression(TextProperty);
+                                             {
+                                                 var bindingExpression = GetBindingExpression(TextProperty);
 
-                if(bindingExpression != null)
-                {
-                    Dispatcher.BeginInvoke(DispatcherPriority.DataBind, 
-                        new Action(bindingExpression.UpdateSource));
-                }
+                                                 if(bindingExpression != null)
+                                                 {
+                                                     Dispatcher.BeginInvoke(DispatcherPriority.DataBind, 
+                                                                            new Action(bindingExpression.UpdateSource));
+                                                 }
 
-                _textChangedTimer.Stop();
-            };
+                                                 _textChangedTimer.Stop();
+                                             };
+            TextChanged += OnTextChanged;
         }
 
         private void OnTextChanged(object sender, TextChangedEventArgs e)

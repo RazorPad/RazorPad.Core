@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 
-namespace RazorPad.UI.Wpf
+namespace RazorPad.UI
 {
     public class BrowseBehavior
     {

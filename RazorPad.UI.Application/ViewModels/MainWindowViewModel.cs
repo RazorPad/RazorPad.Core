@@ -10,7 +10,6 @@ using RazorPad.Persistence;
 using RazorPad.Providers;
 using RazorPad.UI;
 using RazorPad.UI.ModelBuilders;
-using RazorPad.UI.Wpf;
 
 namespace RazorPad.ViewModels
 {

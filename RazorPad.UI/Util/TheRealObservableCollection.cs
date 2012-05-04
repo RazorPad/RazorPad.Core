@@ -2,7 +2,7 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 
-namespace RazorPad.UI.Wpf
+namespace RazorPad.UI
 {
     public class TheRealObservableCollection<T> : ObservableCollection<T>
         where T : INotifyPropertyChanged
@@ -44,14 +44,14 @@ namespace RazorPad.UI.Wpf
         // picking up c# slack again - constructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:RazorPad.UI.Wpf.TheRealObservableCollection`1"/> class.
+        /// Initializes a new instance of the <see cref="T:RazorPad.UI.TheRealObservableCollection`1"/> class.
         /// </summary>
         public TheRealObservableCollection()
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:RazorPad.UI.Wpf.TheRealObservableCollection`1"/> class that contains elements copied from the specified list.
+        /// Initializes a new instance of the <see cref="T:RazorPad.UI.TheRealObservableCollection`1"/> class that contains elements copied from the specified list.
         /// </summary>
         /// <param name="list">The list from which the elements are copied.</param><exception cref="T:System.ArgumentNullException">The <paramref name="list"/> parameter cannot be null.</exception>
         public TheRealObservableCollection(List<T> list)
@@ -65,7 +65,7 @@ namespace RazorPad.UI.Wpf
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:RazorPad.UI.Wpf.TheRealObservableCollection`1"/> class that contains elements copied from the specified collection.
+        /// Initializes a new instance of the <see cref="T:RazorPad.UI.TheRealObservableCollection`1"/> class that contains elements copied from the specified collection.
         /// </summary>
         /// <param name="collection">The collection from which the elements are copied.</param><exception cref="T:System.ArgumentNullException">The <paramref name="collection"/> parameter cannot be null.</exception>
         public TheRealObservableCollection(IEnumerable<T> collection)

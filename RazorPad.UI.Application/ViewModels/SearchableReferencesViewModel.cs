@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using RazorPad.UI;
-using RazorPad.UI.Wpf;
 
 namespace RazorPad.ViewModels
 {

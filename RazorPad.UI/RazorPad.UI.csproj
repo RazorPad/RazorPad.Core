@@ -32,6 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ICSharpCode.AvalonEdit">
+      <HintPath>..\packages\AvalonEdit.4.1.0.8000\lib\Net40\ICSharpCode.AvalonEdit.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -43,6 +46,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CodeEditors\TextDocumentConverter.cs" />
     <Compile Include="ModelBuilders\IModelBuilderFactory.cs" />
     <Compile Include="ModelBuilders\Json\JsonModelBuilderFactory.cs" />
     <Compile Include="ModelBuilders\Json\JsonModelBuilderViewModel.cs" />
@@ -50,16 +54,20 @@
     <Compile Include="ModelBuilders\ModelBuilderFactory.cs" />
     <Compile Include="ModelBuilders\ModelBuilders.cs" />
     <Compile Include="ModelBuilders\ModelBuilderViewModel.cs" />
-    <Compile Include="Wpf\BrowseBehavior.cs" />
-    <Compile Include="Wpf\CommandSinkBinding.cs" />
-    <Compile Include="Wpf\DelayedNotifyPropertyChangedTextBox.cs" />
-    <Compile Include="Wpf\ICommandSink.cs" />
+    <Compile Include="Util\BrowseBehavior.cs" />
+    <Compile Include="CodeEditors\BraceFoldingStrategy.cs" />
+    <Compile Include="CodeEditors\CodeEditor.cs" />
+    <Compile Include="CodeEditors\CSharpCodeEditor.cs" />
+    <Compile Include="CodeEditors\JavaScriptCodeEditor.cs" />
+    <Compile Include="CodeEditors\RazorCodeEditor.cs" />
+    <Compile Include="CodeEditors\XmlCodeEditor.cs" />
+    <Compile Include="Util\DelayedNotifyPropertyChangedTextBox.cs" />
     <Compile Include="Util\ObservableTextWriter.cs" />
     <Compile Include="ViewModel\NotifyPropertyChanged.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Wpf\RelayCommand.cs" />
-    <Compile Include="Wpf\TheRealObservableCollection.cs" />
+    <Compile Include="Util\RelayCommand.cs" />
+    <Compile Include="Util\TheRealObservableCollection.cs" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="ModelBuilders\Json\JsonModelBuilder.xaml">
@@ -72,6 +80,9 @@
       <Project>{511D144C-F4C7-40A3-B3B4-80D891FCE2F5}</Project>
       <Name>RazorPad.Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace RazorPad.UI.Wpf
+namespace RazorPad.UI
 {
     public class RelayCommand : ICommand
     {

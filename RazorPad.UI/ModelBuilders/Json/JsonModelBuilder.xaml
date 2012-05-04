@@ -1,10 +1,9 @@
 ﻿<Framework:ModelBuilder x:Class="RazorPad.UI.Json.JsonModelBuilder" 
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:Framework="clr-namespace:RazorPad.UI" 
-             xmlns:RazorPadExt="clr-namespace:RazorPad.UI.Wpf">
+             xmlns:Framework="clr-namespace:RazorPad.UI">
 
-        <RazorPadExt:DelayedNotifyPropertyChangedTextBox x:Name="ModelEditor"
+        <Framework:DelayedNotifyPropertyChangedTextBox x:Name="ModelEditor"
              Text="{Binding Path=Json, UpdateSourceTrigger=Explicit}"
              AcceptsReturn="True" AcceptsTab="true" 
              AllowDrop="True" AutoWordSelection="True" />
