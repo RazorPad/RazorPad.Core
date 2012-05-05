@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Windows;
 using RazorPad.Compilation.Hosts;
 using RazorPad.Providers;
 using RazorPad.UI;
+using RazorPad.UI.Theming;
 using RazorPad.ViewModels;
 
 namespace RazorPad.Views
@@ -39,8 +39,12 @@ namespace RazorPad.Views
 
             ServiceLocator.Initialize();
 
+            var themeLoader = ServiceLocator.Get<ThemeLoader>();
+            var themes = themeLoader.LoadThemes();
+
             ViewModel = ServiceLocator.Get<MainWindowViewModel>();
             ViewModel.Messages = traceWriter;
+            ViewModel.Themes = new ObservableCollection<Theme>(themes);
             
             CreateDemoTemplate();
 

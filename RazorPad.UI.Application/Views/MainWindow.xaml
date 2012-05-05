@@ -29,6 +29,16 @@
             <MenuItem Header="_References">
                 <MenuItem Header="_Manage References..." Click="ManageReference_Click" IsEnabled="True" />
             </MenuItem>
+            <MenuItem Header="Themes" ItemsSource="{Binding Themes}">
+                <MenuItem.ItemContainerStyle>
+                    <Style TargetType="MenuItem">
+                        <Setter Property="Header" Value="{Binding Name}" />
+                        <Setter Property="IsChecked" Value="{Binding Selected}" />
+                        <Setter Property="Command" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=MenuItem}, Path=DataContext.SwitchThemeCommand}" />
+                        <Setter Property="CommandParameter" Value="{Binding}" />
+                    </Style>
+                </MenuItem.ItemContainerStyle>
+            </MenuItem>
         </Menu>
 
         <avalonDock:DockingManager x:Name="dockManager" Grid.Row="1"

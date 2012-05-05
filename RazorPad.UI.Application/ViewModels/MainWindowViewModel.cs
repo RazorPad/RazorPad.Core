@@ -2,13 +2,16 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Markup;
 using RazorPad.Framework;
 using RazorPad.Persistence;
 using RazorPad.UI;
 using RazorPad.UI.ModelBuilders;
+using RazorPad.UI.Theming;
 
 namespace RazorPad.ViewModels
 {
@@ -27,6 +30,7 @@ namespace RazorPad.ViewModels
         public ICommand OpenCommand { get; private set; }
         public ICommand SaveCommand { get; private set; }
         public ICommand SaveAsCommand { get; private set; }
+        public ICommand SwitchThemeCommand { get; private set; }
 
         // Use thunks to create test seams
         internal Func<RazorTemplateEditorViewModel, MessageBoxResult> ConfirmSaveDirtyDocumentThunk =
@@ -40,6 +44,17 @@ namespace RazorPad.ViewModels
 
         internal Action<string> ShowErrorThunk =
             MessageBoxHelpers.ShowErrorMessageBox;
+
+        internal Action<string> LoadThemeFromFileThunk =
+            filename =>
+                {
+                    using (var stream = File.OpenRead(filename))
+                    {
+                        var dic = (ResourceDictionary) XamlReader.Load(stream);
+                        Application.Current.Resources.MergedDictionaries.Clear();
+                        Application.Current.Resources.MergedDictionaries.Add(dic);
+                    }
+                };
 
 
         public RazorTemplateEditorViewModel CurrentTemplate
@@ -80,10 +95,23 @@ namespace RazorPad.ViewModels
                 OnPropertyChanged("StatusMessage");
             }
         }
+        private string _statusMessage;
 
         public ObservableTextWriter Messages { get; set; }
 
-        private string _statusMessage;
+        public ObservableCollection<Theme> Themes
+        {
+            get { return _themes; }
+            set
+            {
+                if (_themes == value)
+                    return;
+                _themes = value;
+                OnPropertyChanged("Themes");
+            }
+        }
+        private ObservableCollection<Theme> _themes;
+
 
 
         [ImportingConstructor]
@@ -102,7 +130,7 @@ namespace RazorPad.ViewModels
         private void RegisterCommands()
         {
             AnchorableCloseCommand = new RelayCommand(
-                () => { /* Ignore */ }, 
+                () => { /* Ignore */ },
                 () => false);
 
             CloseCommand = new RelayCommand(
@@ -127,6 +155,18 @@ namespace RazorPad.ViewModels
                     p => SaveAs(CurrentTemplate.Document),
                     p => HasCurrentTemplate && CurrentTemplate.CanSaveAsNewFilename
                 );
+
+            SwitchThemeCommand = new RelayCommand(
+                    p => SwitchTheme((Theme)p),
+                    p => true
+                );
+        }
+
+        private void SwitchTheme(Theme theme)
+        {
+            LoadThemeFromFileThunk(theme.FilePath);
+            Themes.ToList().ForEach(x => x.Selected = false);
+            theme.Selected = true;
         }
 
         internal void AddNewTemplateEditor(string filename = null, bool current = true)

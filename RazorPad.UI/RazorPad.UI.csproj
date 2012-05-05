@@ -59,6 +59,8 @@
     <Compile Include="ModelBuilders\ModelBuilderFactory.cs" />
     <Compile Include="ModelBuilders\ModelBuilders.cs" />
     <Compile Include="ModelBuilders\ModelBuilderViewModel.cs" />
+    <Compile Include="Theming\Theme.cs" />
+    <Compile Include="Theming\ThemeLoader.cs" />
     <Compile Include="Util\BrowseBehavior.cs" />
     <Compile Include="CodeEditors\BraceFoldingStrategy.cs" />
     <Compile Include="CodeEditors\CodeEditor.cs" />
