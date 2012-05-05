@@ -68,7 +68,7 @@
 
                             <avalonDockLayout:LayoutAnchorablePane x:Name="ModelBuilderTab" DockMinWidth="150" DockWidth="300">
                                 <avalonDockLayout:LayoutAnchorable Title="Model Builder">
-                                    <Views:ModelBuilder DataContext="{Binding CurrentTemplate}" />
+                                    <Views:ModelBuilder DataContext="{Binding CurrentTemplate}" Background="Gainsboro" />
                                 </avalonDockLayout:LayoutAnchorable>
                             </avalonDockLayout:LayoutAnchorablePane>
                             
