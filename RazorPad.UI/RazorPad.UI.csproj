@@ -46,7 +46,12 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CodeEditors\TextDocumentConverter.cs" />
+    <Compile Include="Editors\BraceFoldingStrategy.cs" />
+    <Compile Include="Editors\CodeEditor.cs" />
+    <Compile Include="Editors\CSharpCodeEditor.cs" />
+    <Compile Include="Editors\JsonCodeEditor.cs" />
+    <Compile Include="Editors\RazorTemplateEditor.cs" />
+    <Compile Include="Editors\XmlCodeEditor.cs" />
     <Compile Include="ModelBuilders\CSharp\CSharpModelBuilderFactory.cs" />
     <Compile Include="ModelBuilders\CSharp\CSharpModelBuilderViewModel.cs" />
     <EmbeddedResource Include="ModelBuilders\CSharp\CSharpModelEvaluatorTemplate.cs" />
@@ -62,12 +67,6 @@
     <Compile Include="Theming\Theme.cs" />
     <Compile Include="Theming\ThemeLoader.cs" />
     <Compile Include="Util\BrowseBehavior.cs" />
-    <Compile Include="CodeEditors\BraceFoldingStrategy.cs" />
-    <Compile Include="CodeEditors\CodeEditor.cs" />
-    <Compile Include="CodeEditors\CSharpCodeEditor.cs" />
-    <Compile Include="CodeEditors\JavaScriptCodeEditor.cs" />
-    <Compile Include="CodeEditors\RazorCodeEditor.cs" />
-    <Compile Include="CodeEditors\XmlCodeEditor.cs" />
     <Compile Include="Util\DelayedNotifyPropertyChangedTextBox.cs" />
     <Compile Include="Util\ObservableTextWriter.cs" />
     <Compile Include="ViewModel\NotifyPropertyChanged.cs" />

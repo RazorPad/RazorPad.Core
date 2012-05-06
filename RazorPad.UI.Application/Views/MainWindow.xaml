@@ -5,7 +5,7 @@
         xmlns:avalonDockLayout="clr-namespace:AvalonDock.Layout;assembly=AvalonDock"
         xmlns:avalonDockThemes="clr-namespace:AvalonDock.Themes;assembly=AvalonDock.Themes.VS2010" 
         xmlns:Output="clr-namespace:RazorPad.Views.Output"
-        xmlns:Views="clr-namespace:RazorPad.Views"
+        xmlns:Views="clr-namespace:RazorPad.Views" xmlns:Editors="clr-namespace:RazorPad.UI.Editors;assembly=RazorPad.UI"
         Title="Razor Pad" Height="700" Width="1000">
     <Window.Resources>
         <avalonDockThemes:VS2010Theme x:Key="VS2010Theme"/>
@@ -51,7 +51,7 @@
 
             <avalonDock:DockingManager.DocumentTemplate>
                 <DataTemplate>
-                    <Views:RazorTemplateEditor />
+                    <Editors:RazorTemplateEditor Text="{Binding Path=Template}" />
                 </DataTemplate>
             </avalonDock:DockingManager.DocumentTemplate>
             <avalonDock:DockingManager.DocumentHeaderTemplate>
