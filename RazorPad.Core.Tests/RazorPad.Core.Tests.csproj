@@ -68,6 +68,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="AcceptanceTests\BasicRazorDocument.razorpad" />
     <EmbeddedResource Include="AcceptanceTests\BasicRazorDocument.razorpad.output" />
+    <EmbeddedResource Include="AcceptanceTests\AssemblyReferences.razorpad" />
+    <EmbeddedResource Include="AcceptanceTests\AssemblyReferences.razorpad.output" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\RazorPad.Contracts\RazorPad.Contracts.csproj">

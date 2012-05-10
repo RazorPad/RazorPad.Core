@@ -9,12 +9,12 @@ namespace RazorPad.Core.Tests
     public class AcceptanceTests
     {
         private TemplateCompiler _templateCompiler;
-        private RazorDocumentManager _manager;
+        private RazorDocumentManager _loader;
 
         [TestInitialize]
         public void TestInitialize()
         {
-            _manager = new RazorDocumentManager(new XmlRazorDocumentSource());
+            _loader = new RazorDocumentManager(new XmlRazorDocumentSource());
             _templateCompiler = new TemplateCompiler();
         }
 
@@ -56,6 +56,18 @@ namespace RazorPad.Core.Tests
 
 		
         [TestMethod]
+        public void ShouldSupportAssemblyReferences()
+        {
+            var document = LoadDocument("AcceptanceTests.AssemblyReferences.razorpad");
+
+            var results = _templateCompiler.Execute(document);
+
+            string output = LoadResource("AcceptanceTests.AssemblyReferences.razorpad.output");
+            Assert.AreEqual(output, results.Trim());
+        }
+
+		
+        [TestMethod]
         public void ShouldSupportBasicRazorDocument()
         {
             var document = LoadDocument("AcceptanceTests.BasicRazorDocument.razorpad");
@@ -71,7 +83,7 @@ namespace RazorPad.Core.Tests
         private RazorDocument LoadDocument(string name)
         {
             using (var reader = GetResourceStream(name))
-                return _manager.Load(reader);
+                return _loader.Load(reader);
         }
 
         private string LoadResource(string name)

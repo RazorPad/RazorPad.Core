@@ -2,6 +2,7 @@
 using System.CodeDom.Compiler;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Web.Razor;
 using RazorPad.Compilation.Hosts;
@@ -87,6 +88,9 @@ namespace RazorPad.Compilation
 
         public string Execute(RazorDocument document)
         {
+            if (document.References != null && document.References.Any())
+                CompilationParameters.SetReferencedAssemblies(document.References);
+
             return Execute(document.Template, document.GetModel());
         }
 

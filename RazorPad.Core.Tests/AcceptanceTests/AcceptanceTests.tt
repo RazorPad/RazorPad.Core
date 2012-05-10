@@ -13,12 +13,12 @@ namespace RazorPad.Core.Tests
     public class AcceptanceTests
     {
         private TemplateCompiler _templateCompiler;
-        private RazorDocumentLoader _loader;
+        private RazorDocumentManager _loader;
 
         [TestInitialize]
         public void TestInitialize()
         {
-            _loader = new RazorDocumentLoader();
+            _loader = new RazorDocumentManager(new XmlRazorDocumentSource());
             _templateCompiler = new TemplateCompiler();
         }
 
