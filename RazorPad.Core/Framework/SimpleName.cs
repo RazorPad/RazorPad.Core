@@ -12,8 +12,8 @@ namespace RazorPad
         public SimpleName(object objectOrType, string suffix = null)
         {
             if (objectOrType == null)
-                throw new ArgumentNullException("objectOrType", "Could not determine Simple Name from null value");
-            
+                return;
+         
             Type type;
             
             if (objectOrType is Type)
@@ -27,9 +27,6 @@ namespace RazorPad
 
         public SimpleName(string extendedName, string suffix = null)
         {
-            if (extendedName == null)
-                throw new ArgumentNullException("extendedName", "Could not determine Simple Name from null value");
-
             _extendedName = extendedName;
             Suffix = suffix;
         }
@@ -37,6 +34,9 @@ namespace RazorPad
         public override string ToString()
         {
             var name = _extendedName;
+
+            if(string.IsNullOrWhiteSpace(name))
+                return null;
 
             if(!string.IsNullOrWhiteSpace(Suffix))
                 name = _extendedName.Replace(Suffix ?? string.Empty, string.Empty);

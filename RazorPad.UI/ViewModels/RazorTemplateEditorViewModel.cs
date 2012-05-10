@@ -340,7 +340,8 @@ namespace RazorPad.ViewModels
         {
             var oldModelProvider = _document.ModelProvider;
 
-            _savedModels[oldModelProvider.GetType()] = oldModelProvider.Serialize();
+            if (oldModelProvider != null)
+                _savedModels[oldModelProvider.GetType()] = oldModelProvider.Serialize();
 
             DetachFromModelProviderEvents(oldModelProvider);
 

@@ -261,7 +261,7 @@ namespace RazorPad.ViewModels
         {
             var filename = document.Filename;
 
-            if (document.CanSaveToCurrentlyLoadedFile)
+            if (!document.CanSaveToCurrentlyLoadedFile)
                 filename = null;
 
             SaveAs(document.Document, filename);

@@ -62,8 +62,11 @@ namespace RazorPad.Persistence
             
             document.Filename = destination;
 
-            using(var fileStream = File.Open(destination, FileMode.OpenOrCreate, FileAccess.Write))
-                Save(document, fileStream);
+            using(var stream = File.Open(destination, FileMode.OpenOrCreate, FileAccess.Write))
+            {
+                Save(document, stream);
+                stream.Flush(true);
+            }
         }
 
         public void Save(RazorDocument document, Stream stream)

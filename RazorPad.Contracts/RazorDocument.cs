@@ -1,10 +1,16 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace RazorPad
 {
     public class RazorDocument
     {
+        public const string DefaultTemplateBaseClassName = "RazorPad.Compilation.TemplateBase";
+
+        public static readonly IEnumerable<string> SimpleTemplateExtensions =
+            new[] { ".txt", ".cshtml", ".vbhtml" };
+
         public string Filename { get; set; }
 
         public IDictionary<string, string> Metadata { get; private set; }
@@ -24,8 +30,12 @@ namespace RazorPad
                 if(_documentKind != null)
                     return _documentKind.Value;
 
-                if(string.IsNullOrWhiteSpace(Filename) || Filename.EndsWith(".cshtml"))
-                    return RazorDocumentKind.TemplateOnly;
+                if(!string.IsNullOrWhiteSpace(Filename))
+                {
+                    var extension = Path.GetExtension(Filename);
+                    if(SimpleTemplateExtensions.Contains(extension))
+                        return RazorDocumentKind.TemplateOnly;
+                }
 
                 return RazorDocumentKind.Full;
             }
@@ -48,7 +58,7 @@ namespace RazorPad
             ModelProvider = modelProvider;
             References = references ?? Enumerable.Empty<string>();
             Template = template ?? string.Empty;
-            TemplateBaseClassName = "RazorPad.Compilation.TemplateBase";
+            TemplateBaseClassName = DefaultTemplateBaseClassName;
         }
 
         public dynamic GetModel()

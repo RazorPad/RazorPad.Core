@@ -70,7 +70,10 @@ namespace RazorPad.Persistence
         {
             var destination = filename ?? document.Filename;
             using (var stream = File.Open(destination, FileMode.Truncate, FileAccess.Write))
+            {
                 Save(document, stream);
+                stream.Flush(true);
+            }
         }
 
         public void Save(RazorDocument document, Stream stream)
@@ -89,20 +92,23 @@ namespace RazorPad.Persistence
             writer.WriteEndElement();
 
             writer.WriteStartElement("References");
-            foreach (var reference in document.References)
+            foreach (var reference in document.References ?? Enumerable.Empty<string>())
             {
                 writer.WriteElementString("Reference", reference);
             }
             writer.WriteEndElement();
 
+            var providerName = (string)new ModelProviderName(document.ModelProvider);
             var serializedModel = document.ModelProvider.Serialize();
             writer.WriteStartElement("Model");
-            writer.WriteAttributeString("Provider", new ModelProviderName(document.ModelProvider));
+            if (!string.IsNullOrWhiteSpace(providerName))
+                writer.WriteAttributeString("Provider", providerName);
             writer.WriteCData(serializedModel);
             writer.WriteEndElement();
 
             writer.WriteStartElement("Template");
-            writer.WriteAttributeString("BaseClass", document.TemplateBaseClassName);
+            if (!string.IsNullOrWhiteSpace(document.TemplateBaseClassName))
+                writer.WriteAttributeString("BaseClass", document.TemplateBaseClassName);
             writer.WriteCData(document.Template);
             writer.WriteEndElement();
 
