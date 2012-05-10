@@ -2,18 +2,38 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 11
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RazorPad.Core", "RazorPad.Core\RazorPad.Core.csproj", "{511D144C-F4C7-40A3-B3B4-80D891FCE2F5}"
+	ProjectSection(ProjectDependencies) = postProject
+		{92E04BBB-A022-41BA-A13C-1EB6C47DFFAE} = {92E04BBB-A022-41BA-A13C-1EB6C47DFFAE}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RazorPad.Core.Tests", "RazorPad.Core.Tests\RazorPad.Core.Tests.csproj", "{4C25DE40-6799-4144-9F23-3919193772EC}"
+	ProjectSection(ProjectDependencies) = postProject
+		{92E04BBB-A022-41BA-A13C-1EB6C47DFFAE} = {92E04BBB-A022-41BA-A13C-1EB6C47DFFAE}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RazorPad.UI.Application", "RazorPad.UI.Application\RazorPad.UI.Application.csproj", "{A635596E-2215-4FEF-BC10-92F63EAAAA97}"
+	ProjectSection(ProjectDependencies) = postProject
+		{92E04BBB-A022-41BA-A13C-1EB6C47DFFAE} = {92E04BBB-A022-41BA-A13C-1EB6C47DFFAE}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RazorPad.UI", "RazorPad.UI\RazorPad.UI.csproj", "{147DFCE8-A33F-42F4-A8F1-7E999C02D1DC}"
+	ProjectSection(ProjectDependencies) = postProject
+		{92E04BBB-A022-41BA-A13C-1EB6C47DFFAE} = {92E04BBB-A022-41BA-A13C-1EB6C47DFFAE}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RazorPad.UI.Tests", "RazorPad.UI.Tests\RazorPad.UI.Tests.csproj", "{BBCFFF3C-AFCF-4751-9834-C4AA7D29133D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{92E04BBB-A022-41BA-A13C-1EB6C47DFFAE} = {92E04BBB-A022-41BA-A13C-1EB6C47DFFAE}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{BC5126B0-DB22-49DE-9592-A6E9791CBAF1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RazorPad.Extensions.Xml", "Samples\RazorPad.Extensions.Xml\RazorPad.Extensions.Xml.csproj", "{ED3011EE-DFF1-4561-9E8D-F96767FEC4F8}"
+	ProjectSection(ProjectDependencies) = postProject
+		{92E04BBB-A022-41BA-A13C-1EB6C47DFFAE} = {92E04BBB-A022-41BA-A13C-1EB6C47DFFAE}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RazorPad.Contracts", "RazorPad.Contracts\RazorPad.Contracts.csproj", "{92E04BBB-A022-41BA-A13C-1EB6C47DFFAE}"
 EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
@@ -58,6 +78,16 @@ Global
 		{511D144C-F4C7-40A3-B3B4-80D891FCE2F5}.Release|Mixed Platforms.Build.0 = Release|x86
 		{511D144C-F4C7-40A3-B3B4-80D891FCE2F5}.Release|x86.ActiveCfg = Release|x86
 		{511D144C-F4C7-40A3-B3B4-80D891FCE2F5}.Release|x86.Build.0 = Release|x86
+		{92E04BBB-A022-41BA-A13C-1EB6C47DFFAE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92E04BBB-A022-41BA-A13C-1EB6C47DFFAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92E04BBB-A022-41BA-A13C-1EB6C47DFFAE}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{92E04BBB-A022-41BA-A13C-1EB6C47DFFAE}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{92E04BBB-A022-41BA-A13C-1EB6C47DFFAE}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{92E04BBB-A022-41BA-A13C-1EB6C47DFFAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92E04BBB-A022-41BA-A13C-1EB6C47DFFAE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92E04BBB-A022-41BA-A13C-1EB6C47DFFAE}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{92E04BBB-A022-41BA-A13C-1EB6C47DFFAE}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{92E04BBB-A022-41BA-A13C-1EB6C47DFFAE}.Release|x86.ActiveCfg = Release|Any CPU
 		{A635596E-2215-4FEF-BC10-92F63EAAAA97}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{A635596E-2215-4FEF-BC10-92F63EAAAA97}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
 		{A635596E-2215-4FEF-BC10-92F63EAAAA97}.Debug|Mixed Platforms.Build.0 = Debug|x86

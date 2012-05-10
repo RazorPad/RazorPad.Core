@@ -8,6 +8,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web.Razor;
 using RazorPad.Compilation;
+using RazorPad.Extensions;
 using RazorPad.Framework;
 using RazorPad.Model;
 using RazorPad.UI;
@@ -240,7 +241,7 @@ namespace RazorPad.ViewModels
 
                 if (GeneratorResults != null)
                 {
-                    var viewModels = GeneratorResults.ParserErrors.Select(x => (RazorPadError)x);
+                    var viewModels = GeneratorResults.ParserErrors.Select(x => new RazorPadRazorError(x));
                     Errors = new ObservableCollection<RazorPadError>(viewModels);
                 }
             }

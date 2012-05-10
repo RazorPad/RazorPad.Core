@@ -63,6 +63,10 @@
     <Compile Include="ServiceLocatorTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\RazorPad.Contracts\RazorPad.Contracts.csproj">
+      <Project>{92E04BBB-A022-41BA-A13C-1EB6C47DFFAE}</Project>
+      <Name>RazorPad.Contracts</Name>
+    </ProjectReference>
     <ProjectReference Include="..\RazorPad.Core\RazorPad.Core.csproj">
       <Project>{511d144c-f4c7-40a3-b3b4-80d891fce2f5}</Project>
       <Name>RazorPad.Core</Name>

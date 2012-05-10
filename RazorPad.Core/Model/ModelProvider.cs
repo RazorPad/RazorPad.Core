@@ -38,7 +38,7 @@ namespace RazorPad
             catch (Exception ex)
             {
                 Trace.TraceError("Error rebuilding model: {0}", ex);
-                Errors.Add(ex);
+                Errors.Add(new RazorPadError(ex));
             }
 
             return model ?? new DynamicDictionary();

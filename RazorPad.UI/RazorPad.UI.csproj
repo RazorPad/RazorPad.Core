@@ -87,6 +87,10 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\RazorPad.Contracts\RazorPad.Contracts.csproj">
+      <Project>{92E04BBB-A022-41BA-A13C-1EB6C47DFFAE}</Project>
+      <Name>RazorPad.Contracts</Name>
+    </ProjectReference>
     <ProjectReference Include="..\RazorPad.Core\RazorPad.Core.csproj">
       <Project>{511D144C-F4C7-40A3-B3B4-80D891FCE2F5}</Project>
       <Name>RazorPad.Core</Name>

@@ -80,17 +80,16 @@
     <Compile Include="Compilation\ViewComponentCSharpRazorCodeParser.cs" />
     <Compile Include="Extensions\CompilerErrorCollectionExtensions.cs" />
     <Compile Include="Extensions\EventHandlerExtensions.cs" />
+    <Compile Include="Extensions\RazorPadCompilerError.cs" />
+    <Compile Include="Extensions\RazorPadRazorError.cs" />
     <Compile Include="Framework\DictionaryPropertyDescriptor.cs" />
     <Compile Include="Framework\DictionaryPropertyGridAdapter.cs" />
     <Compile Include="Framework\DynamicDictionary.cs" />
     <Compile Include="Framework\EventArgs.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
-    <Compile Include="Model\RazorPadError.cs" />
-    <Compile Include="Model\IModelProviderFactory.cs" />
     <Compile Include="Model\ModelProviderName.cs" />
     <Compile Include="Model\ModelProviders.cs" />
     <Compile Include="Model\Providers\BasicModelProvider.cs" />
-    <Compile Include="Model\IModelProvider.cs" />
     <Compile Include="Model\Providers\JsonModelProvider.cs" />
     <Compile Include="Model\ModelProvider.cs" />
     <Compile Include="Framework\SimpleName.cs" />
@@ -106,6 +105,12 @@
   <ItemGroup>
     <None Include="RazorPad.nuspec" />
     <None Include="RazorPad.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\RazorPad.Contracts\RazorPad.Contracts.csproj">
+      <Project>{92E04BBB-A022-41BA-A13C-1EB6C47DFFAE}</Project>
+      <Name>RazorPad.Contracts</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
