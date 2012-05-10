@@ -1,15 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using NLog;
 using NLog.Config;
-using NLog.Targets;
 using RazorPad.Compilation.Hosts;
 using RazorPad.Providers;
 using RazorPad.UI;
 using RazorPad.UI.Theming;
+using RazorPad.UI.Util;
 using RazorPad.ViewModels;
 
 namespace RazorPad.Views
@@ -36,16 +35,14 @@ namespace RazorPad.Views
 
         public MainWindow()
         {
-            var traceTarget = new TraceTarget();
-
             var config = new LoggingConfiguration();
-            config.AddTarget("Trace", traceTarget);
-            config.LoggingRules.Add(new LoggingRule("*", LogLevel.Info, traceTarget));
-            LogManager.Configuration = config;
 
-            // TODO: Replace with real logging
-            var traceWriter = new ObservableTextWriter();
-            Trace.Listeners.Add(new TextWriterTraceListener(traceWriter) { TraceOutputOptions = TraceOptions.None });
+            var observableWriter = new ObservableTextWriter();
+            var textWriterTarget = new TextWriterTarget(observableWriter);
+            config.AddTarget("Output", textWriterTarget);
+            config.LoggingRules.Add(new LoggingRule("*", LogLevel.Info, textWriterTarget));
+
+            LogManager.Configuration = config;
 
             Log.Info("Initializing application...");
 
@@ -56,7 +53,7 @@ namespace RazorPad.Views
 
             ViewModel = ServiceLocator.Get<MainWindowViewModel>();
             ViewModel.GetReferencesThunk = GetReferences;
-            ViewModel.Messages = traceWriter;
+            ViewModel.Messages = observableWriter;
             ViewModel.Themes = new ObservableCollection<Theme>(themes);
 
             CreateDemoTemplate();

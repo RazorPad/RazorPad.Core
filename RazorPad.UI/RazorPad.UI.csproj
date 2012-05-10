@@ -72,6 +72,7 @@
     <Compile Include="Util\BrowseBehavior.cs" />
     <Compile Include="Util\DelayedNotifyPropertyChangedTextBox.cs" />
     <Compile Include="Util\ObservableTextWriter.cs" />
+    <Compile Include="Util\TextWriterTarget.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\MessageBoxHelpers.cs" />
     <Compile Include="ViewModels\NotifyPropertyChanged.cs" />
