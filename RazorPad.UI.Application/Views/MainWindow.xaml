@@ -109,6 +109,10 @@
                                     <avalonDockLayout:LayoutAnchorable x:Name="CodeTab" Title="Generated Code">
                                         <Output:GeneratedCodeView DataContext="{Binding CurrentTemplate}"/>
                                     </avalonDockLayout:LayoutAnchorable>
+
+                                    <avalonDockLayout:LayoutAnchorable x:Name="SyntaxTreeTab" Title="Syntax Tree">
+                                        <Output:SyntaxTreeView DataContext="{Binding CurrentTemplate}"/>
+                                    </avalonDockLayout:LayoutAnchorable>
                                 </avalonDockLayout:LayoutAnchorablePane>
 
                                 <avalonDockLayout:LayoutAnchorablePane>

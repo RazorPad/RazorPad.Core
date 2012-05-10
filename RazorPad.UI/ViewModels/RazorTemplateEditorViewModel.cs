@@ -176,6 +176,20 @@ namespace RazorPad.ViewModels
             }
         }
 
+        public string RazorSyntaxTree
+        {
+            get { return _razorSyntaxTree; }
+            set
+            {
+                if (_razorSyntaxTree == value)
+                    return;
+
+                _razorSyntaxTree = value;
+                OnPropertyChanged("RazorSyntaxTree");
+            }
+        }
+        private string _razorSyntaxTree;
+
         public IEnumerable<string> AssemblyReferences
         {
             get { return _document.References; }
@@ -247,6 +261,7 @@ namespace RazorPad.ViewModels
                 generatedCode = Regex.Replace(generatedCode, "#.*", string.Empty);
 
                 GeneratedTemplateCode = generatedCode.Trim();
+                RazorSyntaxTree = new RazorSyntaxTreeVisualizer().Visualize(GeneratorResults.Document);
             }
 
             if (GeneratorResults == null || !GeneratorResults.Success)

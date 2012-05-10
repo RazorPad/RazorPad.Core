@@ -80,6 +80,9 @@
     <Compile Include="Views\Output\BrowserView.xaml.cs">
       <DependentUpon>BrowserView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Output\SyntaxTreeView.xaml.cs">
+      <DependentUpon>SyntaxTreeView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Output\ErrorsView.xaml.cs">
       <DependentUpon>ErrorsView.xaml</DependentUpon>
     </Compile>
@@ -110,6 +113,10 @@
     <Page Include="Views\Output\BrowserView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Output\SyntaxTreeView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\Output\ErrorsView.xaml">
       <Generator>MSBuild:Compile</Generator>
