@@ -20,15 +20,15 @@ namespace RazorPad.UI.AssemblyReference
         public void ShouldLoadStandardDotNetReferences()
         {
             var paths = StandardDotNetReferencesLocator.GetStandardDotNetReferencePaths() ?? Enumerable.Empty<string>();
-            var references = new List<Reference>();
+            var references = new List<ViewModels.AssemblyReference>();
             var messages = new List<string>();
 
             foreach (var path in paths)
             {
                 string message;
-                Reference reference;
-                if(Reference.TryLoadReference(path, out reference, out message))
-                    references.Add(reference);
+                ViewModels.AssemblyReference assemblyReference;
+                if(ViewModels.AssemblyReference.TryLoadReference(path, out assemblyReference, out message))
+                    references.Add(assemblyReference);
                 else
                 {
                     messages.Add(message);

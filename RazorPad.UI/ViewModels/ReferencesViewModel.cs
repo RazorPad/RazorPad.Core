@@ -13,7 +13,7 @@ namespace RazorPad.ViewModels
         public SearchableReferencesViewModel RecentReferences { get; set; }
         public SearchableReferencesViewModel InstalledReferences { get; set; }
 
-        public ReferencesViewModel(IEnumerable<Reference> loadedReferences)
+        public ReferencesViewModel(IEnumerable<AssemblyReference> loadedReferences)
         {
             Trace.TraceInformation("Loaded references: " + string.Join(", ", loadedReferences));
 
@@ -39,7 +39,7 @@ namespace RazorPad.ViewModels
             StandardReferences.References.ItemPropertyChanged -= StandardReferences_ListChanged;
             RecentReferences.References.ItemPropertyChanged -= RecentReferences_ListChanged;
 
-            var reference = sender as Reference;
+            var reference = sender as AssemblyReference;
             if (reference == null) return;
 
             if (reference.IsInstalled)
@@ -81,7 +81,7 @@ namespace RazorPad.ViewModels
             // prevent stack overflow
             RecentReferences.References.ItemPropertyChanged -= RecentReferences_ListChanged;
 
-            var reference = sender as Reference;
+            var reference = sender as AssemblyReference;
             if (reference == null) return;
 
             if (reference.IsInstalled)
@@ -102,7 +102,7 @@ namespace RazorPad.ViewModels
 
 
 
-        private static IEnumerable<Reference> LoadStandardReferences()
+        private static IEnumerable<AssemblyReference> LoadStandardReferences()
         {
             var paths = (StandardDotNetReferencesLocator.GetStandardDotNetReferencePaths() ?? Enumerable.Empty<string>()).ToArray();
 
@@ -110,12 +110,12 @@ namespace RazorPad.ViewModels
 
             foreach (var path in paths)
             {
-                Reference reference;
+                AssemblyReference assemblyReference;
                 string message;
                 
                 Trace.Write(string.Format("Loading standard reference {0}... ", path));
 
-                var isLoadable = Reference.TryLoadReference(path, out reference, out message);
+                var isLoadable = AssemblyReference.TryLoadReference(path, out assemblyReference, out message);
 
                 if (!isLoadable)
                 {
@@ -125,13 +125,13 @@ namespace RazorPad.ViewModels
 
                 Trace.WriteLine("loaded.");
 
-                reference.IsStandard = true;
+                assemblyReference.IsStandard = true;
 
-                yield return reference;
+                yield return assemblyReference;
             }
         }
 
-        private static IEnumerable<Reference> GetRecentReferences()
+        private static IEnumerable<AssemblyReference> GetRecentReferences()
         {
             const string recentReferencesFilePath = "RecentReferences.txt";
 
@@ -144,7 +144,7 @@ namespace RazorPad.ViewModels
                     return File
                             .ReadAllLines(recentReferencesFilePath)
                             .Where(File.Exists)
-                            .Select(r => new Reference(r)
+                            .Select(r => new AssemblyReference(r)
                                             {
                                                 IsRecent = true
                                             });
@@ -156,7 +156,7 @@ namespace RazorPad.ViewModels
                 }
             }
 
-            return Enumerable.Empty<Reference>();
+            return Enumerable.Empty<AssemblyReference>();
         }
     }
 }

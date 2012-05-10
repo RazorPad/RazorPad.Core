@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.Diagnostics;
@@ -26,6 +27,7 @@ namespace RazorPad.ViewModels
 
         public ICommand AnchorableCloseCommand { get; private set; }
         public ICommand CloseCommand { get; private set; }
+        public ICommand ManageReferencesCommand { get; private set; }
         public ICommand NewCommand { get; private set; }
         public ICommand OpenCommand { get; private set; }
         public ICommand SaveCommand { get; private set; }
@@ -33,19 +35,22 @@ namespace RazorPad.ViewModels
         public ICommand SwitchThemeCommand { get; private set; }
 
         // Use thunks to create test seams
-        internal Func<RazorTemplateEditorViewModel, MessageBoxResult> ConfirmSaveDirtyDocumentThunk =
+        public Func<RazorTemplateEditorViewModel, MessageBoxResult> ConfirmSaveDirtyDocumentThunk =
             MessageBoxHelpers.ShowConfirmSaveDirtyDocumentMessageBox;
 
-        internal Func<string> GetOpenFilenameThunk =
+        public Func<string> GetOpenFilenameThunk =
             MessageBoxHelpers.ShowOpenFileDialog;
 
-        internal Func<RazorTemplateEditorViewModel, string> GetSaveAsFilenameThunk =
+        public Func<IEnumerable<string>, IEnumerable<string>> GetReferencesThunk =
+            references => references;
+
+        public Func<RazorTemplateEditorViewModel, string> GetSaveAsFilenameThunk =
             MessageBoxHelpers.ShowSaveAsDialog;
 
-        internal Action<string> ShowErrorThunk =
+        public Action<string> ShowErrorThunk =
             MessageBoxHelpers.ShowErrorMessageBox;
 
-        internal Action<string> LoadThemeFromFileThunk =
+        public Action<string> LoadThemeFromFileThunk =
             filename =>
                 {
                     using (var stream = File.OpenRead(filename))
@@ -138,10 +143,15 @@ namespace RazorPad.ViewModels
                     p => HasCurrentTemplate
                 );
 
+            ManageReferencesCommand = new RelayCommand(() => {
+                var loadedReferences = CurrentTemplate.ReferencedAssemblies;
+                var references = GetReferencesThunk(loadedReferences);
+                CurrentTemplate.SetReferencedAssemblies(references);
+            });
+
             NewCommand = new RelayCommand(() => AddNewTemplateEditor());
 
-            OpenCommand = new RelayCommand(p =>
-            {
+            OpenCommand = new RelayCommand(p => {
                 var filename = GetOpenFilenameThunk();
                 AddNewTemplateEditor(filename);
             });

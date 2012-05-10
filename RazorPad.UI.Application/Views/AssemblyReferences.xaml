@@ -6,9 +6,7 @@
     <DockPanel>
         <!-- filter area -->
         <Border DockPanel.Dock="Top" Background="#ff606060">
-            <Views:ListViewFilterText x:Name="FilterText" 
-                                      TextBox.TextChanged="FilterTextTextChanged" 
-                                      VerticalAlignment="Stretch" Margin="1" />
+            <Views:ListViewFilterText VerticalAlignment="Stretch" Margin="1" />
         </Border>
         <!-- result area -->
         <Border DockPanel.Dock="Bottom" Background="#ff606060">
@@ -18,7 +16,7 @@
         <ListView x:Name="ReferencesListView"
                   ItemsSource="{Binding References}"
                   VirtualizingStackPanel.IsVirtualizing="True"
-                  >
+                >
             <ListView.Resources>
                 <Style x:Key="HeaderStyle" TargetType="GridViewColumnHeader">
                     <Setter Property="HorizontalContentAlignment" Value="Left"/>

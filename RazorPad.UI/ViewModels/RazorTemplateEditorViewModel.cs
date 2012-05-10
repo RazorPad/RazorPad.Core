@@ -174,6 +174,20 @@ namespace RazorPad.ViewModels
             }
         }
 
+        public IEnumerable<string> ReferencedAssemblies
+        {
+            get
+            {
+                // get the loaded assembly names from the stupid collection to an enumerable one
+                var referencedAssemblies = TemplateCompiler.CompilationParameters.CompilerParameters.ReferencedAssemblies;
+                
+                var loadedReferences = new string[referencedAssemblies.Count];
+                referencedAssemblies.CopyTo(loadedReferences, 0);
+                
+                return loadedReferences;
+            }
+        }
+
         public bool CanSaveToCurrentlyLoadedFile
         {
             get { return !string.IsNullOrWhiteSpace(Filename); }
@@ -335,6 +349,16 @@ namespace RazorPad.ViewModels
 
             modelProvider.Error += OnRazorPadError;
             modelProvider.ModelChanged += OnTemplateChanged;
+        }
+
+        public void SetReferencedAssemblies(IEnumerable<string> references)
+        {
+            var compilationParameters = TemplateCompiler.CompilationParameters;
+
+            compilationParameters.CompilerParameters.ReferencedAssemblies.Clear();
+
+            foreach (var reference in references)
+                TemplateCompiler.CompilationParameters.AddAssemblyReference(reference);
         }
     }
 }

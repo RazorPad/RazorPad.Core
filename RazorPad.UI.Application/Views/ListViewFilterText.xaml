@@ -1,7 +1,7 @@
 ﻿<UserControl x:Class="RazorPad.Views.ListViewFilterText"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    >
+             xmlns:UI="clr-namespace:RazorPad.UI;assembly=RazorPad.UI">
     <UserControl.Resources>
 
         <!-- border style -->
@@ -37,8 +37,8 @@
         <DockPanel>
             <Button x:Name="FilterButton" DockPanel.Dock="Right" Content="X" 
         Style="{StaticResource ButtonStyle}" Click="FilterButtonClick" />
-            <TextBox x:Name="FilterTextBox" DockPanel.Dock="Left" 
-        Style="{StaticResource TextStyle}" TextChanged="FilterTextBoxTextChanged" />
+            <UI:DelayedNotifyPropertyChangedTextBox x:Name="FilterTextBox" DockPanel.Dock="Left" 
+        Style="{StaticResource TextStyle}" Text="{Binding FilterText}" TextChangedEventDelay=".2" />
         </DockPanel>
     </Border>
 

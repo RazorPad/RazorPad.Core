@@ -14,6 +14,7 @@
     <Window.InputBindings>
         <KeyBinding Modifiers="Control" Key="N" Command="{Binding NewCommand}" />
         <KeyBinding Modifiers="Control" Key="O" Command="{Binding OpenCommand}" />
+        <KeyBinding Modifiers="Control" Key="R" Command="{Binding ManageReferencesCommand}" />
         <KeyBinding Modifiers="Control" Key="S" Command="{Binding SaveCommand}" />
         <KeyBinding Modifiers="Control" Key="F4" Command="{Binding CloseCommand}" />
     </Window.InputBindings>
@@ -31,10 +32,10 @@
                 <MenuItem Header="_Open" Command="{Binding OpenCommand}" />
                 <MenuItem Header="_Close" Command="{Binding CloseCommand}" />
                 <MenuItem Header="_Save" Command="{Binding SaveCommand}" />
-                <MenuItem Header="_Save As..." Command="{Binding SaveAsCommand}" />
+                <MenuItem Header="Save _As..." Command="{Binding SaveAsCommand}" />
             </MenuItem>
             <MenuItem Header="_References">
-                <MenuItem Header="_Manage References..." Click="ManageReference_Click" IsEnabled="True" />
+                <MenuItem Header="Manage _References..." Command="{Binding ManageReferencesCommand}" />
             </MenuItem>
             <MenuItem Header="Themes" ItemsSource="{Binding Themes}">
                 <MenuItem.ItemContainerStyle>

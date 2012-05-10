@@ -17,7 +17,7 @@ namespace RazorPad.Views
 
         protected MainWindowViewModel ViewModel
         {
-            get { return (MainWindowViewModel) DataContext; }
+            get { return (MainWindowViewModel)DataContext; }
             private set { DataContext = value; }
         }
 
@@ -43,13 +43,14 @@ namespace RazorPad.Views
             var themes = themeLoader.LoadThemes();
 
             ViewModel = ServiceLocator.Get<MainWindowViewModel>();
+            ViewModel.GetReferencesThunk = GetReferences;
             ViewModel.Messages = traceWriter;
             ViewModel.Themes = new ObservableCollection<Theme>(themes);
-            
+
             CreateDemoTemplate();
 
             InitializeComponent();
-            
+
             Trace.TraceInformation("Done initializing");
         }
 
@@ -65,44 +66,30 @@ namespace RazorPad.Views
         }
 
 
-
-        private void ManageReference_Click(object sender, RoutedEventArgs e)
+        private IEnumerable<string> GetReferences(IEnumerable<string> loadedReferences)
         {
-            var loadedReferencesTempArray =
-                new string[
-                    ViewModel.CurrentTemplate.TemplateCompiler.CompilationParameters.CompilerParameters.
-                        ReferencedAssemblies.Count];
+            var references = loadedReferences.ToArray();
 
-            // get the loaded assembly names from the stupid collection to an enumerable one
-            ViewModel.CurrentTemplate.TemplateCompiler.CompilationParameters.CompilerParameters.ReferencedAssemblies.
-                CopyTo(
-                    loadedReferencesTempArray, 0);
+            var assemblyReferences = references.Select(s =>
+                new AssemblyReference(s)
+                {
+                    IsNotReadOnly = !CoreReferences.Contains(s),
+                    IsInstalled = true,
+                });
 
-            var loadedReferences = loadedReferencesTempArray
-                .Select(s =>
-                        new Reference(s)
-                            {
-                                IsNotReadOnly = !CoreReferences.Contains(s),
-                                IsInstalled = true,
-                            });
-
-            var dialogDataContext = new ReferencesViewModel(loadedReferences);
+            var dialogDataContext = new ReferencesViewModel(assemblyReferences);
             var dlg = new ReferencesDialogWindow
-                          {
-                              Owner = this,
-                              DataContext = dialogDataContext
-                          };
+            {
+                Owner = this,
+                DataContext = dialogDataContext
+            };
 
             dlg.ShowDialog();
 
-            if (dlg.DialogResult != true) return;
+            if (dlg.DialogResult == true)
+                references = dialogDataContext.InstalledReferences.References.Select(reference => reference.Location).ToArray();
 
-            // clear existing ones
-            ViewModel.CurrentTemplate.TemplateCompiler.CompilationParameters.CompilerParameters.ReferencedAssemblies.
-                Clear();
-
-            foreach (var reference in dialogDataContext.InstalledReferences.References)
-                ViewModel.CurrentTemplate.TemplateCompiler.CompilationParameters.AddAssemblyReference(reference.Location);
+            return references;
         }
     }
 }

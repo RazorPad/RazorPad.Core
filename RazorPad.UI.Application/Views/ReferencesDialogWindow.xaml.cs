@@ -43,14 +43,14 @@ namespace RazorPad.Views
                 try
                 {
                     string message;
-                    Reference reference;
+                    AssemblyReference assemblyReference;
 
-                    var refCanBeLoaded = Reference.TryLoadReference(filePath, out reference, out message);
+                    var refCanBeLoaded = AssemblyReference.TryLoadReference(filePath, out assemblyReference, out message);
                     if (refCanBeLoaded)
                     {
-                        reference.IsInstalled = reference.IsRecent = true;
-                        vm.RecentReferences.References.Add(reference);
-                        vm.InstalledReferences.References.Add(reference);
+                        assemblyReference.IsInstalled = assemblyReference.IsRecent = true;
+                        vm.RecentReferences.References.Add(assemblyReference);
+                        vm.InstalledReferences.References.Add(assemblyReference);
                     }
                     else
                     {
