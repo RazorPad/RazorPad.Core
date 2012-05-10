@@ -169,8 +169,23 @@ namespace RazorPad.ViewModels
             theme.Selected = true;
         }
 
-        public void AddNewTemplateEditor(string filename = null, bool current = true)
+        public void AddNewTemplateEditor(bool current = true)
         {
+            var modelProvider = ModelProviders.DefaultFactory.Create();
+
+            var document = new RazorDocument { ModelProvider = modelProvider };
+
+            AddNewTemplateEditor(document, current);
+        }
+
+        public void AddNewTemplateEditor(string filename, bool current = true)
+        {
+            if (string.IsNullOrWhiteSpace(filename))
+            {
+                Trace.TraceWarning("AddNewTemplateEditor called without specifying a filename -- returning");
+                return;
+            }
+
             RazorTemplateEditorViewModel loadedTemplate =
                 TemplateEditors
                     .Where(x => !string.IsNullOrWhiteSpace(x.Filename))
@@ -184,12 +199,7 @@ namespace RazorPad.ViewModels
                 return;
             }
 
-            RazorDocument document;
-
-            if (string.IsNullOrWhiteSpace(filename))
-                document = new RazorDocument();
-            else
-                document = _documentManager.Load(filename);
+            var document = _documentManager.Load(filename);
 
             AddNewTemplateEditor(document, current);
         }

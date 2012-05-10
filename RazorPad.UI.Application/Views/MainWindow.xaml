@@ -10,7 +10,7 @@
     <Window.Resources>
         <avalonDockThemes:VS2010Theme x:Key="VS2010Theme"/>
     </Window.Resources>
-
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
