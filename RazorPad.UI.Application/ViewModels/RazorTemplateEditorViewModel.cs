@@ -10,7 +10,6 @@ using System.Web.Razor;
 using RazorPad.Compilation;
 using RazorPad.Extensions;
 using RazorPad.Framework;
-using RazorPad.Model;
 using RazorPad.UI;
 using RazorPad.UI.ModelBuilders;
 

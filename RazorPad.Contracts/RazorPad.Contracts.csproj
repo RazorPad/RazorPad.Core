@@ -7,7 +7,7 @@
     <ProjectGuid>{92E04BBB-A022-41BA-A13C-1EB6C47DFFAE}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>RazorPad.Contracts</RootNamespace>
+    <RootNamespace>RazorPad</RootNamespace>
     <AssemblyName>RazorPad.Contracts</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -41,10 +41,18 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IModelBuilder.cs" />
+    <Compile Include="IModelBuilderFactory.cs" />
     <Compile Include="IModelProvider.cs" />
     <Compile Include="IModelProviderFactory.cs" />
+    <Compile Include="IRazorDocumentLoader.cs" />
+    <Compile Include="IRazorDocumentSaver.cs" />
+    <Compile Include="ITemplateExecutor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RazorDocument.cs" />
+    <Compile Include="RazorDocumentKind.cs" />
     <Compile Include="RazorPadError.cs" />
+    <Compile Include="TemplateLanguage.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\assets\RazorPad.snk">

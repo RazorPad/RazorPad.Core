@@ -90,7 +90,7 @@ namespace RazorPad.Compilation
             return Execute(document.Template, document.GetModel());
         }
 
-        public string Execute(string templateText, dynamic model = null, RazorEngineHost host = null)
+        public string Execute(string templateText, dynamic model)
         {
             Trace.WriteLine(string.Format("Template text: {0}", templateText));
 

@@ -57,8 +57,6 @@
     <EmbeddedResource Include="ModelBuilders\CSharp\CSharpModelEvaluatorTemplate.cs" />
     <Compile Include="ModelBuilders\CSharp\CSharpModelProvider.cs" />
     <Compile Include="ModelBuilders\CSharp\CSharpModelProviderFactory.cs" />
-    <Compile Include="ModelBuilders\IModelBuilder.cs" />
-    <Compile Include="ModelBuilders\IModelBuilderFactory.cs" />
     <Compile Include="ModelBuilders\Json\JsonModelBuilderFactory.cs" />
     <Compile Include="ModelBuilders\Json\JsonModelBuilderViewModel.cs" />
     <Compile Include="ModelBuilders\ModelBuilder.cs" />

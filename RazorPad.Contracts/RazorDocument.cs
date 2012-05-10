@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using RazorPad.Compilation;
-using RazorPad.Providers;
 
 namespace RazorPad
 {
@@ -31,20 +29,19 @@ namespace RazorPad
             set { _documentKind = value; }
         }
         private RazorDocumentKind? _documentKind;
-        
-        public RazorDocument(string template, object model, IDictionary<string, string> metadata = null)
-            : this(template, new BasicModelProvider(model: model), metadata)
+
+        public RazorDocument()
+            : this(null)
         {
         }
 
-        public RazorDocument(string template = null, IModelProvider modelProvider = null, IDictionary<string, string> metadata = null)
+        public RazorDocument(string template, IModelProvider modelProvider = null, IDictionary<string, string> metadata = null)
         {
             Metadata = new Dictionary<string, string>(metadata ?? new Dictionary<string, string>());
-            ModelProvider = modelProvider ?? new JsonModelProvider();
+            ModelProvider = modelProvider;
             Template = template ?? string.Empty;
-            TemplateBaseClassName = typeof(TemplateBase).FullName;
+            TemplateBaseClassName = "RazorPad.Compilation.TemplateBase";
         }
-
 
         public dynamic GetModel()
         {

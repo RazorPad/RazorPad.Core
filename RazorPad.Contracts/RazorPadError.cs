@@ -1,6 +1,6 @@
 using System;
 
-namespace RazorPad.Model
+namespace RazorPad
 {
     public class RazorPadError
     {

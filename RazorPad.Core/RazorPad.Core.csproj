@@ -75,7 +75,6 @@
     <Compile Include="Compilation\ErrorExtensions.cs" />
     <Compile Include="Compilation\TemplateCompilationParameters.cs" />
     <Compile Include="Compilation\TemplateCompiler.cs" />
-    <Compile Include="Compilation\TemplateLanguage.cs" />
     <Compile Include="Compilation\ViewComponentCSharpRazorCodeGenerator.cs" />
     <Compile Include="Compilation\ViewComponentCSharpRazorCodeParser.cs" />
     <Compile Include="Extensions\CompilerErrorCollectionExtensions.cs" />
@@ -93,14 +92,10 @@
     <Compile Include="Model\Providers\JsonModelProvider.cs" />
     <Compile Include="Model\ModelProvider.cs" />
     <Compile Include="Framework\SimpleName.cs" />
-    <Compile Include="Persistence\IRazorDocumentLoader.cs" />
-    <Compile Include="Persistence\IRazorDocumentSaver.cs" />
     <Compile Include="Persistence\RazorDocumentManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Compilation\TemplateBase.cs" />
-    <Compile Include="RazorDocument.cs" />
     <Compile Include="Persistence\XmlRazorDocumentSource.cs" />
-    <Compile Include="RazorDocumentKind.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="RazorPad.nuspec" />
