@@ -1,12 +1,14 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
+using NLog;
 using RazorPad.Framework;
 
 namespace RazorPad
 {
     public abstract class ModelProvider : IModelProvider
     {
+        protected static readonly Logger Log = LogManager.GetCurrentClassLogger();
+
         public event EventHandler<RazorPadErrorEventArgs> Error
         {
             add { _errorHandlers += value; }
@@ -35,11 +37,16 @@ namespace RazorPad
             }
             catch (Exception ex)
             {
-                Trace.TraceError("Error rebuilding model: {0}", ex);
-                TriggerError(new RazorPadError(ex));
+                TriggerError(ex);
             }
 
             return model ?? new DynamicDictionary();
+        }
+
+        protected void TriggerError(Exception ex)
+        {
+            Log.ErrorException("Error rebuilding model", ex);
+            TriggerError(new RazorPadError(ex));
         }
 
         protected void TriggerError(RazorPadError error)
@@ -50,6 +57,7 @@ namespace RazorPad
 
         protected void TriggerModelChanged()
         {
+            Log.Debug("Model changed");
             if (_modelChangedHandlers != null)
                 _modelChangedHandlers(this, EventArgs.Empty);
         }

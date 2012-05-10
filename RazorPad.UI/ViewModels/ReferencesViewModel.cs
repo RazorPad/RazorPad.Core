@@ -1,21 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using NLog;
 
 namespace RazorPad.ViewModels
 {
     public class ReferencesViewModel
     {
+        protected static readonly Logger Log = LogManager.GetCurrentClassLogger();
+
         public SearchableReferencesViewModel StandardReferences { get; set; }
         public SearchableReferencesViewModel RecentReferences { get; set; }
         public SearchableReferencesViewModel InstalledReferences { get; set; }
 
         public ReferencesViewModel(IEnumerable<AssemblyReference> loadedReferences)
         {
-            Trace.TraceInformation("Loaded references: " + string.Join(", ", loadedReferences));
+            Log.Info(() => string.Format("Loaded references: {0}", string.Join(", ", loadedReferences)));
 
             var standardReferences = LoadStandardReferences().ToList();
             var recentReferences = GetRecentReferences().ToList();
@@ -106,24 +108,24 @@ namespace RazorPad.ViewModels
         {
             var paths = (StandardDotNetReferencesLocator.GetStandardDotNetReferencePaths() ?? Enumerable.Empty<string>()).ToArray();
 
-            Trace.TraceInformation("Standard .NET References: " + string.Join(", ", paths));
+            Log.Debug("Standard .NET References: " + string.Join(", ", paths));
 
             foreach (var path in paths)
             {
                 AssemblyReference assemblyReference;
                 string message;
-                
-                Trace.Write(string.Format("Loading standard reference {0}... ", path));
+
+                Log.Debug("Loading standard reference {0}... ", path);
 
                 var isLoadable = AssemblyReference.TryLoadReference(path, out assemblyReference, out message);
 
                 if (!isLoadable)
                 {
-                    Trace.WriteLine("NOT loaded.");
+                    Log.Warn("Reference {0} NOT loaded.", path);
                     continue;
                 }
 
-                Trace.WriteLine("loaded.");
+                Log.Info("Standard reference {0} loaded.", path);
 
                 assemblyReference.IsStandard = true;
 
@@ -135,7 +137,7 @@ namespace RazorPad.ViewModels
         {
             const string recentReferencesFilePath = "RecentReferences.txt";
 
-            Trace.TraceInformation("Getting recent assembly references from " + recentReferencesFilePath);
+            Log.Info("Getting recent assembly references from " + recentReferencesFilePath);
 
             if (File.Exists(recentReferencesFilePath))
             {
@@ -149,10 +151,9 @@ namespace RazorPad.ViewModels
                                                 IsRecent = true
                                             });
                 }
-
                 catch (Exception ex)
                 {
-                    Trace.TraceError("Error getting recent references: {0}", ex);
+                    Log.ErrorException("Error getting recent references: {0}", ex);
                 }
             }
 

@@ -22,6 +22,11 @@ namespace RazorPad
 
             Message = string.Format("EXCEPTION: {0}", exception.Message);
         }
+
+        public override string ToString()
+        {
+            return string.Format("[{0}:{1}] {2}", Line, Column, Message);
+        }
     }
 
     public class RazorPadErrorEventArgs : EventArgs

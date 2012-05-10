@@ -3,6 +3,9 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows;
+using NLog;
+using NLog.Config;
+using NLog.Targets;
 using RazorPad.Compilation.Hosts;
 using RazorPad.Providers;
 using RazorPad.UI;
@@ -13,6 +16,8 @@ namespace RazorPad.Views
 {
     public partial class MainWindow : Window
     {
+        protected static readonly Logger Log = LogManager.GetCurrentClassLogger();
+
         private IEnumerable<string> _coreReferences;
 
         protected MainWindowViewModel ViewModel
@@ -31,11 +36,18 @@ namespace RazorPad.Views
 
         public MainWindow()
         {
+            var traceTarget = new TraceTarget();
+
+            var config = new LoggingConfiguration();
+            config.AddTarget("Trace", traceTarget);
+            config.LoggingRules.Add(new LoggingRule("*", LogLevel.Info, traceTarget));
+            LogManager.Configuration = config;
+
             // TODO: Replace with real logging
             var traceWriter = new ObservableTextWriter();
             Trace.Listeners.Add(new TextWriterTraceListener(traceWriter) { TraceOutputOptions = TraceOptions.None });
 
-            Trace.TraceInformation("Initializing application...");
+            Log.Info("Initializing application...");
 
             ServiceLocator.Initialize();
 
@@ -51,7 +63,7 @@ namespace RazorPad.Views
 
             InitializeComponent();
 
-            Trace.TraceInformation("Done initializing");
+            Log.Info("Done initializing");
         }
 
         private void CreateDemoTemplate()

@@ -2,15 +2,17 @@
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using NLog;
 
 namespace RazorPad
 {
     public static class ServiceLocator
     {
+        static readonly Logger Log = LogManager.GetCurrentClassLogger();
+
         internal static CompositionContainer Container { get; private set; }
 
         public static void Initialize()
@@ -18,7 +20,7 @@ namespace RazorPad
             if(Container != null)
                 return;
 
-            Trace.TraceInformation("Initializing Service Locator...");
+            Log.Info("Initializing Service Locator...");
 
             var assemblies = new AggregateCatalog(
                     new AssemblyCatalog(Assembly.Load("RazorPad.Core")),
@@ -30,7 +32,7 @@ namespace RazorPad
 
             Container = new CompositionContainer(new AggregateCatalog(assemblies, plugins));
 
-            Trace.TraceInformation("Service Locator initialized");
+            Log.Info("Service Locator initialized");
         }
 
         public static TService Get<TService>(string name = null)
@@ -58,17 +60,18 @@ namespace RazorPad
         {
             string pluginPath = Path.Combine(Environment.CurrentDirectory, "plugins");
 
-            Trace.TraceInformation("Looking for plugins in " + pluginPath);
+            Log.Info("Looking for plugins in " + pluginPath);
 
             if (!Directory.Exists(pluginPath))
             {
-                Trace.WriteLine("Plugin directory doesn't exist - creating...");
+                Log.Debug("Plugin directory {0} doesn't exist - creating...", pluginPath);
                 Directory.CreateDirectory(pluginPath);
             }
 
             var plugins = new DirectoryCatalog(pluginPath);
 
-            Trace.WriteLine(string.Format("Found {0} parts in {1} plugin assemblies", plugins.Parts.Count(), plugins.LoadedFiles.Count));
+            Log.Info(string.Format("Found {0} parts in {1} plugin assemblies", 
+                     plugins.Parts.Count(), plugins.LoadedFiles.Count));
 
             return plugins;
         }

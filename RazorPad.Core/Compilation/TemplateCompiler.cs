@@ -1,10 +1,10 @@
 ﻿using System;
 using System.CodeDom.Compiler;
-using System.Diagnostics;
+using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Web.Razor;
+using NLog;
 using RazorPad.Compilation.Hosts;
 using RazorPad.Framework;
 
@@ -12,6 +12,8 @@ namespace RazorPad.Compilation
 {
     public class TemplateCompiler : ITemplateCompiler
     {
+        protected static readonly Logger Log = LogManager.GetCurrentClassLogger();
+
         public CodeGeneratorOptions CodeGeneratorOptions { get; private set; }
 
         public TemplateCompilationParameters CompilationParameters { get; set; }
@@ -65,62 +67,65 @@ namespace RazorPad.Compilation
 
         public CompilerResults Compile(GeneratorResults generatorResults)
         {
-            Trace.TraceInformation("Compiling generated code...");
+            Log.Info("Compiling generated code...");
 
             var parameters = CompilationParameters.CompilerParameters;
             var codeProvider = CompilationParameters.CodeProvider;
             var generatedCode = generatorResults.GeneratedCode;
 
+            Log.Debug("CodeProvider.CompileAssemblyFromDom()...");
             var compiledCode = codeProvider.CompileAssemblyFromDom(parameters, generatedCode);
 
             if (compiledCode.Errors.HasErrors)
             {
-                Trace.TraceWarning("Compilation FAILED");
-                Trace.WriteLine(compiledCode.Errors.Render());
+                Log.Warn("Compilation FAILED: {0}", compiledCode.Errors.Render());
             }
             else
             {
-                Trace.TraceInformation("Compilation succeeded");
+                Log.Info("Compilation succeeded");
             }
 
             return compiledCode;
         }
 
-        public string Execute(RazorDocument document)
+        public string Execute(string templateText, dynamic model, IEnumerable<string> assemblyReferences)
         {
-            if (document.References != null && document.References.Any())
-                CompilationParameters.SetReferencedAssemblies(document.References);
+            Log.Info("Executing template...");
 
-            return Execute(document.Template, document.GetModel());
-        }
+            Log.Debug(() => string.Format("Template text: {0}", templateText));
 
-        public string Execute(string templateText, dynamic model)
-        {
-            Trace.WriteLine(string.Format("Template text: {0}", templateText));
+            if (assemblyReferences != null)
+            {
+                Log.Debug(() => string.Format("Assembly References: {0}", string.Join(", ", assemblyReferences)));
+                CompilationParameters.SetReferencedAssemblies(assemblyReferences);
+            }
 
             dynamic instance = GetTemplateInstance(templateText);
 
             instance.Model = model ?? new DynamicDictionary();
 
-            Trace.TraceInformation("Executing template...");
+            Log.Info("Executing...");
             instance.Execute();
 
             string templateOutput = instance.Buffer.ToString();
 
-            Trace.WriteLine(string.Format("Executed template output: {0}", templateOutput));
+            Log.Info("Template executed.");
+            Log.Debug(() => string.Format("Executed template output: {0}", templateOutput));            
 
             return templateOutput;
         }
 
         private dynamic GetTemplateInstance(string templateText, RazorEngineHost host = null)
         {
+            Log.Info("Getting template instance...");
+
             host = host ?? RazorEngineHostFactory.Invoke(CompilationParameters.Language);
 
             var generatorResults = GenerateCode(templateText, null, host: host);
 
             if (!generatorResults.Success)
             {
-                Trace.TraceError("Failed to parse template: ", generatorResults.ParserErrors.Render());
+                Log.Error("Failed to parse template: {0}", generatorResults.ParserErrors.Render());
                 throw new CodeGenerationException(generatorResults);
             }
 
@@ -128,6 +133,7 @@ namespace RazorPad.Compilation
 
             if (compilerResults.Errors.Count > 0)
             {
+                Log.Error("Compilation failed with {0} errors", compilerResults.Errors.Count);
                 throw new CompilationException(compilerResults);
             }
 
@@ -137,7 +143,7 @@ namespace RazorPad.Compilation
 
         private dynamic CreateTemplateInstance(string typeName, CompilerResults compilerResults)
         {
-            Trace.TraceInformation("Creating instance of template {0}...", typeName);
+            Log.Info("Creating instance of template {0}...", typeName);
 
             var type = compilerResults.CompiledAssembly.GetType(typeName);
             return TemplateInstanceInstatiator(type);
@@ -161,16 +167,23 @@ namespace RazorPad.Compilation
 
         public GeneratorResults GenerateCode(string templateText, TextWriter codeWriter, RazorEngineHost host = null)
         {
+            Log.Info("Generating code...");
+
             host = host ?? RazorEngineHostFactory(CompilationParameters.Language);
             var engine = new RazorTemplateEngine(host);
 
             var results = engine.GenerateCode(templateText.ToTextReader());
 
-            if (codeWriter != null)
+            if (codeWriter == null)
+            {
+                Log.Debug("No code writer provided -- skipping primary language code generation");
+            }
+            else
             {
                 var codeProvider = CompilationParameters.CodeProvider;
                 var generatedCode = results.GeneratedCode;
-                
+
+                Log.Debug("CodeProvider.GenerateCodeFromCompileUnit()...");
                 codeProvider.GenerateCodeFromCompileUnit(generatedCode, codeWriter, CodeGeneratorOptions);
             }
 

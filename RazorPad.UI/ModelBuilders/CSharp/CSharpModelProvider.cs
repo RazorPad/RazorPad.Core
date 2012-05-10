@@ -1,6 +1,7 @@
 ﻿using System;
 using System.CodeDom.Compiler;
 using System.IO;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using Microsoft.CSharp;
 using RazorPad.Extensions;
@@ -57,12 +58,21 @@ namespace RazorPad.UI.ModelBuilders.CSharp
 
             if(results.Errors.HasErrors)
             {
-                results.Errors.Trace();
+                var razorPadErrors = 
+                    from CompilerError error in results.Errors 
+                    select new RazorPadCompilerError(error);
+
+                foreach (var error in razorPadErrors)
+                {
+                    TriggerError(error);
+                }
+
                 return null;
             }
 
             var type = results.CompiledAssembly.GetType("CSharpModelEvaluator");
             dynamic modelBuilder = Activator.CreateInstance(type);
+
             return modelBuilder.GetModel();
         }
 

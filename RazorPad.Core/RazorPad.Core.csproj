@@ -46,6 +46,9 @@
     <AssemblyOriginatorKeyFile>RazorPad.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="NLog">
+      <HintPath>..\packages\NLog.2.0.0.2000\lib\net40\NLog.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
@@ -77,7 +80,6 @@
     <Compile Include="Compilation\TemplateCompiler.cs" />
     <Compile Include="Compilation\ViewComponentCSharpRazorCodeGenerator.cs" />
     <Compile Include="Compilation\ViewComponentCSharpRazorCodeParser.cs" />
-    <Compile Include="Extensions\CompilerErrorCollectionExtensions.cs" />
     <Compile Include="Extensions\EventHandlerExtensions.cs" />
     <Compile Include="Extensions\RazorPadCompilerError.cs" />
     <Compile Include="Extensions\RazorPadRazorError.cs" />
@@ -100,6 +102,7 @@
     <Compile Include="UI\RazorSyntaxTreeVisualizer.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="packages.config" />
     <None Include="RazorPad.nuspec" />
     <None Include="RazorPad.snk" />
   </ItemGroup>

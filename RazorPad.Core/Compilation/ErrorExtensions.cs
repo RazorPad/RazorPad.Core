@@ -7,7 +7,6 @@ namespace RazorPad.Compilation
 {
     public static class ErrorExtensions
     {
-
         public static IEnumerable<string> Format(this IEnumerable<RazorError> errors)
         {
             var formatted = errors.Select(error => 
@@ -35,6 +34,5 @@ namespace RazorPad.Compilation
             var formatted = Format(errors);
             return string.Join("\r\n", formatted);
         }
-
     }
 }

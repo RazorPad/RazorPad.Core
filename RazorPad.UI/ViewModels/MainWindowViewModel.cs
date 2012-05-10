@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Markup;
+using NLog;
 using RazorPad.Framework;
 using RazorPad.Persistence;
 using RazorPad.UI;
@@ -19,6 +19,8 @@ namespace RazorPad.ViewModels
     [Export]
     public class MainWindowViewModel : ViewModelBase
     {
+        protected static readonly Logger Log = LogManager.GetCurrentClassLogger();
+
         private readonly RazorDocumentManager _documentManager;
         private readonly ModelProviders _modelProviders;
         private readonly ModelBuilders _modelBuilders;
@@ -71,6 +73,7 @@ namespace RazorPad.ViewModels
                     return;
 
                 _currentTemplate = value;
+                Log.Debug("CurrentTemplate changed");
                 OnPropertyChanged("CurrentTemplate");
                 OnPropertyChanged("HasCurrentTemplate");
             }
@@ -173,9 +176,13 @@ namespace RazorPad.ViewModels
 
         private void SwitchTheme(Theme theme)
         {
+            Log.Debug("Switching to {0} theme ({1})...", theme.Name, theme.FilePath);
+
             LoadThemeFromFileThunk(theme.FilePath);
             Themes.ToList().ForEach(x => x.Selected = false);
             theme.Selected = true;
+            
+            Log.Info("Switched to {0} theme", theme.Name);
         }
 
         public void AddNewTemplateEditor(bool current = true)
@@ -191,7 +198,7 @@ namespace RazorPad.ViewModels
         {
             if (string.IsNullOrWhiteSpace(filename))
             {
-                Trace.TraceWarning("AddNewTemplateEditor called without specifying a filename -- returning");
+                Log.Info("Attempted to add new editor without specifying a filename -- returning");
                 return;
             }
 
@@ -220,9 +227,11 @@ namespace RazorPad.ViewModels
 
         public void AddNewTemplateEditor(RazorTemplateEditorViewModel templateEditor, bool current = true)
         {
+            Log.Debug("Adding new template editor (current: {0})...", current);
+
             templateEditor.OnStatusUpdated += (sender, args) =>
                                                   {
-                                                      Trace.TraceInformation(args.Message);
+                                                      Log.Info(args.Message);
                                                       StatusMessage = args.Message;
                                                   };
 
@@ -231,17 +240,28 @@ namespace RazorPad.ViewModels
             TemplateEditors.Add(templateEditor);
 
             if (current)
+            {
+                Log.Debug("Setting as current template");
                 CurrentTemplate = templateEditor;
+            }
 
             templateEditor.Execute();
+
+            Log.Info("Added new template editor");
         }
 
 
         public void Close(RazorTemplateEditorViewModel document, bool? save = null)
         {
+            Log.Debug("Closing document...");
+
             if (document.IsDirty && save.GetValueOrDefault(true))
             {
+                Log.Debug("Document is dirty confirming save or close...");
+
                 var shouldSave = ConfirmSaveDirtyDocumentThunk(document);
+
+                Log.Debug("User said {0}", shouldSave);
 
                 switch (shouldSave)
                 {
@@ -255,6 +275,8 @@ namespace RazorPad.ViewModels
             }
 
             TemplateEditors.Remove(document);
+
+            Log.Debug("Document closed");
         }
 
         public void Save(RazorTemplateEditorViewModel document)
@@ -274,20 +296,29 @@ namespace RazorPad.ViewModels
             try
             {
                 if (filename == null)
+                {
+                    Log.Debug("Filename was null -- triggering SaveAs...");
                     filename = GetSaveAsFilenameThunk(CurrentTemplate);
+                }
 
                 if (string.IsNullOrWhiteSpace(filename))
                 {
-                    Trace.TraceWarning("Filename is empty - skipping save");
+                    Log.Warn("Filename is empty - skipping save");
+                    return filename;
                 }
-                else
-                    _documentManager.Save(document, filename);
+
+                Log.Debug("Saving document to {0}...", filename);
+
+                _documentManager.Save(document, filename);
+
+                Log.Info("Document saved to {0}", filename);
             }
             catch (Exception ex)
             {
-                Trace.TraceError("Error saving document: {0}", ex);
+                Log.ErrorException("Error saving document", ex);
                 Error.SafeInvoke(ex.Message);
             }
+
 
             return filename;
         }
