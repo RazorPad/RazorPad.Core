@@ -96,7 +96,7 @@ namespace RazorPad.UI.Editors
         {
             var codeEditor = sender as CodeEditor;
             if (codeEditor != null) 
-                codeEditor.ReadOnly = (bool)e.NewValue;
+                codeEditor.Editor.IsReadOnly = (bool)e.NewValue;
         }
 
         static void OnTextChanged(object sender, DependencyPropertyChangedEventArgs e)
