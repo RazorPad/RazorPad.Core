@@ -169,7 +169,7 @@ namespace RazorPad.ViewModels
             theme.Selected = true;
         }
 
-        internal void AddNewTemplateEditor(string filename = null, bool current = true)
+        public void AddNewTemplateEditor(string filename = null, bool current = true)
         {
             RazorTemplateEditorViewModel loadedTemplate =
                 TemplateEditors
@@ -194,12 +194,12 @@ namespace RazorPad.ViewModels
             AddNewTemplateEditor(document, current);
         }
 
-        internal void AddNewTemplateEditor(RazorDocument document, bool current = true)
+        public void AddNewTemplateEditor(RazorDocument document, bool current = true)
         {
             AddNewTemplateEditor(new RazorTemplateEditorViewModel(document, _modelBuilders, _modelProviders), current);
         }
 
-        internal void AddNewTemplateEditor(RazorTemplateEditorViewModel templateEditor, bool current = true)
+        public void AddNewTemplateEditor(RazorTemplateEditorViewModel templateEditor, bool current = true)
         {
             templateEditor.OnStatusUpdated += (sender, args) =>
                                                   {

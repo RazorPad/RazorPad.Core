@@ -77,12 +77,6 @@
     </ApplicationDefinition>
     <Compile Include="ServiceLocator.cs" />
     <Compile Include="Views\ActiveDocumentConverter.cs" />
-    <Compile Include="ViewModels\Filter.cs" />
-    <Compile Include="ViewModels\ISearchable.cs" />
-    <Compile Include="ViewModels\MessageBoxHelpers.cs" />
-    <Compile Include="ViewModels\Reference.cs" />
-    <Compile Include="ViewModels\StandardDotNetReferencesLocator.cs" />
-    <Compile Include="ViewModels\ViewFilters.cs" />
     <Compile Include="Views\Output\BrowserView.xaml.cs">
       <DependentUpon>BrowserView.xaml</DependentUpon>
     </Compile>
@@ -101,8 +95,6 @@
     <Compile Include="Views\ReferencesDialogWindow.xaml.cs">
       <DependentUpon>ReferencesDialogWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\ReferencesViewModel.cs" />
-    <Compile Include="ViewModels\SearchableReferencesViewModel.cs" />
     <Compile Include="Views\AssemblyReferences.xaml.cs">
       <DependentUpon>AssemblyReferences.xaml</DependentUpon>
     </Compile>
@@ -115,8 +107,6 @@
     <Compile Include="Views\ModelBuilder.xaml.cs">
       <DependentUpon>ModelBuilder.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\MainWindowViewModel.cs" />
-    <Compile Include="ViewModels\RazorTemplateEditorViewModel.cs" />
     <Page Include="Views\Output\BrowserView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -201,6 +191,7 @@
   <ItemGroup>
     <Resource Include="razor.ico" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <PropertyGroup>

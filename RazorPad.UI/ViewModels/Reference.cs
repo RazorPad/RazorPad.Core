@@ -9,7 +9,7 @@ using RazorPad.UI;
 
 namespace RazorPad.ViewModels
 {
-	public class Reference : ViewModelBase, ISearchable, IEquatable<Reference>
+	public class Reference : ViewModelBase, IHaveAName, IEquatable<Reference>
 	{
 		public string Name { get; set; }
 		public string FullName { get; set; }

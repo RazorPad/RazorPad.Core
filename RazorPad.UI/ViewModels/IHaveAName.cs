@@ -1,6 +1,6 @@
 namespace RazorPad.ViewModels
 {
-	internal interface ISearchable
+    public interface IHaveAName
 	{
 		string Name { get; set; }
 	}

@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace RazorPad.ViewModels
+﻿namespace RazorPad.ViewModels
 {
-	internal class Filter<T> 
-		where T : ISearchable
+    public class Filter<T> 
+		where T : IHaveAName
 	{
 		// main filer text
 		private string _text;

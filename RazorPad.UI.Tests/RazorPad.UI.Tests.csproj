@@ -60,7 +60,6 @@
     <Compile Include="AssemblyReference\StandardDotNetReferencesLocatorTests.cs" />
     <Compile Include="ModelBuilders\ModelBuilderFactoryTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ServiceLocatorTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\RazorPad.Contracts\RazorPad.Contracts.csproj">
@@ -70,10 +69,6 @@
     <ProjectReference Include="..\RazorPad.Core\RazorPad.Core.csproj">
       <Project>{511d144c-f4c7-40a3-b3b4-80d891fce2f5}</Project>
       <Name>RazorPad.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\RazorPad.UI.Application\RazorPad.UI.Application.csproj">
-      <Project>{a635596e-2215-4fef-bc10-92f63eaaaa97}</Project>
-      <Name>RazorPad.UI.Application</Name>
     </ProjectReference>
     <ProjectReference Include="..\RazorPad.UI\RazorPad.UI.csproj">
       <Project>{147dfce8-a33f-42f4-a8f1-7e999c02d1dc}</Project>
