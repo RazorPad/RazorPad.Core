@@ -115,6 +115,8 @@ namespace RazorPad.ViewModels
 
                 _document.Filename = value;
                 OnPropertyChanged("Filename");
+                OnPropertyChanged("DisplayName");
+                OnPropertyChanged("FileDirectory");
             }
         }
 
@@ -228,7 +230,7 @@ namespace RazorPad.ViewModels
             Messages = new ObservableTextWriter();
             TemplateCompiler = new TemplateCompiler();
 
-            ListenForModelProviderEvents(_document.ModelProvider);
+            AttachToModelProviderEvents(_document.ModelProvider);
         }
 
 
@@ -323,16 +325,13 @@ namespace RazorPad.ViewModels
         {
             var oldModelProvider = _document.ModelProvider;
 
-            if (oldModelProvider != null)
-            {
-                _savedModels[oldModelProvider.GetType()] = oldModelProvider.Serialize();
-                oldModelProvider.ModelChanged -= OnTemplateChanged;
-                oldModelProvider.Error -= OnRazorPadError;
-            }
+            _savedModels[oldModelProvider.GetType()] = oldModelProvider.Serialize();
+
+            DetachFromModelProviderEvents(oldModelProvider);
 
             _document.ModelProvider = newModelProvider;
 
-            ListenForModelProviderEvents(newModelProvider);
+            AttachToModelProviderEvents(newModelProvider);
 
             string currentlySavedModel;
             if (newModelProvider != null && _savedModels.TryGetValue(newModelProvider.GetType(), out currentlySavedModel))
@@ -343,7 +342,7 @@ namespace RazorPad.ViewModels
             OnPropertyChanged("ModelBuilder");
         }
 
-        private void ListenForModelProviderEvents(IModelProvider modelProvider)
+        private void AttachToModelProviderEvents(IModelProvider modelProvider)
         {
             if (modelProvider == null)
                 return;
@@ -352,5 +351,13 @@ namespace RazorPad.ViewModels
             modelProvider.ModelChanged += OnTemplateChanged;
         }
 
+        private void DetachFromModelProviderEvents(IModelProvider oldModelProvider)
+        {
+            if (oldModelProvider == null) 
+                return;
+
+            oldModelProvider.ModelChanged -= OnTemplateChanged;
+            oldModelProvider.Error -= OnRazorPadError;
+        }
     }
 }
