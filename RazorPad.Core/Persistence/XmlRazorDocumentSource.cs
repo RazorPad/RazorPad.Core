@@ -48,19 +48,21 @@ namespace RazorPad.Persistence
 
             var root = source.Root;
             var metadataEl = root.Element("Metadata") ?? new XElement("Metadata");
+            var referencesEl = root.Element("References") ?? new XElement("References");
             var modelEl = root.Element("Model") ?? new XElement("Model");
             var templateEl = root.Element("Template") ?? new XElement("Template");
 
             var modelProviderEl = modelEl.Attribute("Provider");
             var modelProviderName = (modelProviderEl == null) ? "Json" : modelProviderEl.Value;
             var modelProvider = _modelProviderFactory.Create(modelProviderName, modelEl.Value);
+            var references = referencesEl.Elements().Select(x => x.Value).Where(x => !string.IsNullOrWhiteSpace(x));
 
             IDictionary<string, string> metadata =
                 metadataEl.Elements()
                     .Select(x => new KeyValuePair<string, string>(x.Name.LocalName, x.Value))
                     .ToDictionary(val => val.Key, val => val.Value);
 
-            return new RazorDocument(templateEl.Value, modelProvider, metadata);
+            return new RazorDocument(templateEl.Value, references, modelProvider, metadata);
         }
 
         public void Save(RazorDocument document, string filename = null)
@@ -82,6 +84,13 @@ namespace RazorPad.Persistence
                 writer.WriteStartElement(datum.Key);
                 writer.WriteString(datum.Value);
                 writer.WriteEndElement();
+            }
+            writer.WriteEndElement();
+
+            writer.WriteStartElement("References");
+            foreach (var reference in document.References)
+            {
+                writer.WriteElementString("Reference", reference);
             }
             writer.WriteEndElement();
 

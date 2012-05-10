@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace RazorPad
 {
@@ -13,6 +14,8 @@ namespace RazorPad
         public string Template { get; set; }
 
         public string TemplateBaseClassName { get; set; }
+
+        public IEnumerable<string> References { get; set; }
 
         public RazorDocumentKind DocumentKind
         {
@@ -35,10 +38,15 @@ namespace RazorPad
         {
         }
 
-        public RazorDocument(string template, IModelProvider modelProvider = null, IDictionary<string, string> metadata = null)
+        public RazorDocument(string template, 
+                IEnumerable<string> references = null, 
+                IModelProvider modelProvider = null, 
+                IDictionary<string, string> metadata = null
+            )
         {
             Metadata = new Dictionary<string, string>(metadata ?? new Dictionary<string, string>());
             ModelProvider = modelProvider;
+            References = references ?? Enumerable.Empty<string>();
             Template = template ?? string.Empty;
             TemplateBaseClassName = "RazorPad.Compilation.TemplateBase";
         }

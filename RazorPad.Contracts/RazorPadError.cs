@@ -23,4 +23,14 @@ namespace RazorPad
             Message = string.Format("EXCEPTION: {0}", exception.Message);
         }
     }
+
+    public class RazorPadErrorEventArgs : EventArgs
+    {
+        public RazorPadError Error { get; private set; }
+
+        public RazorPadErrorEventArgs(RazorPadError error)
+        {
+            Error = error;
+        }
+    }
 }

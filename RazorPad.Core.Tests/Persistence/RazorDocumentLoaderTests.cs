@@ -1,3 +1,4 @@
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RazorPad.Persistence;
 
@@ -17,8 +18,10 @@ namespace RazorPad.Core.Tests
         [TestMethod]
         public void ShouldLoadXmlRazorDocument()
         {
-            var document = _manager.Parse("<RazorDocument><Template><![CDATA[<h1>Hello, World!</h1>]]></Template></RazorDocument>");
+            var document = _manager.Parse("<RazorDocument><References><Reference>System.Awesome</Reference></References><Template><![CDATA[<h1>Hello, World!</h1>]]></Template></RazorDocument>");
+
             Assert.AreEqual("<h1>Hello, World!</h1>", document.Template);
+            Assert.AreEqual("System.Awesome", document.References.Single());
         }
 
         [TestMethod]

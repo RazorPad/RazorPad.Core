@@ -1,6 +1,7 @@
 ﻿using System;
 using System.CodeDom.Compiler;
 using System.Diagnostics.Contracts;
+using System.IO;
 using System.Reflection;
 using System.Web.Razor;
 using Microsoft.CSharp;
@@ -60,22 +61,12 @@ namespace RazorPad.Compilation
 
         public static TemplateCompilationParameters CreateFromFilename(string filename)
         {
-            if (filename.EndsWith(".vbhtml", StringComparison.OrdinalIgnoreCase))
+            var extension = Path.GetExtension(filename ?? "test.cshtml") ?? string.Empty;
+
+            if (extension.ToLower().Contains("vb"))
                 return VisualBasic;
 
             return CSharp;
-        }
-
-        public static TemplateCompilationParameters CreateFromLanguage(TemplateLanguage language)
-        {
-            switch (language)
-            {
-                case(TemplateLanguage.VisualBasic):
-                    return VisualBasic;
-                
-                default:
-                    return CSharp;
-            }
         }
 		
 	}

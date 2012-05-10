@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 
 namespace RazorPad
 {
     public interface IModelProvider
     {
+        event EventHandler<RazorPadErrorEventArgs> Error;
+        
         event EventHandler ModelChanged;
-
-        ObservableCollection<RazorPadError> Errors { get; }
 
         dynamic GetModel();
 

@@ -265,9 +265,6 @@ namespace RazorPad.ViewModels
 
         protected void Refresh()
         {
-            if(_document.ModelProvider != null && _document.ModelProvider.Errors != null)
-                _document.ModelProvider.Errors.Clear();
-
             Errors.Clear();
             Messages.Clear();
             ExecutedTemplateOutput = string.Empty;
@@ -282,16 +279,9 @@ namespace RazorPad.ViewModels
             IsDirty = true;
         }
 
-        private void OnErrorCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void OnRazorPadError(object sender, RazorPadErrorEventArgs e)
         {
-            if (e.Action != NotifyCollectionChangedAction.Add) return;
-
-            Dispatcher.Invoke(new Action(() => {
-                foreach (RazorPadError item in e.NewItems)
-                {
-                    Errors.Add(item);
-                }
-            }));
+            Dispatcher.Invoke(new Action(() => Errors.Add(e.Error)));
         }
 
         private void OnTemplateChanged(object sender, EventArgs args)
@@ -323,9 +313,7 @@ namespace RazorPad.ViewModels
             {
                 _savedModels[oldModelProvider.GetType()] = oldModelProvider.Serialize();
                 oldModelProvider.ModelChanged -= OnTemplateChanged;
-
-                if (oldModelProvider.Errors != null)
-                oldModelProvider.Errors.CollectionChanged -= OnErrorCollectionChanged;
+                oldModelProvider.Error -= OnRazorPadError;
             }
 
             _document.ModelProvider = newModelProvider;
@@ -346,10 +334,8 @@ namespace RazorPad.ViewModels
             if (modelProvider == null)
                 return;
 
+            modelProvider.Error += OnRazorPadError;
             modelProvider.ModelChanged += OnTemplateChanged;
-
-            if (modelProvider.Errors != null)
-                modelProvider.Errors.CollectionChanged += OnErrorCollectionChanged;
         }
     }
 }
