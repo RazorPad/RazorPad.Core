@@ -9,7 +9,7 @@ namespace RazorPad.UI
             return provider is TModelProvider;
         }
 
-        public ModelBuilder Build(IModelProvider provider = null)
+        public IModelBuilder Build(IModelProvider provider = null)
         {
             var modelProvider = provider as TModelProvider;
             dynamic builder = new TModelBuilder();

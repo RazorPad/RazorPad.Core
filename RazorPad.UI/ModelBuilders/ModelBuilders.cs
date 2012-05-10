@@ -30,7 +30,7 @@ namespace RazorPad.UI.ModelBuilders
         }
 
 
-        public ModelBuilder Create(IModelProvider modelProvider)
+        public IModelBuilder Create(IModelProvider modelProvider)
         {
             var builder = Builders.FirstOrDefault(x => x.CanBuild(modelProvider));
 

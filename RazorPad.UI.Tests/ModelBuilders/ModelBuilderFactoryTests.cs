@@ -27,7 +27,7 @@ namespace RazorPad.UI.ModelBuilders
         public void ShouldPopulateModelProviderPropertyWhenCreateIsCalledWithModelProviderArgument()
         {
             var jsonModelProvider = new JsonModelProvider();
-            var builder = _factory.Create(jsonModelProvider);
+            var builder = (ModelBuilder)_factory.Create(jsonModelProvider);
             dynamic dataContext = builder.DataContext;
             Assert.AreSame(jsonModelProvider, dataContext.ModelProvider);
         }

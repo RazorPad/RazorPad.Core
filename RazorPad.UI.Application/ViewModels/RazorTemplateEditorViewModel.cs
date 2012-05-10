@@ -73,7 +73,7 @@ namespace RazorPad.ViewModels
 
         public ObservableCollection<string> AvailableModelProviders { get; set; }
 
-        public ModelBuilder ModelBuilder
+        public IModelBuilder ModelBuilder
         {
             get { return _modelBuilderFactory.Create(_document.ModelProvider); }
         }
