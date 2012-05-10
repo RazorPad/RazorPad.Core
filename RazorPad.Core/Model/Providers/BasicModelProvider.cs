@@ -20,11 +20,6 @@ namespace RazorPad.Providers
         }
         private dynamic _model;
 
-        public BasicModelProvider(object model = null)
-        {
-            Model = model;
-        }
-
         public override string Serialize()
         {
             return new JavaScriptSerializer().Serialize(Model);
@@ -43,12 +38,8 @@ namespace RazorPad.Providers
 
 
         [Export(typeof(IModelProviderFactory))]
-        public class BasicModelProviderFactory : IModelProviderFactory
+        public class BasicModelProviderFactory : ModelProviderFactory<BasicModelProvider>
         {
-            public IModelProvider Create(dynamic model = null)
-            {
-                return new BasicModelProvider(model: model);
-            }
         }
     }
 }

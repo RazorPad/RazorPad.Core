@@ -26,9 +26,9 @@ namespace RazorPad.UI.ModelBuilders.CSharp
         private string _code;
 
 
-        public CSharpModelProvider(string code = null)
+        public CSharpModelProvider()
         {
-            Code = code ?? ClassTemplate.Value;
+            Code = ClassTemplate.Value;
         }
 
 

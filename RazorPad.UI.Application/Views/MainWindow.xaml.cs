@@ -59,7 +59,7 @@ namespace RazorPad.Views
             var demoDocument = new RazorDocument
             {
                 Template = "<h1>Welcome to @Model.Name!</h1>\r\n<div>Start typing some text to get started.</div>\r\n<div>Or, try adding a property called 'Message' and see what happens...</div>\r\n\r\n<h3>@Model.Message</h3>",
-                ModelProvider = new JsonModelProvider(json: "{\r\n\tName: 'RazorPad'\r\n}")
+                ModelProvider = new JsonModelProvider { Json = "{\r\n\tName: 'RazorPad'\r\n}" }
             };
 
             ViewModel.AddNewTemplateEditor(demoDocument);

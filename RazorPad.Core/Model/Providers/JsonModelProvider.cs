@@ -19,10 +19,6 @@ namespace RazorPad.Providers
         }
         private string _json;
 
-        public JsonModelProvider(string json = null)
-        {
-            Json = json;
-        }
 
         public override string Serialize()
         {
@@ -44,12 +40,8 @@ namespace RazorPad.Providers
 
 
         [Export(typeof(IModelProviderFactory))]
-        public class JsonModelProviderFactory : IModelProviderFactory
+        public class JsonModelProviderFactory : ModelProviderFactory<JsonModelProvider>
         {
-            public IModelProvider Create(dynamic model = null)
-            {
-                return new JsonModelProvider(json: model);
-            }
         }
     }
 }

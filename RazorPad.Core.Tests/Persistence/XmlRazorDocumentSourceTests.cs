@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using System.Linq;
 using System.Xml.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RazorPad.Persistence;
@@ -66,7 +65,7 @@ namespace RazorPad.Core.Tests
             const string expectedModel = "{Name:'RazorPad'}";
             var document = new RazorDocument
                                {
-                                   ModelProvider = new JsonModelProvider(json: expectedModel),
+                                   ModelProvider = new JsonModelProvider { Json = expectedModel },
                                    Template = "<h1>Test!</h1>",
                                };
             document.Metadata.Add("Title", "Test Document");
@@ -90,7 +89,7 @@ namespace RazorPad.Core.Tests
             const string expectedModel = "{Name:'RazorPad'}";
             var originalDocument = new RazorDocument
                                {
-                                   ModelProvider = new JsonModelProvider(json: expectedModel),
+                                   ModelProvider = new JsonModelProvider { Json = expectedModel },
                                    Template = "<h1>Test!</h1>",
                                };
             originalDocument.Metadata.Add("Title", "Test Document");

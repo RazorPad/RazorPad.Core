@@ -50,7 +50,7 @@ namespace RazorPad
                 _providers.Add(providerNickname, factory);
         }
 
-        public IModelProvider Create(string provider, dynamic model = null)
+        public IModelProvider Create(string provider)
         {
             IModelProviderFactory factory;
 
@@ -63,7 +63,7 @@ namespace RazorPad
                 factory = DefaultFactory;
             }
 
-            return factory.Create(model);
+            return factory.Create();
         }
 
         private static string GetProviderDictionaryKey(string typeName)

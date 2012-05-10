@@ -22,10 +22,9 @@ namespace RazorPad.Extensions.Xml.ModelProvider
         private string _xml;
 
 
-        public XmlModelProvider(Type modelType = null, string model = null)
-            : base()
+        public XmlModelProvider()
         {
-            Xml = model ?? "<Model>\r\n\r\n</Model>";
+            Xml = "<Model>\r\n\r\n</Model>";
         }
 
 

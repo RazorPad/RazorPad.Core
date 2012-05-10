@@ -54,7 +54,8 @@ namespace RazorPad.Persistence
 
             var modelProviderEl = modelEl.Attribute("Provider");
             var modelProviderName = (modelProviderEl == null) ? "Json" : modelProviderEl.Value;
-            var modelProvider = _modelProviderFactory.Create(modelProviderName, modelEl.Value);
+            var modelProvider = _modelProviderFactory.Create(modelProviderName);
+            modelProvider.Deserialize(modelEl.Value);
             var references = referencesEl.Elements().Select(x => x.Value).Where(x => !string.IsNullOrWhiteSpace(x));
 
             IDictionary<string, string> metadata =
