@@ -20,14 +20,7 @@ namespace RazorPad.Persistence
 
             document.DocumentKind = RazorDocument.GetDocumentKind(filename);
 
-			FileInfo fiTarget = new FileInfo( destination );
-
-			if( fiTarget.Exists )
-			{
-				fiTarget.Delete();
-			}
-
-            using (var stream = fiTarget.OpenWrite() )
+            using (var stream = File.Open(destination, FileMode.Truncate, FileAccess.Write))
             {
                 saver.Save(document, stream);
 
