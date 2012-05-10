@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -11,10 +10,37 @@ namespace RazorPad.UI.Editors
 {
     public class CodeEditor : UserControl
     {
-        public bool SuspendEditorUpdate { get; private set; }
-        public TextEditor Editor { get; private set; }
+        public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text",
+            typeof(string), typeof(CodeEditor), new FrameworkPropertyMetadata(string.Empty, OnTextChanged)
+            {
+                BindsTwoWayByDefault = true,
+            });
+
+        public static readonly DependencyProperty ReadOnlyProperty = DependencyProperty.Register("ReadOnly",
+            typeof(bool), typeof(CodeEditor), new FrameworkPropertyMetadata(false, OnReadOnlyChanged)
+            {
+                BindsTwoWayByDefault = true,
+            });
+
 
         private DispatcherTimer _textChangedTimer;
+
+        public TextEditor Editor { get; private set; }
+
+        public bool ReadOnly
+        {
+            get { return (bool)GetValue(ReadOnlyProperty); }
+            set { SetValue(ReadOnlyProperty, value); }
+        }
+
+        public bool SuspendEditorUpdate { get; private set; }
+
+        public string Text
+        {
+            get { return (string)GetValue(TextProperty); }
+            set { SetValue(TextProperty, value); }
+        }
+
 
         public CodeEditor()
         {
@@ -22,36 +48,36 @@ namespace RazorPad.UI.Editors
             InitializeTextChangedTimer();
         }
 
-        private void InitializeEditor()
-        {
-            Editor = new TextEditor
-                             {
-                                 ShowLineNumbers = true,
-                                 FontFamily = new FontFamily("Consolas"),
-                                 FontSize = (double)(new FontSizeConverter().ConvertFrom("10pt") ?? 10.0)
-                             };
-
-            Editor.KeyUp += (sender, args) =>
-            {
-                if (_textChangedTimer.IsEnabled)
-                    _textChangedTimer.Stop();
-
-                _textChangedTimer.Start();
-
-            };
-            AddChild(Editor);
-        }
 
         private void InitializeTextChangedTimer()
         {
             _textChangedTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(500) };
             _textChangedTimer.Tick += (sender, args) =>
             {
-                //Debug.Print("codeEditor: TimerTick");
                 SuspendEditorUpdate = true;
                 Text = Editor.Text;
                 SuspendEditorUpdate = false;
             };
+        }
+
+        private void InitializeEditor()
+        {
+            Editor = new TextEditor
+                         {
+                             ShowLineNumbers = true,
+                             FontFamily = new FontFamily("Consolas"),
+                             FontSize = (double)(new FontSizeConverter().ConvertFrom("10pt") ?? 10.0)
+                         };
+
+            Editor.KeyUp += (sender, args) =>
+                                {
+                                    if (_textChangedTimer.IsEnabled)
+                                        _textChangedTimer.Stop();
+
+                                    _textChangedTimer.Start();
+
+                                };
+            AddChild(Editor);
         }
 
         protected void InitializeFolding(AbstractFoldingStrategy foldingStrategy)
@@ -65,29 +91,20 @@ namespace RazorPad.UI.Editors
             foldingUpdateTimer.Start();
         }
 
-        #region TextProperty
 
-        public string Text
+        static void OnReadOnlyChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            get { return GetValue(TextProperty) as string; }
-            set { SetValue(TextProperty, value); }
+            var codeEditor = sender as CodeEditor;
+            if (codeEditor != null) 
+                codeEditor.ReadOnly = (bool)e.NewValue;
         }
 
-        public static void OnTextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        static void OnTextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            //Debug.Print("codeEditor: OnTextChanged");
             var codeEditor = sender as CodeEditor;
 
-            if (!codeEditor.SuspendEditorUpdate)
+            if (codeEditor != null && !codeEditor.SuspendEditorUpdate)
                 codeEditor.Editor.Text = (e.NewValue ?? string.Empty).ToString();
         }
-
-        public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text",
-            typeof(String), typeof(CodeEditor), new FrameworkPropertyMetadata(string.Empty, OnTextChanged)
-            {
-                BindsTwoWayByDefault = true,
-            }); 
-
-        #endregion
     }
 }

@@ -51,7 +51,7 @@
     <Compile Include="Editors\CodeEditor.cs" />
     <Compile Include="Editors\CSharpCodeEditor.cs" />
     <Compile Include="Editors\JsonCodeEditor.cs" />
-    <Compile Include="Editors\RazorTemplateEditor.cs" />
+    <Compile Include="Editors\RazorCodeEditor.cs" />
     <Compile Include="Editors\XmlCodeEditor.cs" />
     <Compile Include="ModelBuilders\CSharp\CSharpModelBuilderFactory.cs" />
     <Compile Include="ModelBuilders\CSharp\CSharpModelBuilderViewModel.cs" />

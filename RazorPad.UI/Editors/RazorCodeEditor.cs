@@ -4,9 +4,9 @@ using ICSharpCode.AvalonEdit.Indentation;
 
 namespace RazorPad.UI.Editors
 {
-	public class RazorTemplateEditor : CodeEditor
+	public class RazorCodeEditor : CodeEditor
 	{
-		public RazorTemplateEditor()
+		public RazorCodeEditor()
 		{
             Editor.TextArea.IndentationStrategy = new DefaultIndentationStrategy();
 			InitializeFolding(new XmlFoldingStrategy());
