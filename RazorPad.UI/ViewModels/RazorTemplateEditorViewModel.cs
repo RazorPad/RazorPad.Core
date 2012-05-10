@@ -110,7 +110,7 @@ namespace RazorPad.ViewModels
             get { return _document.Filename; }
             set
             {
-                if (_document.Filename == value)
+                if (string.Equals(_document.Filename, value, StringComparison.OrdinalIgnoreCase))
                     return;
 
                 _document.Filename = value;

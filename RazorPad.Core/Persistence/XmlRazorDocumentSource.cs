@@ -66,15 +66,6 @@ namespace RazorPad.Persistence
             return new RazorDocument(templateEl.Value, references, modelProvider, metadata);
         }
 
-        public void Save(RazorDocument document, string filename = null)
-        {
-            var destination = filename ?? document.Filename;
-            using (var stream = File.Open(destination, FileMode.Truncate, FileAccess.Write))
-            {
-                Save(document, stream);
-                stream.Flush(true);
-            }
-        }
 
         public void Save(RazorDocument document, Stream stream)
         {

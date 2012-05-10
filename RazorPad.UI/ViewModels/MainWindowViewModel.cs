@@ -264,10 +264,12 @@ namespace RazorPad.ViewModels
             if (!document.CanSaveToCurrentlyLoadedFile)
                 filename = null;
 
-            SaveAs(document.Document, filename);
+            var newFilename = SaveAs(document.Document, filename);
+
+            document.Filename = newFilename;
         }
 
-        public void SaveAs(RazorDocument document, string filename = null)
+        public string SaveAs(RazorDocument document, string filename = null)
         {
             try
             {
@@ -277,18 +279,17 @@ namespace RazorPad.ViewModels
                 if (string.IsNullOrWhiteSpace(filename))
                 {
                     Trace.TraceWarning("Filename is empty - skipping save");
-                    return;
                 }
-
-                _documentManager.Save(document, filename);
-
-                if (!filename.Equals(document.Filename, StringComparison.OrdinalIgnoreCase))
-                    document.Filename = filename;
+                else
+                    _documentManager.Save(document, filename);
             }
             catch (Exception ex)
             {
+                Trace.TraceError("Error saving document: {0}", ex);
                 Error.SafeInvoke(ex.Message);
             }
+
+            return filename;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -10,6 +11,9 @@ namespace RazorPad
 
         public static readonly IEnumerable<string> SimpleTemplateExtensions =
             new[] { ".txt", ".cshtml", ".vbhtml" };
+
+        public static volatile Func<string, RazorDocumentKind> GetDocumentKind = 
+            GetDocumentKindInternal;
 
         public string Filename { get; set; }
 
@@ -25,20 +29,7 @@ namespace RazorPad
 
         public RazorDocumentKind DocumentKind
         {
-            get
-            {
-                if(_documentKind != null)
-                    return _documentKind.Value;
-
-                if(!string.IsNullOrWhiteSpace(Filename))
-                {
-                    var extension = Path.GetExtension(Filename);
-                    if(SimpleTemplateExtensions.Contains(extension))
-                        return RazorDocumentKind.TemplateOnly;
-                }
-
-                return RazorDocumentKind.Full;
-            }
+            get { return _documentKind.GetValueOrDefault(GetDocumentKind(Filename)); }
             set { _documentKind = value; }
         }
         private RazorDocumentKind? _documentKind;
@@ -67,6 +58,18 @@ namespace RazorPad
                 return null;
 
             return ModelProvider.GetModel();
+        }
+
+        private static RazorDocumentKind GetDocumentKindInternal(string filename)
+        {
+            if (!string.IsNullOrWhiteSpace(filename))
+            {
+                var extension = Path.GetExtension(filename);
+                if (SimpleTemplateExtensions.Contains(extension))
+                    return RazorDocumentKind.TemplateOnly;
+            }
+
+            return RazorDocumentKind.Full;
         }
     }
 }

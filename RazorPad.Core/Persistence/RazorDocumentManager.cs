@@ -53,22 +53,6 @@ namespace RazorPad.Persistence
             return new RazorDocument(new StreamReader(stream, Encoding).ReadToEnd());
         }
 
-        public void Save(RazorDocument document, string fileName = null)
-        {
-            var destination = fileName ?? document.Filename;
-
-            if (string.IsNullOrWhiteSpace(destination))
-                throw new ApplicationException("No filename specified!");
-            
-            document.Filename = destination;
-
-            using(var stream = File.Open(destination, FileMode.OpenOrCreate, FileAccess.Write))
-            {
-                Save(document, stream);
-                stream.Flush(true);
-            }
-        }
-
         public void Save(RazorDocument document, Stream stream)
         {
             if (document.DocumentKind == RazorDocumentKind.TemplateOnly)
