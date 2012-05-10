@@ -144,9 +144,8 @@ namespace RazorPad.ViewModels
                 );
 
             ManageReferencesCommand = new RelayCommand(() => {
-                var loadedReferences = CurrentTemplate.ReferencedAssemblies;
-                var references = GetReferencesThunk(loadedReferences);
-                CurrentTemplate.SetReferencedAssemblies(references);
+                var loadedReferences = CurrentTemplate.AssemblyReferences;
+                CurrentTemplate.AssemblyReferences = GetReferencesThunk(loadedReferences);
             });
 
             NewCommand = new RelayCommand(() => AddNewTemplateEditor());

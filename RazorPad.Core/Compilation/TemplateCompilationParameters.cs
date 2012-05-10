@@ -1,7 +1,9 @@
 ﻿using System;
 using System.CodeDom.Compiler;
+using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Web.Razor;
 using Microsoft.CSharp;
@@ -56,6 +58,12 @@ namespace RazorPad.Compilation
             Contract.Requires(string.IsNullOrWhiteSpace(location) == false);
 
             CompilerParameters.ReferencedAssemblies.Add(location);
+        }
+
+        public void SetReferencedAssemblies(IEnumerable<string> references)
+        {
+            CompilerParameters.ReferencedAssemblies.Clear();
+            CompilerParameters.ReferencedAssemblies.AddRange(references.ToArray());
         }
 
 
