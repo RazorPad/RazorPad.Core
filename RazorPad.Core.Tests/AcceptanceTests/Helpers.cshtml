@@ -1,0 +1,5 @@
+﻿@helper DisplayCurrency(decimal value)  {  
+    @value.ToString("C2", new System.Globalization.CultureInfo("en-us"))
+}
+
+@DisplayCurrency(3.4m)

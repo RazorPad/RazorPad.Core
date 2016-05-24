@@ -1,0 +1,33 @@
+@using System.Web
+@using System.Linq
+@using System.Xml.Linq
+@using System.Text.RegularExpressions
+
+@{
+	XDocument feedXml = XDocument.Load("http://feeds.feedburner.com/jesschadwick");
+	var feeds = from feed in feedXml.Descendants("item")
+	            select new 
+	            {
+	                Title = feed.Element("title").Value,
+	                Link = feed.Element("link").Value,
+	                Description = Regex.Match(feed.Element("description").Value, @"^.{1,180}\b(?<!\s)").Value
+	            };
+
+}
+
+<h2>RssReader</h2>
+<table>
+    <tr>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Link</th>
+    </tr>
+    @foreach (var item in @feeds) 
+    {
+        <tr>
+        	<td><a href="@item.Link" target="_blank">@System.Web.HttpUtility.HtmlEncode(item.Title)</a></td>
+        	<td>@System.Web.HttpUtility.HtmlDecode(item.Description)</td>
+        	<td><a href="@item.Link" target="_blank">More</a></td>
+    	</tr>
+	} 
+</table>

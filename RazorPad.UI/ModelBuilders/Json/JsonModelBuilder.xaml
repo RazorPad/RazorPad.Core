@@ -1,0 +1,10 @@
+﻿<Framework:ModelBuilder x:Class="RazorPad.UI.Json.JsonModelBuilder" 
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:Framework="clr-namespace:RazorPad.UI" xmlns:Editors="clr-namespace:RazorPad.UI.Editors">
+
+        <Editors:JsonCodeEditor x:Name="ModelEditor"
+             Text="{Binding Path=Json}"
+             AllowDrop="True" />
+
+</Framework:ModelBuilder>

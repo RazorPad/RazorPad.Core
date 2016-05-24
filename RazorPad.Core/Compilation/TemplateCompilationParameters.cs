@@ -1,11 +1,13 @@
 ﻿using System;
-using System.Diagnostics.Contracts;
-using System.Linq;
 using System.CodeDom.Compiler;
+using System.Collections.Generic;
+using System.Diagnostics.Contracts;
+using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Web.Razor;
 using Microsoft.CSharp;
 using Microsoft.VisualBasic;
-using System.Reflection;
 
 namespace RazorPad.Compilation
 {
@@ -58,25 +60,22 @@ namespace RazorPad.Compilation
             CompilerParameters.ReferencedAssemblies.Add(location);
         }
 
+        public void SetReferencedAssemblies(IEnumerable<string> references)
+        {
+            CompilerParameters.ReferencedAssemblies.Clear();
+            CompilerParameters.ReferencedAssemblies.AddRange(references.ToArray());
+        }
+
 
         public static TemplateCompilationParameters CreateFromFilename(string filename)
         {
-            if (filename.EndsWith(".vbhtml", StringComparison.OrdinalIgnoreCase))
+            var extension = Path.GetExtension(filename ?? "test.cshtml") ?? string.Empty;
+
+            if (extension.ToLower().Contains("vb"))
                 return VisualBasic;
 
             return CSharp;
         }
-
-        public static TemplateCompilationParameters CreateFromLanguage(TemplateLanguage language)
-        {
-            switch (language)
-            {
-                case(TemplateLanguage.VisualBasic):
-                    return VisualBasic;
-                
-                default:
-                    return CSharp;
-            }
-        }
-    }
+		
+	}
 }
