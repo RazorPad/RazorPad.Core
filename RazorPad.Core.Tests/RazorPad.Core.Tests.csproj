@@ -45,6 +45,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\Program Files (x86)\Microsoft ASP.NET\ASP.NET Web Pages\v1.0\Assemblies\System.Web.Razor.dll</HintPath>
     </Reference>
+    <Reference Include="System.XML" />
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDependentAssemblyPaths Condition=" '$(VS100COMNTOOLS)' != '' " Include="$(VS100COMNTOOLS)..\IDE\PrivateAssemblies">
@@ -52,14 +54,43 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AcceptanceTests.cs" />
+    <Compile Include="AcceptanceTests\AcceptanceTests.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AcceptanceTests.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Persistence\RazorDocumentLoaderTests.cs" />
+    <Compile Include="Persistence\XmlRazorDocumentSourceTests.cs" />
+    <None Include="AcceptanceTests\AcceptanceTests.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>AcceptanceTests.cs</LastGenOutput>
+    </None>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="AcceptanceTests\BasicRazorDocument.razorpad" />
+    <EmbeddedResource Include="AcceptanceTests\BasicRazorDocument.razorpad.output" />
+    <EmbeddedResource Include="AcceptanceTests\AssemblyReferences.razorpad" />
+    <EmbeddedResource Include="AcceptanceTests\AssemblyReferences.razorpad.output" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\RazorPad.Contracts\RazorPad.Contracts.csproj">
+      <Project>{92E04BBB-A022-41BA-A13C-1EB6C47DFFAE}</Project>
+      <Name>RazorPad.Contracts</Name>
+    </ProjectReference>
     <ProjectReference Include="..\RazorPad.Core\RazorPad.Core.csproj">
       <Project>{511D144C-F4C7-40A3-B3B4-80D891FCE2F5}</Project>
       <Name>RazorPad.Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="AcceptanceTests\Helpers.cshtml.output" />
+    <EmbeddedResource Include="AcceptanceTests\Helpers.cshtml" />
+    <EmbeddedResource Include="AcceptanceTests\Functions.cshtml.output" />
+    <EmbeddedResource Include="AcceptanceTests\Functions.cshtml" />
+    <EmbeddedResource Include="AcceptanceTests\SimpleRendering.cshtml.output" />
+    <EmbeddedResource Include="AcceptanceTests\SimpleRendering.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

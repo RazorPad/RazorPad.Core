@@ -1,0 +1,19 @@
+﻿<UserControl x:Class="RazorPad.Views.ModelBuilder"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <ComboBox Grid.Row="0" 
+                  ItemsSource="{Binding AvailableModelProviders}" 
+                  SelectedValue="{Binding SelectedModelProvider}" 
+        />
+
+        <ContentPresenter Grid.Row="1" Content="{Binding ModelBuilder}" />
+    </Grid>
+
+</UserControl>

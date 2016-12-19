@@ -9,11 +9,14 @@ using System.Reflection;
 using System.Web.Razor;
 using Microsoft.CSharp;
 using Microsoft.VisualBasic;
+using NLog;
 
 namespace RazorPad.Compilation.EmbeddedResources
 {
     public class RazorViewComponentAssembly
     {
+        protected static readonly Logger Log = LogManager.GetCurrentClassLogger();
+
         static readonly Func<string, bool> ResourceIsRazorView = EmbeddedTemplateHost.IsRazorView;
 
         private readonly string _originalAssemblyFileName;
@@ -40,16 +43,16 @@ namespace RazorPad.Compilation.EmbeddedResources
             Initialize();
 
             IEnumerable<string> embeddedRazorViewResourceNames = 
-                Assembly.GetManifestResourceNames().Where(ResourceIsRazorView);
+                Assembly.GetManifestResourceNames().Where(ResourceIsRazorView).ToArray();
 
             if (!embeddedRazorViewResourceNames.Any())
             {
-                Debug("No embedded Razor views were found in this assembly.");
+                Log.Debug("No embedded Razor views were found in this assembly.");
                 return _compilationResultMessage;
             }
 
-            Debug("Found the following embedded Razor views: {0}", 
-                  string.Join("\r\n", embeddedRazorViewResourceNames));
+            Log.Debug(() => string.Format("Found the following embedded Razor views: {0}", 
+                                          string.Join("\r\n", embeddedRazorViewResourceNames)));
 
             IEnumerable<IGrouping<RazorCodeLanguage, string>> resourcesGroupedByLanguage =
                 from resourceName in embeddedRazorViewResourceNames
@@ -67,32 +70,32 @@ namespace RazorPad.Compilation.EmbeddedResources
                 throw new RazorViewComponentAssemblyCompilationException(compiledAssemblies);
             }
 
-            Debug("Done!");
+            Log.Debug("Done!");
 
             return _compilationResultMessage;
         }
 
         private void Initialize()
         {
-            Debug("Initializing Razor View Component Assembly {0}...", _originalAssemblyFileName);
+            Log.Debug("Initializing Razor View Component Assembly {0}...", _originalAssemblyFileName);
 
             WorkingFolder = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
 
             Directory.CreateDirectory(WorkingFolder);
-            Debug("Working folder: {0}", WorkingFolder);
+            Log.Debug("Working folder: {0}", WorkingFolder);
 
             var workingAssemblyFileName = Path.Combine(WorkingFolder, Path.GetFileName(_originalAssemblyFileName));
 
-            Debug("Copying original assembly {0} to working file {1}...", _originalAssemblyFileName, workingAssemblyFileName);
+            Log.Debug("Copying original assembly {0} to working file {1}...", _originalAssemblyFileName, workingAssemblyFileName);
             File.Copy(_originalAssemblyFileName, workingAssemblyFileName, true);
 
-            Debug("Loading assembly: {0}", workingAssemblyFileName);
+            Log.Debug("Loading assembly: {0}", workingAssemblyFileName);
             Assembly = Assembly.LoadFrom(workingAssemblyFileName);
         }
 
         private IEnumerable<CompilerResults> CompileResourcesByLanguage(IEnumerable<IGrouping<RazorCodeLanguage, string>> resourcesGroupedByLanguage)
         {
-            List<CompilerResults> compilerResults = new List<CompilerResults>();
+            var compilerResults = new List<CompilerResults>();
 
             foreach (var resourceNameGroup in resourcesGroupedByLanguage.ToArray())
             {
@@ -100,15 +103,15 @@ namespace RazorPad.Compilation.EmbeddedResources
                 string languageDisplayName = language.GetType().Name;
                 IEnumerable<string> resourceNames = resourceNameGroup;
 
-                Debug("Compiling {0} {1} resources", resourceNames.Count(), languageDisplayName);
+                Log.Debug("Compiling {0} {1} resources", resourceNames.Count(), languageDisplayName);
 
                 _compilationResultMessage.EmbeddedRazorViews.Add(languageDisplayName, resourceNames);
 
-                IEnumerable<CodeCompileUnit> codeCompileUnits = GenerateCode(resourceNames);
+                var codeCompileUnits = GenerateCode(resourceNames).ToArray();
 
                 _compilationResultMessage.CodeCompileUnits.Add(languageDisplayName, codeCompileUnits);
 
-                CompilerResults compilerResult = CompileGeneratedCode(language, codeCompileUnits);
+                var compilerResult = CompileGeneratedCode(language, codeCompileUnits);
 
                 compilerResults.Add(compilerResult);
             }
@@ -120,9 +123,10 @@ namespace RazorPad.Compilation.EmbeddedResources
 
         private IEnumerable<CodeCompileUnit> GenerateCode(IEnumerable<string> resourceNames)
         {
-            Debug("Generating code for resources:\r\n{0}", String.Join("\r\n\t", resourceNames.ToArray()));
+            Log.Debug(() => string.Format("Generating code for resources: {0}", 
+                                          string.Join("; ", resourceNames.ToArray())));
 
-            List<CodeCompileUnit> codeCompileUnits = new List<CodeCompileUnit>();
+            var codeCompileUnits = new List<CodeCompileUnit>();
 
             foreach (var resourceName in resourceNames)
             {
@@ -138,7 +142,7 @@ namespace RazorPad.Compilation.EmbeddedResources
 
         private CompilerResults CompileGeneratedCode(RazorCodeLanguage language, IEnumerable<CodeCompileUnit> codeCompileUnits)
         {
-            Debug("Compiling generated code for {0}", language.GetType().Name);
+            Log.Debug("Compiling generated code for {0}", language.GetType().Name);
 
             CodeDomProvider codeProvider = GetCodeProvider(language);
 
@@ -146,14 +150,14 @@ namespace RazorPad.Compilation.EmbeddedResources
 
             if (compilerParameters.GenerateInMemory)
             {
-                Debug("Generating assemblies in memory");
+                Log.Debug("Generating assemblies in memory");
             }
             else
             {
-                Debug("Output assembly: {0}", compilerParameters.OutputAssembly);
+                Log.Debug("Output assembly: {0}", compilerParameters.OutputAssembly);
             }
 
-            CompilerResults compilerResults =
+            var compilerResults =
                 codeProvider.CompileAssemblyFromDom(compilerParameters, codeCompileUnits.ToArray());
 
             return compilerResults;
@@ -165,11 +169,6 @@ namespace RazorPad.Compilation.EmbeddedResources
                 return new VBCodeProvider();
             else
                 return new CSharpCodeProvider();
-        }
-
-        private void Debug(string format, params object[] args)
-        {
-            System.Diagnostics.Debug.WriteLine(format, args);
         }
     }
 }

@@ -1,0 +1,6 @@
+﻿<UserControl x:Class="RazorPad.Views.Output.BrowserView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:AttachedProperties="clr-namespace:RazorPad.UI;assembly=RazorPad.UI">
+    <WebBrowser AttachedProperties:BrowseBehavior.Html="{Binding ExecutedTemplateOutput}" />
+</UserControl>

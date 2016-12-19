@@ -1,0 +1,17 @@
+﻿<RazorDocument>
+  <Metadata />
+  <References>
+    <Reference>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\System.XML.dll</Reference>
+    <Reference>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\System.Xml.Linq.dll</Reference>
+    <Reference>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\System.Web.dll</Reference>
+  </References>
+  <Model Provider="Json"><![CDATA[{
+	Name: 'RazorPad'
+}]]></Model>
+  <Template BaseClass="RazorPad.Compilation.TemplateBase">
+  <![CDATA[@using System.Web
+@using System.Linq
+@using System.Xml.Linq
+@XDocument.Parse("<WhatIsRazorPad>Awesome</WhatIsRazorPad>").Root.Value
+]]></Template>
+</RazorDocument>
